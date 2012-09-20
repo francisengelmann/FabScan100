@@ -1,9 +1,11 @@
 #ifndef GEOMETRYENGINE_H
 #define GEOMETRYENGINE_H
 
+#include <QtOpenGL/QGLFunctions>
 #include <QtOpenGL/QGLShaderProgram>
 
-class GeometryEngine
+
+class GeometryEngine : protected QGLFunctions
 {
 public:
     GeometryEngine();
