@@ -4,7 +4,6 @@
 #include <QtOpenGL/QGLFunctions>
 #include <QtOpenGL/QGLShaderProgram>
 
-
 class GeometryEngine : protected QGLFunctions
 {
 public:

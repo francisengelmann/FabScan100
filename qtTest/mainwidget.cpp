@@ -6,10 +6,10 @@
 
 #include <QBasicTimer>
 #include <QMouseEvent>
+#include <QDebug>
 
 #include <math.h>
-
-#include <QDebug>
+#include <locale.h>
 
 MainWidget::MainWidget(QWidget *parent) :
     QGLWidget(parent),
@@ -78,6 +78,8 @@ void MainWidget::timerEvent(QTimerEvent *e)
 
 void MainWidget::initializeGL()
 {
+    initializeGLFunctions();
+
     qglClearColor(Qt::black);
 
     qDebug() << "Initializing shaders...";
@@ -96,7 +98,6 @@ void MainWidget::initializeGL()
 
     qDebug() << "Initializing geometries...";
     geometries->init();
-    qDebug() << "Initialized geometries.";
 
     // using QBasicTimer because its faster that QTimer
     timer->start(12, this);
