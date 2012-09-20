@@ -3,7 +3,7 @@ FabScan1.5
 
 This is basically just a small project where I try to combine the different libraies in one program on multiple platforms.
 The Libraries I plan to use are the following:
-* OpenGL - works on Mac, does not yet work on Ubunutu, not tested on Windows
+* OpenGL - works on Mac, works on Ubunutu, not tested on Windows
 * OpenCV - not tested on Mac, not tested on Ubuntu, not tested on Windows
 * PCL - not tested on Mac, not tested on Ubunutu, not tested on Windows
 
