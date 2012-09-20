@@ -13,11 +13,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     geometryengine.cpp \
-    mainwidget.cpp
+    mainwidget.cpp \
+    glextensions.cpp
 
 HEADERS  += mainwindow.h \
     geometryengine.h \
-    mainwidget.h
+    mainwidget.h \
+    glextensions.h
 
 FORMS    += mainwindow.ui
 

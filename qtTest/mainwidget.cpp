@@ -96,6 +96,7 @@ void MainWidget::initializeGL()
 
     qDebug() << "Initializing geometries...";
     geometries->init();
+    qDebug() << "Initialized geometries.";
 
     // using QBasicTimer because its faster that QTimer
     timer->start(12, this);

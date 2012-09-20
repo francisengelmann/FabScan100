@@ -1,6 +1,8 @@
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 
+//#include <GL/gl.h>
+//#include <GL/glfw.h>
 #include <QtOpenGL/QGLWidget>
 
 #include <QMatrix4x4>
