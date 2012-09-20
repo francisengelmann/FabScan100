@@ -13,7 +13,7 @@ Current Setup on Ubuntu: Qt 4.8 with Qt-Creator 2.4.1
 
 Current Setup on Windows: not tested, who wants to do this ?
 
-Instalation
+Installation
 ===========
 
 For all platforms:
