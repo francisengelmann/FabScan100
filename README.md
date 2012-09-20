@@ -28,7 +28,8 @@ Mac:
 2. Install OpenCV using homebrew: brew install opencv
 3. Install PCL using homebrew: see http://www.pointclouds.org/documentation/tutorials/installing_homebrew.php
 
-  important: seems to be a little tricky, working on it
+  important: seems to be a little tricky, working on it.
+  Solution: You need to change -mmacosx-version-min=10.5 in $QTDIR/mkspecs/common/g++-macx.conf to -mmacosx-version-min=10.7. This is because SDKs for 10.5 or 10.6 are not included in Mountain Lion and XCode 4.4.
 
 Ubuntu:
 =======
