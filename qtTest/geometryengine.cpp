@@ -104,6 +104,9 @@ void GeometryEngine::initCubeGeometry()
 //! [2]
 void GeometryEngine::drawCubeGeometry(QGLShaderProgram *program)
 {
+
+    glEnable(GL_PROGRAM_POINT_SIZE_EXT);
+
     // Tell OpenGL which VBOs to use
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
@@ -125,6 +128,7 @@ void GeometryEngine::drawCubeGeometry(QGLShaderProgram *program)
     glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
 
     // Draw cube geometry using indices from VBO 1
-    glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
+    //glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_POINTS, 34, GL_UNSIGNED_SHORT, 0);
 }
 //! [2]
