@@ -27,6 +27,7 @@ Mac:
 1. Install Homebrew: http://mxcl.github.com/homebrew/
 2. Install OpenCV using homebrew: brew install opencv
 3. Install PCL using homebrew: see http://www.pointclouds.org/documentation/tutorials/installing_homebrew.php
+  important: seems to be a little tricky, working on it
 
 Ubuntu:
 =======
