@@ -22,15 +22,18 @@ For all platforms:
 Install Qt Creator from http://qt-project.org/downloads
 Make sure you have OpenGL installed. Preinstalled on Ubunutu, Mac. What about Windows?
 
-Mac:
-===
+Mac OS X 10.8.1 with XCode 4.5
+==============================
 1. Install Homebrew: http://mxcl.github.com/homebrew/
 2. Install OpenCV using homebrew: brew install opencv
-3. Install PCL following these instructions: http://www.pointclouds.org/downloads/macosx.html
+3. Install PCL 1.5 following these instructions: http://www.pointclouds.org/downloads/macosx.html
 
-  (Homebrew is not really suported yet)
+  (Homebrew is not really suported yet, at this time 1.5 seems to be the only one compiling on Mountain Lion)
 
-  Important: You need to change -mmacosx-version-min=10.5 in $QTDIR/mkspecs/common/g++-macx.conf to -mmacosx-version-min=10.7. This is because SDKs for 10.5 or 10.6 are not included in Mountain Lion and XCode 4.4.
+  Important:
+    * You need to change -mmacosx-version-min=10.5 in $QTDIR/mkspecs/common/g++-macx.conf to -mmacosx-version-min=10.7. This is because SDKs for 10.5 or 10.6 are not included in Mountain Lion and XCode 4.4.
+    * Also install vtk 5.6 from http://www.vtk.org/VTK/resources/software.html#previous2
+
 
 Ubuntu:
 =======
