@@ -48,4 +48,4 @@ Ubuntu 12.04 LTS:
 
 Windows:
 ========
-1. ???
+ Here I need people to test! If you are interessted please send me an email!
