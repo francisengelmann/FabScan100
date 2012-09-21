@@ -35,16 +35,16 @@ Mac OS X 10.8.1 with XCode 4.5
     * Also install vtk 5.6 from http://www.vtk.org/VTK/resources/software.html#previous2
 
 
-Ubuntu:
+Ubuntu 12.04 LTS:
 =======
 1. Install OpenCV following this guide: http://www.samontab.com/web/2012/06/installing-opencv-2-4-1-ubuntu-12-04-lts/
 
   (OpenCV 2.4.2 is the most recent at time of writing this, so just replace accordingly)
   
 2. Install PCL
-  sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
-  sudo apt-get update
-  sudo apt-get install libpcl-all
+  * sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
+  * sudo apt-get update
+  * sudo apt-get install libpcl-all
 
 Windows:
 ========
