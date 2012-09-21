@@ -23,7 +23,7 @@ void MainWindow::on_myButton_clicked()
 
 
     // Open the video file
-          cv::VideoCapture capture(0);
+          cv::VideoCapture capture(-1);
           // check if video successfully opened
           if (!capture.isOpened()) return;
           // Get the frame rate
