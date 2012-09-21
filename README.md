@@ -40,3 +40,7 @@ Ubuntu:
 1. Install OpenCV following this guide: http://www.samontab.com/web/2012/06/installing-opencv-2-4-1-ubuntu-12-04-lts/
 
   (OpenCV 2.4.2 is the most recent at time of writing this, so just replace accordingly)
+
+Windows:
+========
+1. ???
