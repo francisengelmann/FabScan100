@@ -39,6 +39,22 @@ macx {
    -lopencv_imgproc \
    -lopencv_features2d \
    -lopencv_calib3d
+
+    INCLUDEPATH += /usr/local/include/pcl-1.5
+    INCLUDEPATH += /usr/local/Cellar/eigen/3.1.1/include/eigen3
+    INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
+
+    LIBS += -LC:/usr/local/lib \
+    -lpcl_common \
+    -lpcl_io \
+    -lpcl_filters \
+    -lpcl_kdtree \
+    -lpcl_registration \
+    -lpcl_features \
+    -lpcl_segmentation
+
+    LIBS += -LC:/usr/local/lib/vtk-5.6 \
+    -lvtk_common
 }
 
 linux-g++ {
