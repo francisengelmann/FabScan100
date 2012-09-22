@@ -24,7 +24,7 @@ For all platforms:
 ==================
 
 Install Qt Creator from http://qt-project.org/downloads
-Make sure you have OpenGL installed. Preinstalled on Ubunutu, Mac. What about Windows?
+Make sure you have OpenGL installed. Preinstalled on Ubuntu, Mac. What about Windows?
 
 Mac OS X 10.8.1 with XCode 4.5
 ==============================
