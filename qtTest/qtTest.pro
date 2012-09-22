@@ -44,22 +44,20 @@ macx {
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.1/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
 
-    LIBS += -LC:/usr/local/lib \
-    -lpcl_common \
-    -lpcl_io \
-    -lpcl_filters \
-    -lpcl_kdtree \
-    -lpcl_registration \
-    -lpcl_features \
-    -lpcl_segmentation
-
-    LIBS += -LC:/usr/local/lib/vtk-5.6 \
-    -lvtk_common
+    #LIBS += -LC:/usr/local/lib \
+    #-lpcl_common \
+    #-lpcl_io \
+    #-lpcl_filters \
+    #-lpcl_kdtree \
+    #-lpcl_registration \
+    #-lpcl_features \
+    #-lpcl_segmentation
 }
 
 linux-g++ {
     message("Buildng for Linux.")
     INCLUDEPATH += /usr/local/include/opencv2/
+    INCLUDEPATH += /usr/include/eigen3/
     LIBS += -LC:/usr/local/lib/ \
    -lopencv_core \
    -lopencv_highgui \
@@ -68,6 +66,16 @@ linux-g++ {
    -lopencv_calib3d
     #CONFIG += link_pkgconfig
     #PKGCONFIG += opencv
+
+    INCLUDEPATH += /usr/include/pcl-1.6
+    LIBS += -LC:/usr/lib \
+    -lpcl_common \
+    -lpcl_io \
+    -lpcl_filters \
+    -lpcl_kdtree \
+    -lpcl_registration \
+    -lpcl_features \
+    -lpcl_segmentation
 }
 
 win32 {
