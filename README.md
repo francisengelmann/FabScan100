@@ -33,6 +33,8 @@ Mac OS X 10.8.1 with XCode 4.5
   Important:
     * You need to change -mmacosx-version-min=10.5 in $QTDIR/mkspecs/common/g++-macx.conf to -mmacosx-version-min=10.7. This is because SDKs for 10.5 or 10.6 are not included in Mountain Lion and XCode 4.4.
     * Also install vtk 5.6 from http://www.vtk.org/VTK/resources/software.html#previous2
+    
+  Currently stuck here, installing PCL on Mac does not seem straightforward... :( 
 
 
 Ubuntu 12.04 LTS:
