@@ -52,6 +52,8 @@ Ubuntu 12.04 LTS:
   Important: OpenCV 2.4.2 is the most recent at the time of writing, so just replace 2.4.1 with 2.4.2 everywhere it occurs.
   
 3. Install PCL
+
+  * sudo apt-get install libeigen3-dev
   * sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
   * sudo apt-get update
   * sudo apt-get install libpcl-all
