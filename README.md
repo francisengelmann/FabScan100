@@ -11,7 +11,7 @@ The following checklist shows the advancements:
 * serial communication - not implemented, but look here: http://stackoverflow.com/questions/1459344/qt-and-serial-port-programming
 * accessing arbitrary webcams - not implemented
 
-Current Setup on Mac: Qt 4.7 with Qt-Creator 2.4
+Current Setup on Mac: Qt 4.7 with Qt-Creator 2.4.1
 
 Current Setup on Ubuntu: Qt 4.8 with Qt-Creator 2.4.1
 
