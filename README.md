@@ -2,10 +2,14 @@ FabScan1.5
 ==========
 
 This is basically just a small project where I try to combine the different libraries into one program that runs on multiple platforms.
-The libraries I plan to use are the following:
+
+The following checklist shows the advancements:
+    
 * OpenGL - works on Mac, works on Ubuntu, not tested on Windows
 * OpenCV - works on Mac, almost works on Ubuntu, not tested on Windows
 * PCL - not tested on Mac, not tested on Ubunutu, not tested on Windows
+* serial communication - not implemented, but look here: http://stackoverflow.com/questions/1459344/qt-and-serial-port-programming
+* accessing arbitrary webcams - not implemented
 
 Current Setup on Mac: Qt 4.7 with Qt-Creator 2.4
 
