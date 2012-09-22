@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Wed Sep 19 13:15:38 2012
+** Created: Sat Sep 22 12:02:16 2012
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -35,6 +35,7 @@ public:
     QGridLayout *gridLayout;
     QLabel *label;
     QPushButton *myButton;
+    QPushButton *pushButton;
     QMenuBar *menuBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -71,6 +72,11 @@ public:
 
         gridLayout->addWidget(myButton, 1, 0, 1, 1);
 
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+
+        gridLayout->addWidget(pushButton, 2, 0, 1, 1);
+
 
         verticalLayout_2->addLayout(gridLayout);
 
@@ -90,6 +96,7 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "FabScan", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
         myButton->setText(QApplication::translate("MainWindow", "Start Scan", 0, QApplication::UnicodeUTF8));
+        pushButton->setText(QApplication::translate("MainWindow", "Load PointCloud", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
