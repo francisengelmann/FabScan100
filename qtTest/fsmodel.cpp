@@ -15,7 +15,7 @@ void FSModel::loadModel()
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 
-      if (pcl::io::loadPCDFile<pcl::PointXYZ> ("../qtTest/cup.pcd", mycloud) == -1) //* load the file
+      if (pcl::io::loadPCDFile<pcl::PointXYZ> ("../qtTest/bearHigh.pcd", mycloud) == -1) //* load the file
       {
         PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
         return ;

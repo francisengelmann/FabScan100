@@ -40,7 +40,7 @@ void GeometryEngine::init()
 void GeometryEngine::setPointCloudTo(pcl::PointCloud<pcl::PointXYZ> pointcloud)
 {
     VertexData vertices[pointcloud.points.size()];
-    GLushort indices[pointcloud.points.size()];
+    GLuint indices[pointcloud.points.size()];
 
     for (size_t i = 0; i < pointcloud.points.size(); ++i){
         vertices[i] = {
@@ -78,7 +78,7 @@ void GeometryEngine::setPointCloudTo(pcl::PointCloud<pcl::PointXYZ> pointcloud)
 
     // Transfer index data to VBO 1
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, pointcloud.points.size() * sizeof(GLushort), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, pointcloud.points.size() * sizeof(GLuint), indices, GL_STATIC_DRAW);
 }
 
 void GeometryEngine::initPointCloud()
@@ -106,7 +106,7 @@ void GeometryEngine::initPointCloud()
 
 void GeometryEngine::drawPointCloud(QGLShaderProgram *program)
 {
-    glPointSize(1.0f);
+    //glPointSize(1.0f);
     // Tell OpenGL which VBOs to use
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
@@ -128,8 +128,8 @@ void GeometryEngine::drawPointCloud(QGLShaderProgram *program)
     glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
 
     // Draw cube geometry using indices from VBO 3
-    int numberOfPoints = FSController::getInstance()->model->mycloud.size();
-    glDrawElements(GL_POINTS, numberOfPoints, GL_UNSIGNED_SHORT, 0);
+    unsigned int numberOfPoints = FSController::getInstance()->model->mycloud.size();
+    glDrawElements(GL_POINTS, numberOfPoints, GL_UNSIGNED_INT, 0);
 }
 
 void GeometryEngine::initCubeGeometry()
@@ -194,7 +194,7 @@ void GeometryEngine::initCubeGeometry()
 //! [1]
     // Transfer vertex data to VBO 0
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(VertexData), vertices, GL_DYNAMIC_DRAW);
 
     // Transfer index data to VBO 1
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
