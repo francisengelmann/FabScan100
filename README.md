@@ -1,33 +1,32 @@
 FabScan1.5
 ==========
-
 This is basically just a small project where I try to combine the different libraries into one program that runs on multiple platforms.
 
-The following checklist shows the advancements:
+Progress
+========
+
+The following checklist shows the projects progress:
     
 * OpenGL - works on Mac, works on Ubuntu, not tested on Windows
 * OpenCV - works on Mac, works on Ubuntu, not tested on Windows
-* PCL - not tested on Mac, works on Ubunutu, not tested on Windows
+* PCL - not working on Mac, works on Ubuntu, not tested on Windows
 * serial communication - not implemented, but look here: http://stackoverflow.com/questions/1459344/qt-and-serial-port-programming
 * accessing arbitrary webcams - not implemented
 
 Current Setup on Mac: Qt 4.8.1 with Qt-Creator 2.4.1
 
-Current Setup on Ubuntu: Qt 4.8 with Qt-Creator 2.4.1
+Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1
 
 Current Setup on Windows: not tested, who wants to do this ?
 
 Installation
 ===========
 
-For all platforms:
-==================
-
 Install Qt Creator from http://qt-project.org/downloads
-Make sure you have OpenGL installed. Preinstalled on Ubunutu, Mac. What about Windows?
+Make sure you have OpenGL installed. Preinstalled on Ubuntu, Mac. What about Windows?
 
-Mac OS X 10.8.1 with XCode 4.5
-==============================
+Mac OS X 10.8.1 with XCode 4.5 installed
+========================================
 1. Install Homebrew: http://mxcl.github.com/homebrew/
 2. Install OpenCV using homebrew: brew install opencv
 3. Install PCL 1.5 following these instructions: http://www.pointclouds.org/downloads/macosx.html
@@ -61,3 +60,16 @@ Ubuntu 12.04 LTS:
 Windows:
 ========
  Here I need people to test! If you are interessted please send me an email!
+
+Get the source code
+===================
+
+In order to compile the code you need git:
+Mac: brew install git
+Ubunutu: sudo apt-get install git
+Windows: ?
+
+To get read-only access to the code, type into the console:
+git clone git://github.com/francisengelmann/FabScan.git
+
+If you also want to modify the code please send me an email with your ssh public key so i can give you access.
