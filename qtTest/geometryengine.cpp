@@ -1,5 +1,7 @@
 #include "geometryengine.h"
 
+#include "fscontroller.h"
+
 #include <QVector2D>
 #include <QVector3D>
 
@@ -9,13 +11,13 @@ struct VertexData
     QVector2D texCoord;
 };
 
-GeometryEngine::GeometryEngine() : vboIds(new GLuint[2])
+GeometryEngine::GeometryEngine() : vboIds(new GLuint[4])
 {
 }
 
 GeometryEngine::~GeometryEngine()
 {
-    glDeleteBuffers(2, vboIds);
+    glDeleteBuffers(4, vboIds);
     delete[] vboIds;
 }
 
@@ -23,14 +25,111 @@ void GeometryEngine::init()
 {
     initializeGLFunctions();
 
+    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 //! [0]
-    // Generate 2 VBOs
-    glGenBuffers(2, vboIds);
+    // Generate 4 VBOs
+    glGenBuffers(4, vboIds);
 
 //! [0]
 
     // Initializes cube geometry and transfers it to VBOs
     initCubeGeometry();
+    initPointCloud();
+}
+
+void GeometryEngine::setPointCloudTo(pcl::PointCloud<pcl::PointXYZ> pointcloud)
+{
+    VertexData vertices[pointcloud.points.size()];
+    GLushort indices[pointcloud.points.size()];
+
+    for (size_t i = 0; i < pointcloud.points.size(); ++i){
+        vertices[i] = {
+                QVector3D(
+                    pointcloud.points[i].x,
+                    pointcloud.points[i].y,
+                    pointcloud.points[i].z)
+                , QVector2D(0.0, 0.0)};
+        indices[i] = i;
+        //std::cout<<i<<std::endl;
+    }
+
+    /*for (size_t i = 0; i < pointcloud.points.size(); ++i){
+        //std::cout << pointcloud.points[i].x << " " << pointcloud.points[i].y << " " << pointcloud.points[i].z << std::endl;
+        vertices[i] = {
+                QVector3D(
+                    pointcloud.points[i].x,
+                    pointcloud.points[i].y,
+                    pointcloud.points[i].z)
+                , QVector2D(0.0, 0.0)};
+    }*/
+
+
+
+    /*VertexData vertices[] = {
+        {QVector3D(-0.5, -1.0,  1.0), QVector2D(0.0, 0.0)},  // v0
+        {QVector3D( 0.0, -1.0,  1.0), QVector2D(0.33, 0.0)}, // v1
+        {QVector3D(-0.5,  1.0,  1.0), QVector2D(0.0, 0.5)},  // v2
+        {QVector3D( 0.0,  1.0,  1.0), QVector2D(0.33, 0.5)}, // v3
+    };*/
+
+    // Transfer vertex data to VBO 0
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
+    glBufferData(GL_ARRAY_BUFFER, pointcloud.points.size() * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+
+    // Transfer index data to VBO 1
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, pointcloud.points.size() * sizeof(GLushort), indices, GL_STATIC_DRAW);
+}
+
+void GeometryEngine::initPointCloud()
+{
+    VertexData vertices[] = {
+        {QVector3D(-1.0, -1.0,  1.0), QVector2D(0.0, 0.0)},  // v0
+        {QVector3D( 1.0, -1.0,  1.0), QVector2D(0.33, 0.0)}, // v1
+        {QVector3D(-1.0,  1.0,  1.0), QVector2D(0.0, 0.5)},  // v2
+        {QVector3D( 1.0,  1.0,  1.0), QVector2D(0.33, 0.5)}, // v3
+    };
+
+    GLushort indices[] = {
+         0,  1,  2,  3
+    };
+
+    // Transfer vertex data to VBO 0
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
+    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+
+    // Transfer index data to VBO 1
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+
+}
+
+void GeometryEngine::drawPointCloud(QGLShaderProgram *program)
+{
+    glPointSize(1.0f);
+    // Tell OpenGL which VBOs to use
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
+
+    // Offset for position
+    int offset = 0;
+
+    // Tell OpenGL programmable pipeline how to locate vertex position data
+    int vertexLocation = program->attributeLocation("a_position");
+    program->enableAttributeArray(vertexLocation);
+    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+
+    // Offset for texture coordinate
+    offset += sizeof(QVector3D);
+
+    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
+    int texcoordLocation = program->attributeLocation("a_texcoord");
+    program->enableAttributeArray(texcoordLocation);
+    glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+
+    // Draw cube geometry using indices from VBO 3
+    int numberOfPoints = FSController::getInstance()->model->mycloud.size();
+    glDrawElements(GL_POINTS, numberOfPoints, GL_UNSIGNED_SHORT, 0);
 }
 
 void GeometryEngine::initCubeGeometry()

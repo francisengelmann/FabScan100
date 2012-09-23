@@ -13,11 +13,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     geometryengine.cpp \
-    mainwidget.cpp
+    mainwidget.cpp \
+    fscontroller.cpp \
+    fsmodel.cpp
 
 HEADERS  += mainwindow.h \
     geometryengine.h \
-    mainwidget.h
+    mainwidget.h \
+    fscontroller.h \
+    fsmodel.h
 
 FORMS    += mainwindow.ui
 

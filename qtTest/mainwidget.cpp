@@ -1,5 +1,6 @@
 #include "mainwidget.h"
 
+#include "fscontroller.h"
 #include "geometryengine.h"
 
 #include <QtOpenGL/QGLShaderProgram>
@@ -14,8 +15,8 @@
 MainWidget::MainWidget(QWidget *parent) :
     QGLWidget(parent),
     timer(new QBasicTimer),
-    program(new QGLShaderProgram),
-    geometries(new GeometryEngine)
+    program(new QGLShaderProgram)
+    //geometries(new GeometryEngine)
 {
 }
 
@@ -23,7 +24,7 @@ MainWidget::~MainWidget()
 {
     delete timer; timer = 0;
     delete program; program = 0;
-    delete geometries; geometries = 0;
+    //delete geometries; geometries = 0;
 
     deleteTexture(texture);
 }
@@ -71,7 +72,7 @@ void MainWidget::timerEvent(QTimerEvent *e)
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
 
         // Update scene
-        updateGL();
+        this->updateGL();
     }
 }
 //! [1]
@@ -97,7 +98,7 @@ void MainWidget::initializeGL()
 //! [2]
 
     qDebug() << "Initializing geometries...";
-    geometries->init();
+    FSController::getInstance()->geometries->init();
 
     // using QBasicTimer because its faster that QTimer
     timer->start(12, this);
@@ -161,7 +162,7 @@ void MainWidget::resizeGL(int w, int h)
     qreal aspect = (qreal)w / ((qreal)h?h:1);
 
     // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 3.0, zFar = 7.0, fov = 45.0;
+    const qreal zNear = 1.0, zFar = 17.0, fov = 45.0;
 
     // Reset projection
     projection.setToIdentity();
@@ -179,7 +180,7 @@ void MainWidget::paintGL()
 //! [6]
     // Calculate model view transformation
     QMatrix4x4 matrix;
-    matrix.translate(0.0, 0.0, -5.0);
+    matrix.translate(0.0, -5.0, -10.0);
     matrix.rotate(rotation);
 
     // Set modelview-projection matrix
@@ -190,5 +191,7 @@ void MainWidget::paintGL()
     program->setUniformValue("texture", 0);
 
     // Draw cube geometry
-    geometries->drawCubeGeometry(program);
+    //geometries->drawCubeGeometry(program);
+
+    FSController::getInstance()->geometries->drawPointCloud(program);
 }
