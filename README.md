@@ -61,6 +61,11 @@ Windows:
 ========
  Here I need people to test! If you are interessted please send me an email!
 
+Other platforms
+===============
+
+Make sure to adapt the .pro file e.g. current lib+header pathes 
+
 Get the source code
 ===================
 
