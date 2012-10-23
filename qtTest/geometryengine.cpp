@@ -43,12 +43,13 @@ void GeometryEngine::setPointCloudTo(pcl::PointCloud<pcl::PointXYZ> pointcloud)
     GLuint indices[pointcloud.points.size()];
 
     for (size_t i = 0; i < pointcloud.points.size(); ++i){
-        vertices[i] = {
-                QVector3D(
+        VertexData vd;
+        vd.position = QVector3D(
                     pointcloud.points[i].x,
                     pointcloud.points[i].y,
-                    pointcloud.points[i].z)
-                , QVector2D(0.0, 0.0)};
+                    pointcloud.points[i].z);
+        vd.texCoord = QVector2D(0.0, 0.0);
+        vertices[i] = vd;
         indices[i] = i;
         //std::cout<<i<<std::endl;
     }

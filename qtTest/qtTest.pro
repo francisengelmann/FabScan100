@@ -48,14 +48,14 @@ macx {
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.1/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
 
-    #LIBS += -LC:/usr/local/lib \
-    #-lpcl_common \
-    #-lpcl_io \
-    #-lpcl_filters \
-    #-lpcl_kdtree \
-    #-lpcl_registration \
-    #-lpcl_features \
-    #-lpcl_segmentation
+    LIBS += -LC:/usr/local/lib \
+    -lpcl_common \
+    -lpcl_io \
+    -lpcl_filters \
+    -lpcl_kdtree \
+    -lpcl_registration \
+    -lpcl_features \
+    -lpcl_segmentation
 }
 
 linux-g++ {
