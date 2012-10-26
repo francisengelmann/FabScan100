@@ -17,7 +17,7 @@ void FSModel::loadModel()
 
       if (pcl::io::loadPCDFile<pcl::PointXYZ> ("../qtTest/bearHigh.pcd", mycloud) == -1) //* load the file
       {
-        PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
+        PCL_ERROR ("Couldn't read pcd file  \n");
         return ;
       }
       std::cout << "Loaded "

@@ -37,16 +37,47 @@ macx {
     message("Buildng for Mac.")
     INCLUDEPATH += /usr/local/Cellar/opencv/2.4.2/include
 
-    LIBS += -LC:/usr/local/Cellar/opencv/2.4.2/ \
-   -lopencv_core \
-   -lopencv_highgui \
-   -lopencv_imgproc \
-   -lopencv_features2d \
-   -lopencv_calib3d
+    LIBS += -LC:/usr/local/Cellar/opencv/2.4.2 \
+    -lopencv_core \
+    -lopencv_highgui \
+    -lopencv_imgproc \
+    -lopencv_features2d \
+    -lopencv_calib3d
 
-    INCLUDEPATH += /usr/local/include/pcl-1.5
+    INCLUDEPATH += /usr/local/include/pcl-1.7
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.1/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
+    INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
+
+    LIBS += -LC:/usr/local/Cellar/boost/1.51.0 \
+    -lboost_chrono-mt \
+    -lboost_context-mt \
+    -lboost_date_time-mt \
+    -lboost_exception-mt \
+    -lboost_filesystem-mt \
+    -lboost_graph-mt \
+    -lboost_iostreams-mt \
+    -lboost_locale-mt \
+    -lboost_math_c99-mt \
+    -lboost_math_c99f-mt \
+    -lboost_math_c99l-mt \
+    -lboost_math_tr1-mt \
+    -lboost_math_tr1f-mt \
+    -lboost_math_tr1l-mt \
+    -lboost_prg_exec_monitor-mt \
+    -lboost_program_options-mt \
+    -lboost_python-mt \
+    -lboost_random-mt \
+    -lboost_regex-mt \
+    -lboost_serialization-mt \
+    -lboost_signals-mt \
+    -lboost_system-mt \
+    -lboost_test_exec_monitor-mt \
+    -lboost_thread-mt \
+    -lboost_timer-mt \
+    -lboost_unit_test_framework-mt \
+    -lboost_wave-mt \
+    -lboost_wserialization-mt \
 
     LIBS += -LC:/usr/local/lib \
     -lpcl_common \
