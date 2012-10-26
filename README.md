@@ -29,16 +29,17 @@ Mac OS X 10.8.1 with XCode 4.5 installed
 ========================================
 1. Install Homebrew: http://mxcl.github.com/homebrew/
 2. Install OpenCV using homebrew: brew install opencv
-3. Install PCL 1.5 following these instructions: http://www.pointclouds.org/downloads/macosx.html
+3. Install Boost: brew install boost
+4. Install FLANN: brew install flann
+5. Install VTK: brew install vtk
+6. Install eigen: brew install eigen
+7. Install the experimental version from trunck of PCL 1.7
 
-  (Homebrew is not really suported yet, at this time 1.5 seems to be the only one compiling on Mountain Lion)
-
-  Important:
-    * You need to change -mmacosx-version-min=10.5 in $QTDIR/mkspecs/common/g++-macx.conf to -mmacosx-version-min=10.7. This is because SDKs for 10.5 or 10.6 are not included in Mountain Lion and XCode 4.4.
-    * Also install vtk 5.6 from http://www.vtk.org/VTK/resources/software.html#previous2
-    
-  Currently stuck here, installing PCL on Mac does not seem straightforward... :( 
-
+    svn co http://svn.pointclouds.org/pcl/trunk pcl-trunk
+    cd pcl-trunk && mkdir build && cd build
+    cmake -DCMAKE_BUILD_TYPE=Release .. 
+    make
+    sudo make install
 
 Ubuntu 12.04 LTS:
 =======
