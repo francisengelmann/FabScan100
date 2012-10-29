@@ -21,6 +21,8 @@ class MainWidget : public QGLWidget, protected QGLFunctions
 public:
     explicit MainWidget(QWidget *parent = 0);
     virtual ~MainWidget();
+    char drawState;
+    void paintGL();
 
 signals:
 
@@ -33,7 +35,6 @@ protected:
 
     void initializeGL();
     void resizeGL(int w, int h);
-    void paintGL();
 
     void initShaders();
     void initTextures();

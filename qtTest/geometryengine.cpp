@@ -33,7 +33,7 @@ void GeometryEngine::init()
 //! [0]
 
     // Initializes cube geometry and transfers it to VBOs
-    initCubeGeometry();
+    initSurfaceMesh();
     initPointCloud();
 }
 
@@ -54,31 +54,12 @@ void GeometryEngine::setPointCloudTo(pcl::PointCloud<pcl::PointXYZ> pointcloud)
         //std::cout<<i<<std::endl;
     }
 
-    /*for (size_t i = 0; i < pointcloud.points.size(); ++i){
-        //std::cout << pointcloud.points[i].x << " " << pointcloud.points[i].y << " " << pointcloud.points[i].z << std::endl;
-        vertices[i] = {
-                QVector3D(
-                    pointcloud.points[i].x,
-                    pointcloud.points[i].y,
-                    pointcloud.points[i].z)
-                , QVector2D(0.0, 0.0)};
-    }*/
-
-
-
-    /*VertexData vertices[] = {
-        {QVector3D(-0.5, -1.0,  1.0), QVector2D(0.0, 0.0)},  // v0
-        {QVector3D( 0.0, -1.0,  1.0), QVector2D(0.33, 0.0)}, // v1
-        {QVector3D(-0.5,  1.0,  1.0), QVector2D(0.0, 0.5)},  // v2
-        {QVector3D( 0.0,  1.0,  1.0), QVector2D(0.33, 0.5)}, // v3
-    };*/
-
     // Transfer vertex data to VBO 0
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
     glBufferData(GL_ARRAY_BUFFER, pointcloud.points.size() * sizeof(VertexData), vertices, GL_STATIC_DRAW);
 
     // Transfer index data to VBO 1
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, pointcloud.points.size() * sizeof(GLuint), indices, GL_STATIC_DRAW);
 }
 
@@ -96,11 +77,11 @@ void GeometryEngine::initPointCloud()
     };
 
     // Transfer vertex data to VBO 0
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
     glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(VertexData), vertices, GL_STATIC_DRAW);
 
     // Transfer index data to VBO 1
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLushort), indices, GL_STATIC_DRAW);
 
 }
@@ -109,8 +90,8 @@ void GeometryEngine::drawPointCloud(QGLShaderProgram *program)
 {
     //glPointSize(1.0f);
     // Tell OpenGL which VBOs to use
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
 
     // Offset for position
     int offset = 0;
@@ -129,11 +110,11 @@ void GeometryEngine::drawPointCloud(QGLShaderProgram *program)
     glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
 
     // Draw cube geometry using indices from VBO 3
-    unsigned int numberOfPoints = FSController::getInstance()->model->mycloud.size();
+    unsigned int numberOfPoints = FSController::getInstance()->model->pointCloud.size();
     glDrawElements(GL_POINTS, numberOfPoints, GL_UNSIGNED_INT, 0);
 }
 
-void GeometryEngine::initCubeGeometry()
+void GeometryEngine::initSurfaceMesh()
 {
     // For cube we would need only 8 vertices but we have to
     // duplicate vertex for each face because texture coordinate
@@ -194,21 +175,59 @@ void GeometryEngine::initCubeGeometry()
 
 //! [1]
     // Transfer vertex data to VBO 0
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
     glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(VertexData), vertices, GL_DYNAMIC_DRAW);
 
     // Transfer index data to VBO 1
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 34 * sizeof(GLushort), indices, GL_STATIC_DRAW);
 //! [1]
 }
 
+void GeometryEngine::setSurfaceMeshTo(pcl::PolygonMesh surfacemesh)
+{
+    pcl::PointCloud<pcl::PointXYZRGB> cloud;
+    pcl::fromROSMsg(surfacemesh.cloud, cloud);
+
+    VertexData vertices[cloud.points.size()];
+    GLuint indices[cloud.points.size()*3];
+
+    for (size_t i = 0; i < cloud.points.size(); ++i){
+        VertexData vd;
+        vd.position = QVector3D(
+                    cloud.points[i].x,
+                    cloud.points[i].y,
+                    cloud.points[i].z);
+        vd.texCoord = QVector2D(0.0, 0.0);
+        vertices[i] = vd;
+        //std::cout<<i<<std::endl;
+    }
+
+    for (size_t i = 0; i < surfacemesh.polygons.size(); i++){
+
+        indices[3*i+0] = surfacemesh.polygons[i].vertices[0];
+        indices[3*i+1] = surfacemesh.polygons[i].vertices[1];
+        indices[3*i+2] = surfacemesh.polygons[i].vertices[2];
+    }
+
+//! [1]
+    // Transfer vertex data to VBO 2
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
+    glBufferData(GL_ARRAY_BUFFER, cloud.points.size() * sizeof(VertexData), vertices, GL_DYNAMIC_DRAW);
+
+    // Transfer index data to VBO 3
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, cloud.points.size()*3 * sizeof(GLushort), indices, GL_STATIC_DRAW);
+//! [1]
+
+}
+
 //! [2]
-void GeometryEngine::drawCubeGeometry(QGLShaderProgram *program)
+void GeometryEngine::drawSurfaceMesh(QGLShaderProgram *program)
 {
     // Tell OpenGL which VBOs to use
-    glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[1]);
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
 
     // Offset for position
     int offset = 0;
@@ -227,6 +246,6 @@ void GeometryEngine::drawCubeGeometry(QGLShaderProgram *program)
     glVertexAttribPointer(texcoordLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
 
     // Draw cube geometry using indices from VBO 1
-    glDrawElements(GL_TRIANGLE_STRIP, 34, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_TRIANGLES , 34, GL_UNSIGNED_SHORT, 0);
 }
 //! [2]

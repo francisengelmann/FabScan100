@@ -29,6 +29,11 @@ MainWidget::~MainWidget()
     deleteTexture(texture);
 }
 
+/*void MainWidget::Event(QMouseEvent *e)
+{
+
+}*/
+
 //! [0]
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
@@ -79,6 +84,8 @@ void MainWidget::timerEvent(QTimerEvent *e)
 
 void MainWidget::initializeGL()
 {
+    drawState = 0;
+
     initializeGLFunctions();
 
     qglClearColor(Qt::black);
@@ -194,5 +201,9 @@ void MainWidget::paintGL()
     // Draw cube geometry
     //geometries->drawCubeGeometry(program);
 
-    FSController::getInstance()->geometries->drawPointCloud(program);
+    if(drawState == 0){//POINT_CLOUD
+        FSController::getInstance()->geometries->drawPointCloud(program);
+    }else if(drawState == 1){//SURFACE_MESH
+        FSController::getInstance()->geometries->drawSurfaceMesh(program);
+    }
 }

@@ -23,8 +23,9 @@ public:
     
 private slots:
     void on_myButton_clicked();
-
+    void on_convertButton_clicked();
     void on_pushButton_clicked();
+    void on_toggleViewButton_clicked();
 
 private:
     Ui::MainWindow *ui;

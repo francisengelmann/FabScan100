@@ -34,6 +34,20 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="convertButton">
+        <property name="text">
+         <string>Compute Surface Mesh...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Open PointCloud...</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QPushButton" name="myButton">
         <property name="text">
@@ -41,10 +55,10 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="pushButton">
+      <item row="3" column="0">
+       <widget class="QPushButton" name="toggleViewButton">
         <property name="text">
-         <string>Load PointCloud</string>
+         <string>Toggle Point Cloud / Surface Mesh</string>
         </property>
        </widget>
       </item>

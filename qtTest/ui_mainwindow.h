@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Oct 26 13:33:58 2012
+** Created: Sat Oct 27 18:50:03 2012
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -34,8 +34,10 @@ public:
     MainWidget *widget;
     QGridLayout *gridLayout;
     QLabel *label;
-    QPushButton *myButton;
+    QPushButton *convertButton;
     QPushButton *pushButton;
+    QPushButton *myButton;
+    QPushButton *toggleViewButton;
     QMenuBar *menuBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -67,15 +69,25 @@ public:
 
         gridLayout->addWidget(label, 0, 0, 1, 1);
 
+        convertButton = new QPushButton(centralWidget);
+        convertButton->setObjectName(QString::fromUtf8("convertButton"));
+
+        gridLayout->addWidget(convertButton, 2, 0, 1, 1);
+
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+
+        gridLayout->addWidget(pushButton, 4, 0, 1, 1);
+
         myButton = new QPushButton(centralWidget);
         myButton->setObjectName(QString::fromUtf8("myButton"));
 
         gridLayout->addWidget(myButton, 1, 0, 1, 1);
 
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        toggleViewButton = new QPushButton(centralWidget);
+        toggleViewButton->setObjectName(QString::fromUtf8("toggleViewButton"));
 
-        gridLayout->addWidget(pushButton, 2, 0, 1, 1);
+        gridLayout->addWidget(toggleViewButton, 3, 0, 1, 1);
 
 
         verticalLayout_2->addLayout(gridLayout);
@@ -95,8 +107,10 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "FabScan", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
+        convertButton->setText(QApplication::translate("MainWindow", "Compute Surface Mesh...", 0, QApplication::UnicodeUTF8));
+        pushButton->setText(QApplication::translate("MainWindow", "Open PointCloud...", 0, QApplication::UnicodeUTF8));
         myButton->setText(QApplication::translate("MainWindow", "Start Scan", 0, QApplication::UnicodeUTF8));
-        pushButton->setText(QApplication::translate("MainWindow", "Load PointCloud", 0, QApplication::UnicodeUTF8));
+        toggleViewButton->setText(QApplication::translate("MainWindow", "Toggle Point Cloud / Surface Mesh", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

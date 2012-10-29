@@ -86,7 +86,9 @@ macx {
     -lpcl_kdtree \
     -lpcl_registration \
     -lpcl_features \
-    -lpcl_segmentation
+    -lpcl_segmentation \
+    -lpcl_surface \
+    -lpcl_search
 }
 
 linux-g++ {

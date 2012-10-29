@@ -31,7 +31,6 @@ class FSController
         static void destroy();
 
         //Class Funtionality
-        void loadModel();
 };
 
 #endif // FSCONTROLLER_H
