@@ -9,6 +9,8 @@ QT       += core gui opengl
 TARGET = qtTest
 TEMPLATE = app
 
+#CONFIG += precompile_header
+#PRECOMPILED_HEADER = stable.h
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -21,7 +23,8 @@ HEADERS  += mainwindow.h \
     geometryengine.h \
     mainwidget.h \
     fscontroller.h \
-    fsmodel.h
+    fsmodel.h \
+    staticHeaders.h
 
 FORMS    += mainwindow.ui
 

@@ -2,19 +2,24 @@
 
 FSModel::FSModel()
 {
-
+    pointCloud.reset(new pcl::PointCloud<pcl::PointXYZRGB>);
 }
 
 void FSModel::convertPointCloudToSurfaceMesh()
 {
     // Load input file into a PointCloud<T> with an appropriate type
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-    sensor_msgs::PointCloud2 cloud_blob;
-    pcl::io::loadPCDFile ("bearHigh.pcd", cloud_blob);
-    pcl::fromROSMsg (cloud_blob, *cloud);
+    //sensor_msgs::PointCloud2 cloud_blob;
+    //pcl::io::loadPCDFile ("bearHigh.pcd", cloud_blob);
+    //pcl::fromROSMsg (cloud_blob, *cloud);
     //* the data should be available in cloud
 
-    //cloud = pointCloud;
+    cloud->points.resize(pointCloud->size());
+    for (size_t i = 0; i < pointCloud->points.size(); i++) {
+        cloud->points[i].x = pointCloud->points[i].x;
+        cloud->points[i].y = pointCloud->points[i].y;
+        cloud->points[i].z = pointCloud->points[i].z;
+    }
 
     // Normal estimation*
     pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> n;
@@ -72,13 +77,13 @@ void FSModel::loadPointCloud(const std::string &file_name)
 
     //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 
-      if (pcl::io::loadPCDFile<pcl::PointXYZ> (file_name, pointCloud) == -1) //* load the file
-      {
+    if (pcl::io::loadPCDFile<pcl::PointXYZRGB> (file_name, *pointCloud) == -1) //* load the file
+    {
         PCL_ERROR ("Couldn't read pcd file  \n");
         return ;
-      }
-      std::cout << "Loaded "
-                << pointCloud.width * pointCloud.height
+    }
+    std::cout << "Loaded "
+                << pointCloud->width * pointCloud->height
                 << " data points from test_pcd.pcd with the following fields: "
                 << std::endl;
       /*for (size_t i = 0; i < cloud->points.size (); ++i)

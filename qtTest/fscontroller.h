@@ -1,15 +1,7 @@
 #ifndef FSCONTROLLER_H
 #define FSCONTROLLER_H
 
-#include <QtOpenGL/QGLWidget>
-#include <QtOpenGL/QGLFunctions>
-
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_types.h>
-
+#include "staticHeaders.h"
 #include "fsmodel.h"
 #include "geometryengine.h"
 

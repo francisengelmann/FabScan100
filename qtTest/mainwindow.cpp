@@ -2,8 +2,6 @@
 #include "ui_mainwindow.h"
 #include "fscontroller.h"
 
-#include <QFileDialog>
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -59,7 +57,8 @@ void MainWindow::on_convertButton_clicked()
     qDebug("converting...");
     FSController::getInstance()->model->convertPointCloudToSurfaceMesh();
     FSController::getInstance()->geometries->setSurfaceMeshTo(
-                FSController::getInstance()->model->triangles);
+                FSController::getInstance()->model->triangles,
+                FSController::getInstance()->model->pointCloud);
     ui->widget->drawState = 1; //display surface mesh
     ui->widget->updateGL();
 
@@ -71,6 +70,7 @@ void MainWindow::on_pushButton_clicked()
     FSController::getInstance()->model->loadPointCloud(fileName.toStdString());
     ui->widget->updateGL();
 }
+
 
 void MainWindow::on_toggleViewButton_clicked()
 {

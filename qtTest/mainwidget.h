@@ -1,12 +1,7 @@
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 
-#include <QtOpenGL/QGLWidget>
-#include <QtOpenGL/QGLFunctions>
-
-#include <QMatrix4x4>
-#include <QQuaternion>
-#include <QVector2D>
+#include "staticHeaders.h"
 
 QT_BEGIN_NAMESPACE
 class QBasicTimer;
