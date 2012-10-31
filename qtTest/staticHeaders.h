@@ -1,6 +1,14 @@
 #ifndef STATICHEADERS_H
 #define STATICHEADERS_H
 
+#include <Eigen/Core>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+#include <pcl/point_types.h>
+
+#if defined __cplusplus
+
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QtOpenGL/QGLWidget>
@@ -12,17 +20,10 @@
 #include <QMatrix4x4>
 #include <QQuaternion>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-
-#include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/io/vtk_io.h>
-#include <pcl/kdtree/kdtree_flann.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/surface/gp3.h>
 
-#include <Eigen/Core>
+#endif
 
 #endif // STATICHEADERS_H

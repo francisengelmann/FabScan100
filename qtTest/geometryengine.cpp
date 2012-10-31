@@ -229,6 +229,7 @@ void GeometryEngine::setSurfaceMeshTo(pcl::PolygonMesh surfacemesh, pcl::PointCl
 
 void GeometryEngine::drawSurfaceMesh(QGLShaderProgram *program)
 {
+
     // Tell OpenGL which VBOs to use
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[2]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[3]);
