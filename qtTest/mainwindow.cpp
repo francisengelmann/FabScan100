@@ -127,7 +127,9 @@ void MainWindow::openPointCloud()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Open File","","Files (*.pcd)");
     FSController::getInstance()->model->loadPointCloud(fileName.toStdString());
+    ui->widget->drawState = 0;
     ui->widget->updateGL();
+
 }
 
 void MainWindow::newPointCloud()

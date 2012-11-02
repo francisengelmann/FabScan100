@@ -200,10 +200,16 @@ void GeometryEngine::setSurfaceMeshTo(pcl::PolygonMesh surfacemesh, pcl::PointCl
                     cloud.points[i].x,
                     cloud.points[i].y,
                     cloud.points[i].z);
+
+        //take color from original point cloud
+        uint32_t rgb = FSController::getInstance()->model->pointCloud->points[i].rgb;
+
+        //uint32_t rgb = cloud.points[i].rgb;
         vd.color = QVector3D(
-                    pointCloud->points[i].r,
-                    pointCloud->points[i].g,
-                    pointCloud->points[i].b);
+                        (rgb>>16)&0x0000ff,
+                        (rgb>>8)&0x0000ff,
+                        (rgb>>0)&0x0000ff
+                    );
         vertices[i] = vd;
     }
 

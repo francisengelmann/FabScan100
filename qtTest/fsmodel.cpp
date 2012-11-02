@@ -32,8 +32,8 @@ void FSModel::convertPointCloudToSurfaceMesh()
     tree->setInputCloud (cloud);
     n.setInputCloud (cloud);
     n.setSearchMethod (tree);
-    n.setRadiusSearch(15.0);
-    //n.setKSearch (50);
+    //n.setRadiusSearch(15.0);
+    n.setKSearch (20);
     n.compute (*normals);
     //* normals should not contain the point normals + surface curvatures
 
