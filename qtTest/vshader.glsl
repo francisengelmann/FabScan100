@@ -20,6 +20,6 @@ void main()
 
     // Pass texture coordinate to fragment shader
     // Value will be automatically interpolated to fragments inside polygon faces
-    v_col = a_position.xyz+vec3(0.0, -4.0, 0.0);
+    v_col = a_col/265.0;
 }
 //! [0]

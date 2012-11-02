@@ -68,16 +68,13 @@ void GeometryEngine::setPointCloudTo(pcl::PointCloud<pcl::PointXYZRGB>::Ptr poin
                     pointcloud->points[i].x,
                     pointcloud->points[i].y,
                     pointcloud->points[i].z);
-
-        Eigen::Vector3i color;
-        color = pointcloud->points[i].getRGBVector3i();
+        uint32_t rgb = pointcloud->points[i].rgb;
         vd.color = QVector3D(
-                    color[0],
-                    color[1],
-                    color[2]);
+                    (rgb>>16)&0x0000ff,
+                    (rgb>>8)&0x0000ff,
+                    (rgb>>0)&0x0000ff);
         vertices[i] = vd;
         indices[i] = i;
-        //std::cout<<i<<std::endl;
     }
 
     // Transfer vertex data to VBO 0

@@ -18,7 +18,6 @@ FSController* FSController::getInstance() {
 void FSController::destroy() {
     if (singleton != 0) {
         delete singleton;
-
         singleton = 0;
     }
 }
