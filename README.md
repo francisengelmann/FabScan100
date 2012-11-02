@@ -1,6 +1,7 @@
-FabScan1.5
+FabScan100
 ==========
-This is basically just a small project where I try to combine the different libraries into one program that runs on multiple platforms.
+The FabScan100 software is planned to run on Mac and Linux (and maybe also Windows).
+This git repository stores all the files for the project, software as well as the hardware.
 
 Progress
 ========
