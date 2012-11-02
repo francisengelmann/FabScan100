@@ -33,7 +33,7 @@ private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...
     Ui::MainWindow *ui;
     cv::Mat image;
-
+    QString *serialPath;
     void updateConnectedSerialPorts();
 };
 

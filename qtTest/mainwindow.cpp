@@ -10,9 +10,11 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     hwTimer(new QBasicTimer),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    serialPath(new QString)
 {
     ui->setupUi(this);
+    this->updateConnectedSerialPorts();
     hwTimer->start(5000, this);
 }
 
@@ -23,6 +25,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_myButton_clicked()
 {
+    return;
     //image= cv::imread("cube.png");
     //cv::namedWindow("Original Image");
     //cv::imshow("Original Image", image);
@@ -30,10 +33,10 @@ void MainWindow::on_myButton_clicked()
     qDebug("Hello World!");
 
     // Open the video file
-          cv::VideoCapture capture(-1);
-          // check if video successfully opened
-          if (!capture.isOpened()) return;
-          // Get the frame rate
+    cv::VideoCapture capture(-1);
+    // check if video successfully opened
+    if (!capture.isOpened()) return;
+    // Get the frame rate
           double rate= capture.get(CV_CAP_PROP_FPS);
           bool stop(false);
           cv::Mat frame; // current video frame
@@ -96,8 +99,9 @@ void MainWindow::selectSerialPort()
 {
     QAction* action=qobject_cast<QAction*>(sender());
     if(!action) return;
-    action->setChecked(true);
-    qDebug() << action->iconText();
+    serialPath->clear();
+    serialPath->append(action->iconText());
+    this->updateConnectedSerialPorts();
 }
 
 void MainWindow::updateConnectedSerialPorts()
@@ -106,9 +110,17 @@ void MainWindow::updateConnectedSerialPorts()
     ui->menuSerialPort->clear();
 
     foreach (QextPortInfo info, ports) {
-        if(!info.portName.isEmpty())
+        if(!info.portName.isEmpty()){
         //ui->menuSerialPort->addAction(info.portName,)
-        ui->menuSerialPort->addAction(info.portName, this, SLOT(selectSerialPort()));
+            QAction* ac = new QAction(info.portName, this);
+            ac->setCheckable(true);
+            connect(ac,SIGNAL(triggered()),this, SLOT(selectSerialPort()));
+            if(serialPath->compare(info.portName)==0){
+                ac->setChecked(true);
+            }
+            //ui->menuSerialPort->addAction(info.portName, this, SLOT(selectSerialPort()));
+            ui->menuSerialPort->addAction(ac);
+        }
         //qDebug() << "port name:"       << info.portName;
         //qDebug() << "friendly name:"   << info.friendName;
         //qDebug() << "physical name:"   << info.physName;
