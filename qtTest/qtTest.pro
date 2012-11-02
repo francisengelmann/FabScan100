@@ -12,6 +12,8 @@ TEMPLATE = app
 CONFIG += precompile_header
 PRECOMPILED_HEADER = staticHeaders.h
 
+include(qextserialport-1.2beta2/src/qextserialport.pri)
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     geometryengine.cpp \
@@ -46,6 +48,9 @@ macx {
     -lopencv_imgproc \
     -lopencv_features2d \
     -lopencv_calib3d
+
+#LIBS += /Users/francis/QtSDK/Desktop/Qt/4.8.1/gcc/lib \
+#    -lSerialPort
 
     INCLUDEPATH += /usr/local/include/pcl-1.7
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.1/include/eigen3
