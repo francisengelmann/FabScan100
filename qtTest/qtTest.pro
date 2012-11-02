@@ -6,7 +6,7 @@
 
 QT       += core gui opengl
 
-TARGET = qtTest
+TARGET = FabScan100
 TEMPLATE = app
 
 CONFIG += precompile_header

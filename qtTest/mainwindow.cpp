@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     serialPath(new QString)
 {
     ui->setupUi(this);
+    this->setupMenu();
     this->updateConnectedSerialPorts();
     hwTimer->start(5000, this);
 }
@@ -22,6 +23,23 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::setupMenu()
+{
+    QAction* newPointCloudAction = new QAction("New", this);
+    newPointCloudAction->setShortcuts(QKeySequence::New);
+    connect(newPointCloudAction,SIGNAL(triggered()),this, SLOT(newPointCloud()));
+    ui->menuFile->addAction(newPointCloudAction);
+
+    QAction* openPointCloudAction = new QAction("Open PointCloud...", this);
+    openPointCloudAction->setShortcuts(QKeySequence::Open);
+    connect(openPointCloudAction,SIGNAL(triggered()),this, SLOT(openPointCloud()));
+    ui->menuFile->addAction(openPointCloudAction);
+}
+
+//===========================================
+// Action Methods
+//===========================================
 
 void MainWindow::on_myButton_clicked()
 {
@@ -76,11 +94,8 @@ void MainWindow::on_convertButton_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open File","","Files (*.pcd)");
-    FSController::getInstance()->model->loadPointCloud(fileName.toStdString());
-    ui->widget->updateGL();
+    this->openPointCloud();
 }
-
 
 void MainWindow::on_toggleViewButton_clicked()
 {
@@ -95,6 +110,10 @@ void MainWindow::timerEvent(QTimerEvent *e)
     this->updateConnectedSerialPorts();
 }
 
+//===========================================
+// Menu Methods
+//===========================================
+
 void MainWindow::selectSerialPort()
 {
     QAction* action=qobject_cast<QAction*>(sender());
@@ -102,6 +121,20 @@ void MainWindow::selectSerialPort()
     serialPath->clear();
     serialPath->append(action->iconText());
     this->updateConnectedSerialPorts();
+}
+
+void MainWindow::openPointCloud()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open File","","Files (*.pcd)");
+    FSController::getInstance()->model->loadPointCloud(fileName.toStdString());
+    ui->widget->updateGL();
+}
+
+void MainWindow::newPointCloud()
+{
+    FSController::getInstance()->model->pointCloud->clear();
+    FSController::getInstance()->model->triangles.polygons.clear();
+    ui->widget->updateGL();
 }
 
 void MainWindow::updateConnectedSerialPorts()

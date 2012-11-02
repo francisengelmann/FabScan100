@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Fri Nov 2 18:01:01 2012
+** Created: Fri Nov 2 18:40:51 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,6 +37,8 @@ static const uint qt_meta_data_MainWindow[] = {
       85,   11,   11,   11, 0x08,
      117,  115,   11,   11, 0x08,
      142,   11,   11,   11, 0x08,
+     161,   11,   11,   11, 0x08,
+     178,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -47,6 +49,7 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "on_pushButton_clicked()\0"
     "on_toggleViewButton_clicked()\0e\0"
     "timerEvent(QTimerEvent*)\0selectSerialPort()\0"
+    "openPointCloud()\0newPointCloud()\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -61,6 +64,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->on_toggleViewButton_clicked(); break;
         case 4: _t->timerEvent((*reinterpret_cast< QTimerEvent*(*)>(_a[1]))); break;
         case 5: _t->selectSerialPort(); break;
+        case 6: _t->openPointCloud(); break;
+        case 7: _t->newPointCloud(); break;
         default: ;
         }
     }
@@ -98,9 +103,9 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 8;
     }
     return _id;
 }

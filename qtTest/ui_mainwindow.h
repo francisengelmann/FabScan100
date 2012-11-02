@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Nov 2 17:24:22 2012
+** Created: Fri Nov 2 18:47:01 2012
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -31,6 +31,7 @@ class Ui_MainWindow
 {
 public:
     QAction *actionPort1;
+    QAction *actionOpenPointCloud;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_2;
     MainWidget *widget;
@@ -42,6 +43,8 @@ public:
     QPushButton *toggleViewButton;
     QMenuBar *menuBar;
     QMenu *menuSerialPort;
+    QMenu *menuCamera;
+    QMenu *menuFile;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -50,6 +53,8 @@ public:
         MainWindow->resize(619, 513);
         actionPort1 = new QAction(MainWindow);
         actionPort1->setObjectName(QString::fromUtf8("actionPort1"));
+        actionOpenPointCloud = new QAction(MainWindow);
+        actionOpenPointCloud->setObjectName(QString::fromUtf8("actionOpenPointCloud"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         verticalLayout_2 = new QVBoxLayout(centralWidget);
@@ -103,9 +108,15 @@ public:
         menuBar->setGeometry(QRect(0, 0, 619, 22));
         menuSerialPort = new QMenu(menuBar);
         menuSerialPort->setObjectName(QString::fromUtf8("menuSerialPort"));
+        menuCamera = new QMenu(menuBar);
+        menuCamera->setObjectName(QString::fromUtf8("menuCamera"));
+        menuFile = new QMenu(menuBar);
+        menuFile->setObjectName(QString::fromUtf8("menuFile"));
         MainWindow->setMenuBar(menuBar);
 
+        menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuSerialPort->menuAction());
+        menuBar->addAction(menuCamera->menuAction());
         menuSerialPort->addAction(actionPort1);
 
         retranslateUi(MainWindow);
@@ -117,12 +128,15 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "FabScan", 0, QApplication::UnicodeUTF8));
         actionPort1->setText(QApplication::translate("MainWindow", "blablabla", 0, QApplication::UnicodeUTF8));
+        actionOpenPointCloud->setText(QApplication::translate("MainWindow", "Open PointCloud...", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
         convertButton->setText(QApplication::translate("MainWindow", "Compute Surface Mesh...", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("MainWindow", "Open PointCloud...", 0, QApplication::UnicodeUTF8));
         myButton->setText(QApplication::translate("MainWindow", "Start Scan", 0, QApplication::UnicodeUTF8));
         toggleViewButton->setText(QApplication::translate("MainWindow", "Toggle Point Cloud / Surface Mesh", 0, QApplication::UnicodeUTF8));
         menuSerialPort->setTitle(QApplication::translate("MainWindow", "SerialPort", 0, QApplication::UnicodeUTF8));
+        menuCamera->setTitle(QApplication::translate("MainWindow", "Camera", 0, QApplication::UnicodeUTF8));
+        menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

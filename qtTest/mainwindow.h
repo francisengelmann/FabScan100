@@ -26,7 +26,10 @@ private slots:
     void on_pushButton_clicked();
     void on_toggleViewButton_clicked();
     void timerEvent(QTimerEvent *e);
+
     void selectSerialPort();
+    void openPointCloud();
+    void newPointCloud();
 
 
 private:
@@ -34,6 +37,9 @@ private:
     Ui::MainWindow *ui;
     cv::Mat image;
     QString *serialPath;
+
+    void setupMenu();
+
     void updateConnectedSerialPorts();
 };
 

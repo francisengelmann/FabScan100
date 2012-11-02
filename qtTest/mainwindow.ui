@@ -81,11 +81,28 @@
     </property>
     <addaction name="actionPort1"/>
    </widget>
+   <widget class="QMenu" name="menuCamera">
+    <property name="title">
+     <string>Camera</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
    <addaction name="menuSerialPort"/>
+   <addaction name="menuCamera"/>
   </widget>
   <action name="actionPort1">
    <property name="text">
     <string>blablabla</string>
+   </property>
+  </action>
+  <action name="actionOpenPointCloud">
+   <property name="text">
+    <string>Open PointCloud...</string>
    </property>
   </action>
  </widget>
