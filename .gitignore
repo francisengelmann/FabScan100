@@ -1,2 +1,2 @@
-.DS_Store
-scans/.DS_Store
+*.DS_Store
+*.o
