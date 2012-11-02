@@ -10,7 +10,7 @@ The following checklist shows the projects progress:
     
 * OpenGL - works on Mac, works on Ubuntu, not tested on Windows
 * OpenCV - works on Mac, works on Ubuntu, not tested on Windows
-* PCL - not working on Mac, works on Ubuntu, not tested on Windows
+* PCL - working on Mac, works on Ubuntu, not tested on Windows
 * serial communication - not implemented, but look here: http://stackoverflow.com/questions/1459344/qt-and-serial-port-programming
 * accessing arbitrary webcams - not implemented
 
