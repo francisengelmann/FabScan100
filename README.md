@@ -14,10 +14,10 @@ The following checklist shows the projects progress:
 * accessing arbitrary webcams - not implemented
 
 Current Setup on Mac: Qt 4.8.1 with Qt-Creator 2.4.1
-
 Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1
-
 Current Setup on Windows: not tested, who wants to do this ?
+
+Qt 4.8 is needed for QGLFunctions.
 
 Installation
 ===========
