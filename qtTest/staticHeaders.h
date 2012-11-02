@@ -13,7 +13,6 @@
 #include <QFileDialog>
 #include <QtOpenGL/QGLWidget>
 #include <QtOpenGL/QGLFunctions>
-#include <QtOpenGL/QGLFunctions>
 #include <QtOpenGL/QGLShaderProgram>
 #include <QVector2D>
 #include <QVector3D>

@@ -24,7 +24,6 @@ MainWidget::~MainWidget()
 {
     delete timer; timer = 0;
     delete program; program = 0;
-    //delete geometries; geometries = 0;
 
     deleteTexture(texture);
 }
