@@ -1,6 +1,3 @@
-
-
-
 #ifndef PORTLISTENER_H_
 #define PORTLISTENER_H_
 
@@ -21,6 +18,5 @@ private slots:
     void onDsrChanged(bool status);
 
 };
-
 
 #endif /*PORTLISTENER_H_*/

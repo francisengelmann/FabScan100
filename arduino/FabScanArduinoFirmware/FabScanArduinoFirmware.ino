@@ -116,7 +116,7 @@ void setup()
  
  currStepper = 0;  //turntable is default stepper
 
-digitalWrite(MS_PIN, 0);
+  digitalWrite(MS_PIN, 0);
   
 } 
 
@@ -124,9 +124,11 @@ void loop()
 {
   digitalWrite(LED_PIN, 0);
   if(Serial.available() > 0){
+    
     digitalWrite(LED_PIN, 1);
     incomingByte = Serial.read();
-    
+    Serial.write("a");
+
     switch(byteType){
       case ACTION_BYTE:
       
@@ -202,5 +204,5 @@ void loop()
           byteType = ACTION_BYTE;
           break;
     }
-  } 
+  }
 } 

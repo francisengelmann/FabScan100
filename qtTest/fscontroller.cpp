@@ -6,6 +6,7 @@ FSController::FSController()
 {
     model = new FSModel();
     geometries = new GeometryEngine();
+    serial = new FSSerial();
 }
 
 FSController* FSController::getInstance() {

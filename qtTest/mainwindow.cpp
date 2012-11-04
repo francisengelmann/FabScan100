@@ -4,19 +4,17 @@
 
 #include <QBasicTimer>
 
-#include "qextserialport.h"
-#include "qextserialenumerator.h"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     hwTimer(new QBasicTimer),
-    ui(new Ui::MainWindow),
-    serialPath(new QString)
+    ui(new Ui::MainWindow)
+    //serialPortPath(new QString)
 {
     ui->setupUi(this);
     this->setupMenu();
-    this->updateConnectedSerialPorts();
+    this->enumerateSerialPorts();
     hwTimer->start(5000, this);
+    ui->statusLabel->setText("Not connected to FabScan.");
 }
 
 MainWindow::~MainWindow()
@@ -47,7 +45,7 @@ void MainWindow::on_myButton_clicked()
     //image= cv::imread("cube.png");
     //cv::namedWindow("Original Image");
     //cv::imshow("Original Image", image);
-    ui->label->setText("Press a button to close...");
+    ui->statusLabel->setText("Press a button to close...");
     qDebug("Hello World!");
 
     // Open the video file
@@ -77,11 +75,14 @@ void MainWindow::on_myButton_clicked()
           // Not required since called by destructor
           capture.release();
           cvDestroyWindow("Extracted Frame");
-          ui->label->setText("Idling...");
+          ui->statusLabel->setText("Idling...");
 }
 
 void MainWindow::on_convertButton_clicked()
 {
+    if(FSController::getInstance()->model->pointCloud->empty()){
+        return;
+    }
     qDebug("converting...");
     FSController::getInstance()->model->convertPointCloudToSurfaceMesh();
     FSController::getInstance()->geometries->setSurfaceMeshTo(
@@ -91,12 +92,6 @@ void MainWindow::on_convertButton_clicked()
     ui->widget->updateGL();
 }
 
-
-void MainWindow::on_pushButton_clicked()
-{
-    this->openPointCloud();
-}
-
 void MainWindow::on_toggleViewButton_clicked()
 {
     char currentDrawState = ui->widget->drawState;
@@ -104,23 +99,48 @@ void MainWindow::on_toggleViewButton_clicked()
     ui->widget->updateGL();
 }
 
+void MainWindow::on_pingButton_clicked()
+{
+    FSController::getInstance()->serial->writeChar('a');
+    /*if(serialPortPath->isEmpty())
+        return;
+    qDebug("button pressed");
+    if(!serialPort->isOpen() )
+        return;
+
+    if(serialPort->isWritable() ){
+        qDebug("is writable");
+        const char c = 255;
+        serialPort->write(&c);
+    }else{
+        qDebug("is not writable");
+    }*/
+}
+
+
 void MainWindow::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
-    this->updateConnectedSerialPorts();
+    this->enumerateSerialPorts();
 }
 
 //===========================================
 // Menu Methods
 //===========================================
 
-void MainWindow::selectSerialPort()
+void MainWindow::onSelectSerialPort()
 {
     QAction* action=qobject_cast<QAction*>(sender());
     if(!action) return;
-    serialPath->clear();
-    serialPath->append(action->iconText());
-    this->updateConnectedSerialPorts();
+    //set new path
+    FSController::getInstance()->serial->serialPortPath->clear();
+    FSController::getInstance()->serial->serialPortPath->append(action->iconText());
+    //serialPortPath->clear();
+    //serialPortPath->append(action->iconText());
+    this->enumerateSerialPorts();
+    FSController::getInstance()->serial->connectToSerialPort();
+    ui->statusLabel->setText(QString("Now connected to").append(action->iconText()));
+
 }
 
 void MainWindow::openPointCloud()
@@ -129,7 +149,6 @@ void MainWindow::openPointCloud()
     FSController::getInstance()->model->loadPointCloud(fileName.toStdString());
     ui->widget->drawState = 0;
     ui->widget->updateGL();
-
 }
 
 void MainWindow::newPointCloud()
@@ -139,7 +158,7 @@ void MainWindow::newPointCloud()
     ui->widget->updateGL();
 }
 
-void MainWindow::updateConnectedSerialPorts()
+void MainWindow::enumerateSerialPorts()
 {
     QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
     ui->menuSerialPort->clear();
@@ -149,8 +168,8 @@ void MainWindow::updateConnectedSerialPorts()
         //ui->menuSerialPort->addAction(info.portName,)
             QAction* ac = new QAction(info.portName, this);
             ac->setCheckable(true);
-            connect(ac,SIGNAL(triggered()),this, SLOT(selectSerialPort()));
-            if(serialPath->compare(info.portName)==0){
+            connect(ac,SIGNAL(triggered()),this, SLOT(onSelectSerialPort()));
+            if(FSController::getInstance()->serial->serialPortPath->compare(info.portName)==0){
                 ac->setChecked(true);
             }
             //ui->menuSerialPort->addAction(info.portName, this, SLOT(selectSerialPort()));
@@ -165,3 +184,27 @@ void MainWindow::updateConnectedSerialPorts()
         //qDebug() << "===================================";
     }
 }
+
+/*bool MainWindow::connectToSerialPort() //outdated
+{
+    this->serialPort = new QextSerialPort(*serialPortPath, QextSerialPort::EventDriven);
+    serialPort->setBaudRate(BAUD9600);
+    serialPort->setFlowControl(FLOW_OFF);
+    serialPort->setParity(PAR_NONE);
+    serialPort->setDataBits(DATA_8);
+    serialPort->setStopBits(STOP_2);
+
+    if (serialPort->open(QIODevice::ReadWrite) == true) {
+        connect(serialPort, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
+        connect(serialPort, SIGNAL(dsrChanged(bool)), this, SLOT(onDsrChanged(bool)));
+        if (!(serialPort->lineStatus() & LS_DSR)){
+            qDebug() << "warning: device is not turned on";
+            return false;
+        }
+        qDebug() << "listening for data on" << serialPort->portName();
+        return true;
+    }else{
+        qDebug() << "device failed to open:" << serialPort->errorString();
+        return true;
+    }
+}*/

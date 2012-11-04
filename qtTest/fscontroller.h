@@ -4,9 +4,11 @@
 #include "staticHeaders.h"
 #include "fsmodel.h"
 #include "geometryengine.h"
+#include "fsserial.h"
 
 class GeometryEngine;
 class FSModel;
+class FSSerial;
 
 class FSController
 {
@@ -16,7 +18,8 @@ class FSController
 
     public:
         FSModel* model;
-        GeometryEngine *geometries;
+        GeometryEngine* geometries;
+        FSSerial* serial;
 
         //Singleton Pattern
         static FSController* getInstance();

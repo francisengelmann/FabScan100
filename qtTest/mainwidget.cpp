@@ -24,14 +24,8 @@ MainWidget::~MainWidget()
 {
     delete timer; timer = 0;
     delete program; program = 0;
-
     deleteTexture(texture);
 }
-
-/*void MainWidget::Event(QMouseEvent *e)
-{
-
-}*/
 
 //! [0]
 void MainWidget::mousePressEvent(QMouseEvent *e)

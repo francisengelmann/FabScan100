@@ -19,14 +19,16 @@ SOURCES += main.cpp\
     geometryengine.cpp \
     mainwidget.cpp \
     fscontroller.cpp \
-    fsmodel.cpp
+    fsmodel.cpp \
+    fsserial.cpp
 
 HEADERS  += mainwindow.h \
     geometryengine.h \
     mainwidget.h \
     fscontroller.h \
     fsmodel.h \
-    staticHeaders.h
+    staticHeaders.h \
+    fsserial.h
 
 FORMS    += mainwindow.ui
 

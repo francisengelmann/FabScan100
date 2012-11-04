@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Fri Nov 2 18:40:51 2012
+** Created: Sat Nov 3 17:51:36 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -34,11 +34,11 @@ static const uint qt_meta_data_MainWindow[] = {
       12,   11,   11,   11, 0x08,
       34,   11,   11,   11, 0x08,
       61,   11,   11,   11, 0x08,
-      85,   11,   11,   11, 0x08,
+      91,   11,   11,   11, 0x08,
      117,  115,   11,   11, 0x08,
      142,   11,   11,   11, 0x08,
-     161,   11,   11,   11, 0x08,
-     178,   11,   11,   11, 0x08,
+     163,   11,   11,   11, 0x08,
+     180,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -46,9 +46,9 @@ static const uint qt_meta_data_MainWindow[] = {
 static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0on_myButton_clicked()\0"
     "on_convertButton_clicked()\0"
-    "on_pushButton_clicked()\0"
-    "on_toggleViewButton_clicked()\0e\0"
-    "timerEvent(QTimerEvent*)\0selectSerialPort()\0"
+    "on_toggleViewButton_clicked()\0"
+    "on_pingButton_clicked()\0e\0"
+    "timerEvent(QTimerEvent*)\0onSelectSerialPort()\0"
     "openPointCloud()\0newPointCloud()\0"
 };
 
@@ -60,10 +60,10 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->on_myButton_clicked(); break;
         case 1: _t->on_convertButton_clicked(); break;
-        case 2: _t->on_pushButton_clicked(); break;
-        case 3: _t->on_toggleViewButton_clicked(); break;
+        case 2: _t->on_toggleViewButton_clicked(); break;
+        case 3: _t->on_pingButton_clicked(); break;
         case 4: _t->timerEvent((*reinterpret_cast< QTimerEvent*(*)>(_a[1]))); break;
-        case 5: _t->selectSerialPort(); break;
+        case 5: _t->onSelectSerialPort(); break;
         case 6: _t->openPointCloud(); break;
         case 7: _t->newPointCloud(); break;
         default: ;

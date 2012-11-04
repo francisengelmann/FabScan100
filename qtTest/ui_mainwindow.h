@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Nov 2 20:01:59 2012
+** Created: Sun Nov 4 11:15:34 2012
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -36,11 +36,11 @@ public:
     QVBoxLayout *verticalLayout_2;
     MainWidget *widget;
     QGridLayout *gridLayout;
-    QLabel *label;
+    QLabel *statusLabel;
     QPushButton *convertButton;
     QPushButton *toggleViewButton;
-    QPushButton *pushButton;
     QPushButton *myButton;
+    QPushButton *pingButton;
     QMenuBar *menuBar;
     QMenu *menuSerialPort;
     QMenu *menuCamera;
@@ -74,30 +74,30 @@ public:
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        label = new QLabel(centralWidget);
-        label->setObjectName(QString::fromUtf8("label"));
+        statusLabel = new QLabel(centralWidget);
+        statusLabel->setObjectName(QString::fromUtf8("statusLabel"));
 
-        gridLayout->addWidget(label, 0, 0, 1, 1);
+        gridLayout->addWidget(statusLabel, 0, 0, 1, 1);
 
         convertButton = new QPushButton(centralWidget);
         convertButton->setObjectName(QString::fromUtf8("convertButton"));
 
-        gridLayout->addWidget(convertButton, 2, 0, 1, 1);
+        gridLayout->addWidget(convertButton, 4, 0, 1, 1);
 
         toggleViewButton = new QPushButton(centralWidget);
         toggleViewButton->setObjectName(QString::fromUtf8("toggleViewButton"));
 
-        gridLayout->addWidget(toggleViewButton, 5, 0, 1, 1);
-
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-
-        gridLayout->addWidget(pushButton, 4, 0, 1, 1);
+        gridLayout->addWidget(toggleViewButton, 6, 0, 1, 1);
 
         myButton = new QPushButton(centralWidget);
         myButton->setObjectName(QString::fromUtf8("myButton"));
 
-        gridLayout->addWidget(myButton, 3, 0, 1, 1);
+        gridLayout->addWidget(myButton, 2, 0, 1, 1);
+
+        pingButton = new QPushButton(centralWidget);
+        pingButton->setObjectName(QString::fromUtf8("pingButton"));
+
+        gridLayout->addWidget(pingButton, 1, 0, 1, 1);
 
 
         verticalLayout_2->addLayout(gridLayout);
@@ -129,11 +129,11 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "FabScan", 0, QApplication::UnicodeUTF8));
         actionPort1->setText(QApplication::translate("MainWindow", "blablabla", 0, QApplication::UnicodeUTF8));
         actionOpenPointCloud->setText(QApplication::translate("MainWindow", "Open PointCloud...", 0, QApplication::UnicodeUTF8));
-        label->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
+        statusLabel->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
         convertButton->setText(QApplication::translate("MainWindow", "Compute Surface Mesh...", 0, QApplication::UnicodeUTF8));
         toggleViewButton->setText(QApplication::translate("MainWindow", "Toggle Point Cloud / Surface Mesh", 0, QApplication::UnicodeUTF8));
-        pushButton->setText(QApplication::translate("MainWindow", "Open PointCloud...", 0, QApplication::UnicodeUTF8));
         myButton->setText(QApplication::translate("MainWindow", "Start Scan", 0, QApplication::UnicodeUTF8));
+        pingButton->setText(QApplication::translate("MainWindow", "Ping Button", 0, QApplication::UnicodeUTF8));
         menuSerialPort->setTitle(QApplication::translate("MainWindow", "SerialPort", 0, QApplication::UnicodeUTF8));
         menuCamera->setTitle(QApplication::translate("MainWindow", "Camera", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));

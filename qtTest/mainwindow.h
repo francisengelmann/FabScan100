@@ -23,24 +23,33 @@ public:
 private slots:
     void on_myButton_clicked();
     void on_convertButton_clicked();
-    void on_pushButton_clicked();
     void on_toggleViewButton_clicked();
+
+    void on_pingButton_clicked();
+
     void timerEvent(QTimerEvent *e);
 
-    void selectSerialPort();
+    void onSelectSerialPort();
     void openPointCloud();
     void newPointCloud();
 
+    //void onDataAvailable();
+    //void onReadyRead(); //oudated
+    //void onDsrChanged(bool); //oudated
+    //void sendChar(char c); //oudated
 
 private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...
     Ui::MainWindow *ui;
     cv::Mat image;
-    QString *serialPath;
+    //QString *serialPortPath; //oudated
+    //QextSerialPort *serialPort; //oudated
 
     void setupMenu();
 
-    void updateConnectedSerialPorts();
+    //serial port functionality
+    //bool connectToSerialPort(); //outdated
+    void enumerateSerialPorts();
 };
 
 #endif // MAINWINDOW_H
