@@ -45,8 +45,8 @@ Mac OS X 10.8.1 with XCode 4.5 installed
 Ubuntu 12.04 LTS:
 =======
 1. Install Qt
-  * sudo apt-get install libqt4-dev
   * Qt-Creator from Ubuntu Software Center
+  * install the qt-4.8 libraries from qt-project.org
 
 2. Install OpenCV following this guide: http://www.samontab.com/web/2012/06/installing-opencv-2-4-1-ubuntu-12-04-lts/
 
