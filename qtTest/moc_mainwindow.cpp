@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Sat Nov 3 17:51:36 2012
+** Created: Mon Nov 5 14:55:43 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,6 +39,7 @@ static const uint qt_meta_data_MainWindow[] = {
      142,   11,   11,   11, 0x08,
      163,   11,   11,   11, 0x08,
      180,   11,   11,   11, 0x08,
+     196,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -50,6 +51,7 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "on_pingButton_clicked()\0e\0"
     "timerEvent(QTimerEvent*)\0onSelectSerialPort()\0"
     "openPointCloud()\0newPointCloud()\0"
+    "on_laserOnButton_clicked()\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -66,6 +68,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 5: _t->onSelectSerialPort(); break;
         case 6: _t->openPointCloud(); break;
         case 7: _t->newPointCloud(); break;
+        case 8: _t->on_laserOnButton_clicked(); break;
         default: ;
         }
     }
@@ -103,9 +106,9 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

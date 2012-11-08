@@ -38,6 +38,8 @@ private slots:
     //void onDsrChanged(bool); //oudated
     //void sendChar(char c); //oudated
 
+    void on_laserOnButton_clicked();
+
 private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...
     Ui::MainWindow *ui;

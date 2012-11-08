@@ -101,7 +101,7 @@ void MainWindow::on_toggleViewButton_clicked()
 
 void MainWindow::on_pingButton_clicked()
 {
-    FSController::getInstance()->serial->writeChar('a');
+    FSController::getInstance()->serial->writeChar(200);
     /*if(serialPortPath->isEmpty())
         return;
     qDebug("button pressed");
@@ -208,3 +208,8 @@ void MainWindow::enumerateSerialPorts()
         return true;
     }
 }*/
+
+void MainWindow::on_laserOnButton_clicked()
+{
+    FSController::getInstance()->serial->writeChar(201);
+}
