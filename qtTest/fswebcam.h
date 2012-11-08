@@ -6,11 +6,18 @@
 #ifndef FSWEBCAM_H
 #define FSWEBCAM_H
 
+struct {
+    QString portName;
+    QString friendlyName;
+} FSWebCamInfo;
+
 class FSWebCam
 {
 public:
     FSWebCam();
     ~FSWebCam();
+
+    QList<FSWebCamInfo>
 
 };
 
