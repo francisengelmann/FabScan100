@@ -11,7 +11,7 @@ The following checklist shows the projects progress:
 * OpenGL - works on Mac, works on Ubuntu, not tested on Windows
 * OpenCV - works on Mac, works on Ubuntu, not tested on Windows
 * PCL - works on Mac, works on Ubuntu, not tested on Windows
-* SerialPort - works on Mac, not tested on Ubuntu, not tested on Windows
+* SerialPort - works on Mac, works on Ubuntu, not tested on Windows
 * accessing arbitrary webcams - not implemented
 
 Current Setup on Mac: Qt 4.8.1 with Qt-Creator 2.4.1
