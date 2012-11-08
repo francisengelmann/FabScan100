@@ -16,5 +16,7 @@ FSWebCam::~FSWebCam()
 
 QList<FSWebCamInfo> FSWebCam::enumerate()
 {
+    QList<FSWebCamInfo> list;
+    return list;
     qDebug("Not yet implemented.");
 }

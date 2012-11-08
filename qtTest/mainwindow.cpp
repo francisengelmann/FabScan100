@@ -122,6 +122,7 @@ void MainWindow::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
     this->enumerateSerialPorts();
+    this->enumerateWebCams();
 }
 
 //===========================================
@@ -138,7 +139,16 @@ void MainWindow::onSelectSerialPort()
     this->enumerateSerialPorts();
     FSController::getInstance()->serial->connectToSerialPort();
     ui->statusLabel->setText(QString("Now connected to").append(action->iconText()));
+}
 
+void MainWindow::onSelectWebCam()
+{
+    QAction* action=qobject_cast<QAction*>(sender());
+    if(!action) return;
+    //FSController::getInstance()->serial->serialPortPath->append(action->iconText());
+    this->enumerateWebCams();
+    //FSController::getInstance()->serial->connectToSerialPort();
+    ui->statusLabel->setText(QString("Now connected to").append(action->iconText()));
 }
 
 void MainWindow::openPointCloud()
@@ -180,6 +190,32 @@ void MainWindow::enumerateSerialPorts()
         //qDebug() << "vendor ID:"       << info.vendorID;
         //qDebug() << "product ID:"      << info.productID;
         //qDebug() << "===================================";
+    }
+}
+
+void MainWindow::enumerateWebCams()
+{
+    QList<FSWebCamInfo> ports = FSWebCam::enumerate();
+    ui->menuCamera->clear();
+
+    foreach (FSWebCamInfo cam, ports) {
+        if(!cam.portName.isEmpty()){
+        //ui->menuSerialPort->addAction(info.portName,)
+            QAction* ac = new QAction(cam.portName, this);
+            ac->setCheckable(true);
+            connect(ac,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
+            //if(FSController::getInstance()->serial->serialPortPath->compare(info.portName)==0){
+                //ac->setChecked(true);
+            //}
+            //ui->menuSerialPort->addAction(info.portName, this, SLOT(selectSerialPort()));
+            ui->menuCamera->addAction(ac);
+        }
+    }
+
+    if(ports.size()==0){
+       QAction* a = new QAction("No camera found", this);
+       a->setEnabled(false);
+       ui->menuCamera->addAction(a);
     }
 }
 

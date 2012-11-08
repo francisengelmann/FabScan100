@@ -30,6 +30,7 @@ private slots:
     void timerEvent(QTimerEvent *e);
 
     void onSelectSerialPort();
+    void onSelectWebCam();
     void openPointCloud();
     void newPointCloud();
 
@@ -52,6 +53,7 @@ private:
     //serial port functionality
     //bool connectToSerialPort(); //outdated
     void enumerateSerialPorts();
+    void enumerateWebCams();
 };
 
 #endif // MAINWINDOW_H
