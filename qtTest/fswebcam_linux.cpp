@@ -15,7 +15,7 @@ FSWebCam::~FSWebCam()
     //platformSpecificDestructor();
 }
 
-FSWebCam::enumerate()
+QList<FSWebCamInfo> FSWebCam::enumerate()
 {
     QString program = "lsusb";
     QStringList arguments;
