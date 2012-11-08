@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setupMenu();
     this->enumerateSerialPorts();
+    this->enumerateWebCams();
     hwTimer->start(5000, this);
     ui->statusLabel->setText("Not connected to FabScan.");
 }
@@ -198,6 +199,13 @@ void MainWindow::enumerateWebCams()
     QList<FSWebCamInfo> ports = FSWebCam::enumerate();
     ui->menuCamera->clear();
 
+    if(ports.size()==0){
+       QAction* a = new QAction("No camera found", this);
+       a->setEnabled(false);
+       ui->menuCamera->addAction(a);
+       return;
+    }
+
     foreach (FSWebCamInfo cam, ports) {
         if(!cam.portName.isEmpty()){
         //ui->menuSerialPort->addAction(info.portName,)
@@ -210,12 +218,6 @@ void MainWindow::enumerateWebCams()
             //ui->menuSerialPort->addAction(info.portName, this, SLOT(selectSerialPort()));
             ui->menuCamera->addAction(ac);
         }
-    }
-
-    if(ports.size()==0){
-       QAction* a = new QAction("No camera found", this);
-       a->setEnabled(false);
-       ui->menuCamera->addAction(a);
     }
 }
 
