@@ -135,8 +135,6 @@ void MainWindow::onSelectSerialPort()
     //set new path
     FSController::getInstance()->serial->serialPortPath->clear();
     FSController::getInstance()->serial->serialPortPath->append(action->iconText());
-    //serialPortPath->clear();
-    //serialPortPath->append(action->iconText());
     this->enumerateSerialPorts();
     FSController::getInstance()->serial->connectToSerialPort();
     ui->statusLabel->setText(QString("Now connected to").append(action->iconText()));

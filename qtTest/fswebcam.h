@@ -10,6 +10,8 @@ class FSWebCam
 {
 public:
     FSWebCam();
+    ~FSWebCam();
+
 };
 
 #endif // FSWEBCAM_H

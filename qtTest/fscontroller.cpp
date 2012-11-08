@@ -7,6 +7,7 @@ FSController::FSController()
     model = new FSModel();
     geometries = new GeometryEngine();
     serial = new FSSerial();
+    webcam = new FSWebCam();
 }
 
 FSController* FSController::getInstance() {

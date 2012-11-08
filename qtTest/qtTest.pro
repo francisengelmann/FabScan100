@@ -21,6 +21,12 @@ SOURCES += main.cpp\
     fscontroller.cpp \
     fsmodel.cpp \
     fsserial.cpp
+macx {
+    SOURCES += fswebcam_osx.cpp
+}
+linux-g++ {
+    SOURCES += fswebcam_linux.cpp
+}
 
 HEADERS  += mainwindow.h \
     geometryengine.h \
@@ -28,7 +34,8 @@ HEADERS  += mainwindow.h \
     fscontroller.h \
     fsmodel.h \
     staticHeaders.h \
-    fsserial.h
+    fsserial.h \
+    fswebcam.h
 
 FORMS    += mainwindow.ui
 

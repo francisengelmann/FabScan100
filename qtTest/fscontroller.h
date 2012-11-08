@@ -5,10 +5,12 @@
 #include "fsmodel.h"
 #include "geometryengine.h"
 #include "fsserial.h"
+#include "fswebcam.h"
 
 class GeometryEngine;
 class FSModel;
 class FSSerial;
+class FSWebCam;
 
 class FSController
 {
@@ -20,6 +22,7 @@ class FSController
         FSModel* model;
         GeometryEngine* geometries;
         FSSerial* serial;
+        FSWebCam* webcam;
 
         //Singleton Pattern
         static FSController* getInstance();
