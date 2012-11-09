@@ -122,8 +122,8 @@ void MainWindow::on_pingButton_clicked()
 void MainWindow::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
-    this->enumerateSerialPorts();
-    this->enumerateWebCams();
+    //this->enumerateSerialPorts();
+    //this->enumerateWebCams();
 }
 
 //===========================================
@@ -173,7 +173,7 @@ void MainWindow::enumerateSerialPorts()
     ui->menuSerialPort->clear();
 
     foreach (QextPortInfo info, ports) {
-        if(!info.portName.isEmpty()){
+        if(!info.portName.isEmpty() && !info.portName.startsWith("ttyS")){
         //ui->menuSerialPort->addAction(info.portName,)
             QAction* ac = new QAction(info.portName, this);
             ac->setCheckable(true);
@@ -197,15 +197,16 @@ void MainWindow::enumerateSerialPorts()
 void MainWindow::enumerateWebCams()
 {
     QList<FSWebCamInfo> ports = FSWebCam::enumerate();
-    ui->menuCamera->clear();
 
     if(ports.size()==0){
        QAction* a = new QAction("No camera found", this);
        a->setEnabled(false);
+       ui->menuCamera->clear();
        ui->menuCamera->addAction(a);
        return;
     }
 
+    ui->menuCamera->clear();
     foreach (FSWebCamInfo cam, ports) {
         if(!cam.portName.isEmpty()){
         //ui->menuSerialPort->addAction(info.portName,)

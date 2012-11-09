@@ -110,7 +110,7 @@ macx {
 
 linux-g++ {
     message("Buildng for Linux.")
-    #INCLUDEPATH += /usr/local/include/opencv2/
+    INCLUDEPATH += /usr/local/include/opencv2/
     INCLUDEPATH += /usr/include/eigen3/
     LIBS += -LC:/usr/local/lib/ \
    -lopencv_core \
