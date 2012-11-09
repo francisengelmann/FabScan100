@@ -197,11 +197,11 @@ void MainWindow::enumerateSerialPorts()
 void MainWindow::enumerateWebCams()
 {
     QList<FSWebCamInfo> ports = FSWebCam::enumerate();
-    ui->menuCamera->clear();
 
     if(ports.size()==0){
        QAction* a = new QAction("No camera found", this);
        a->setEnabled(false);
+       ui->menuCamera->clear();
        ui->menuCamera->addAction(a);
        return;
     }
