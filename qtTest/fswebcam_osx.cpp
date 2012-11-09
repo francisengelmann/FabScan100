@@ -14,6 +14,16 @@ FSWebCam::~FSWebCam()
     //platformSpecificDestructor();
 }
 
+cv::Mat FSWebCam::getFrame()
+{
+    cv::VideoCapture capture(-1);
+    cv::Mat frame;
+    if(!capture.isOpened()) return frame;
+    capture.read(frame);
+    capture.release();
+    return frame;
+}
+
 QList<FSWebCamInfo> FSWebCam::enumerate()
 {
     QList<FSWebCamInfo> list;

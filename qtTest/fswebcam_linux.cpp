@@ -16,6 +16,12 @@ FSWebCam::~FSWebCam()
     //platformSpecificDestructor();
 }
 
+cv::Mat FSWebCam::getFrame()
+{
+    cv::Mat frame = cv::imread("cube.png");
+    return frame;
+}
+
 QList<FSWebCamInfo> FSWebCam::enumerate()
 {
     QList<FSWebCamInfo> list;

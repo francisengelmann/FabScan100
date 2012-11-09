@@ -42,13 +42,17 @@ void MainWindow::setupMenu()
 
 void MainWindow::on_myButton_clicked()
 {
-    return;
     //image= cv::imread("cube.png");
     //cv::namedWindow("Original Image");
     //cv::imshow("Original Image", image);
     ui->statusLabel->setText("Press a button to close...");
-    qDebug("Hello World!");
+    cv::Mat frame;
+    frame = FSController::getInstance()->webcam->getFrame();
+    cv::imshow("Extraced Frame",frame);
+    cv::waitKey(0);
+    cvDestroyWindow("Extracted Frame");
 
+/*
     // Open the video file
     cv::VideoCapture capture(-1);
     // check if video successfully opened
@@ -72,11 +76,11 @@ void MainWindow::on_myButton_clicked()
              if (cv::waitKey(1)>=0)
             stop = true;
     }
-          // Close the video file.
-          // Not required since called by destructor
-          capture.release();
-          cvDestroyWindow("Extracted Frame");
-          ui->statusLabel->setText("Idling...");
+    // Close the video file.
+    // Not required since called by destructor
+    capture.release();
+    cvDestroyWindow("Extracted Frame");
+    ui->statusLabel->setText("Idling...");*/
 }
 
 void MainWindow::on_convertButton_clicked()

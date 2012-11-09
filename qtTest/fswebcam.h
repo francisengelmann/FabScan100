@@ -17,8 +17,9 @@ public:
     FSWebCam();
     ~FSWebCam();
 
-    static QList<FSWebCamInfo> enumerate();
+    cv::Mat getFrame();
 
+    static QList<FSWebCamInfo> enumerate();
 };
 
 #endif // FSWEBCAM_H
