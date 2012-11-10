@@ -9,6 +9,8 @@
 struct FSWebCamInfo{
     QString portName;       //path to the webcam e.g. /dev/video0
     QString friendlyName;   //name of webcam that is displayed
+    int sizeX;
+    int sizeY;
 };
 
 class FSWebCam
@@ -16,10 +18,10 @@ class FSWebCam
 public:
     FSWebCam();
     ~FSWebCam();
-
     cv::Mat getFrame();
-
     static QList<FSWebCamInfo> enumerate();
+
+    FSWebCamInfo info;
 };
 
 #endif // FSWEBCAM_H

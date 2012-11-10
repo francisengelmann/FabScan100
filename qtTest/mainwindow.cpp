@@ -3,6 +3,7 @@
 #include "fscontroller.h"
 
 #include <QBasicTimer>
+#include <opencv2/imgproc/imgproc.hpp>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -45,10 +46,17 @@ void MainWindow::on_myButton_clicked()
     //image= cv::imread("cube.png");
     //cv::namedWindow("Original Image");
     //cv::imshow("Original Image", image);
+
+    if(FSController::getInstance()->webcam->info.portName.isEmpty()){
+        qDebug("No WebCam selected.");
+        return;
+    }
+
     ui->statusLabel->setText("Press a button to close...");
     cv::Mat frame;
     frame = FSController::getInstance()->webcam->getFrame();
-    cv::imshow("Extraced Frame",frame);
+    cv::resize(frame,frame,cv::Size(400,300));
+    cv::imshow("Extracted Frame",frame);
     cv::waitKey(0);
     cvDestroyWindow("Extracted Frame");
 
@@ -150,10 +158,8 @@ void MainWindow::onSelectWebCam()
 {
     QAction* action=qobject_cast<QAction*>(sender());
     if(!action) return;
-    //FSController::getInstance()->serial->serialPortPath->append(action->iconText());
+    FSController::getInstance()->webcam->info.portName=action->iconText();
     this->enumerateWebCams();
-    //FSController::getInstance()->serial->connectToSerialPort();
-    ui->statusLabel->setText(QString("Now connected to").append(action->iconText()));
 }
 
 void MainWindow::openPointCloud()
@@ -178,14 +184,12 @@ void MainWindow::enumerateSerialPorts()
 
     foreach (QextPortInfo info, ports) {
         if(!info.portName.isEmpty() && !info.portName.startsWith("ttyS")){
-        //ui->menuSerialPort->addAction(info.portName,)
             QAction* ac = new QAction(info.portName, this);
             ac->setCheckable(true);
             connect(ac,SIGNAL(triggered()),this, SLOT(onSelectSerialPort()));
             if(FSController::getInstance()->serial->serialPortPath->compare(info.portName)==0){
                 ac->setChecked(true);
             }
-            //ui->menuSerialPort->addAction(info.portName, this, SLOT(selectSerialPort()));
             ui->menuSerialPort->addAction(ac);
         }
         //qDebug() << "port name:"       << info.portName;
@@ -213,14 +217,12 @@ void MainWindow::enumerateWebCams()
     ui->menuCamera->clear();
     foreach (FSWebCamInfo cam, ports) {
         if(!cam.portName.isEmpty()){
-        //ui->menuSerialPort->addAction(info.portName,)
             QAction* ac = new QAction(cam.portName, this);
             ac->setCheckable(true);
             connect(ac,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
-            //if(FSController::getInstance()->serial->serialPortPath->compare(info.portName)==0){
-                //ac->setChecked(true);
-            //}
-            //ui->menuSerialPort->addAction(info.portName, this, SLOT(selectSerialPort()));
+            if(FSController::getInstance()->webcam->info.portName.compare(cam.portName)==0){
+                ac->setChecked(true);
+            }
             ui->menuCamera->addAction(ac);
         }
     }
