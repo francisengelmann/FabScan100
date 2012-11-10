@@ -4,6 +4,7 @@
 #include "fsdialog.h"
 
 #include <QBasicTimer>
+#include <QDialogButtonBox>
 #include <opencv2/imgproc/imgproc.hpp>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -46,6 +47,7 @@ void MainWindow::setupMenu()
 
 void MainWindow::showDialog(QString dialogText)
 {
+    dialog->setStandardButtons(QDialogButtonBox::Ok);
     dialog->setText(dialogText);
     dialog->show();
     dialog->raise();
