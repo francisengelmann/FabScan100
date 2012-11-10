@@ -21,6 +21,7 @@ FSWebCam::~FSWebCam()
 
 cv::Mat FSWebCam::getFrame()
 {
+    //all this is still quite slow, but works
     cv::Mat frame;
     QProcess proc;
     //uvccapture -d/dev/video0 -x1280 -y960 -otest.jpg
@@ -30,7 +31,6 @@ cv::Mat FSWebCam::getFrame()
     sizeX.append(QString::number(info.sizeX));
     QString sizeY = "-y";
     sizeY.append(QString::number(info.sizeY));
-    qDebug() <<portName<<sizeX<<sizeY<<"-oshot.jpg";
     proc.start("uvccapture",QStringList()<<portName<<sizeX<<sizeY<<"-oshot.jpg");
     proc.waitForFinished();
     frame = cv::imread("shot.jpg");
@@ -58,7 +58,6 @@ QList<FSWebCamInfo> FSWebCam::enumerate()
             cam.portName = "/dev/";
             cam.portName.append(device);
             list.append(cam);
-            //qDebug() << "Result: " << path;
         }
     }
     return list;

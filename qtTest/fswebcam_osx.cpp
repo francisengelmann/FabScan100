@@ -6,12 +6,11 @@
 
 FSWebCam::FSWebCam()
 {
-    qDebug("mac constructor");
+    info.portName="default cam";
 }
 
 FSWebCam::~FSWebCam()
 {
-    //platformSpecificDestructor();
 }
 
 cv::Mat FSWebCam::getFrame()
