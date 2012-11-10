@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "staticHeaders.h"
+#include "fsdialog.h"
 
 QT_BEGIN_NAMESPACE
 class QBasicTimer;
@@ -45,10 +46,13 @@ private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...
     Ui::MainWindow *ui;
     cv::Mat image;
+    FSDialog* dialog;
+
     //QString *serialPortPath; //oudated
     //QextSerialPort *serialPort; //oudated
 
     void setupMenu();
+    void showDialog(QString dialogText);
 
     //serial port functionality
     //bool connectToSerialPort(); //outdated

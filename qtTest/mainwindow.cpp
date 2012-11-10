@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "fscontroller.h"
+#include "fsdialog.h"
 
 #include <QBasicTimer>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -9,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     hwTimer(new QBasicTimer),
     ui(new Ui::MainWindow)
-    //serialPortPath(new QString)
 {
     ui->setupUi(this);
     this->setupMenu();
@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->enumerateWebCams();
     hwTimer->start(5000, this);
     ui->statusLabel->setText("Not connected to FabScan.");
+    dialog = new FSDialog(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -42,6 +44,14 @@ void MainWindow::setupMenu()
     ui->menuFile->addAction(showControlPanelAction);
 }
 
+void MainWindow::showDialog(QString dialogText)
+{
+    dialog->setText(dialogText);
+    dialog->show();
+    dialog->raise();
+    dialog->activateWindow();
+}
+
 //===========================================
 // Action Methods
 //===========================================
@@ -49,7 +59,7 @@ void MainWindow::setupMenu()
 void MainWindow::on_myButton_clicked()
 {
     if(FSController::getInstance()->webcam->info.portName.isEmpty()){
-        qDebug("No WebCam selected.");
+        showDialog("No webcam selected!");
         return;
     }
 

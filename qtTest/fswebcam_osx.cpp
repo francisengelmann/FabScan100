@@ -6,7 +6,7 @@
 
 FSWebCam::FSWebCam()
 {
-    info.portName="default cam";
+    //info.portName="default cam";
 }
 
 FSWebCam::~FSWebCam()

@@ -15,6 +15,11 @@ public:
     explicit FSDialog(QWidget *parent = 0);
     ~FSDialog();
 
+    void setText(QString someText);
+
+private slots:
+    void on_buttonBox_accepted();
+
 private:
     Ui::FSDialog *ui;
 };

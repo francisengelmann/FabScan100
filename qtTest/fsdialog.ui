@@ -1,7 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>FSDialog</class>
  <widget class="QDialog" name="FSDialog">
   <property name="geometry">
@@ -9,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>123</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>240</y>
+     <y>80</y>
      <width>341</width>
-     <height>32</height>
+     <height>40</height>
     </rect>
    </property>
    <property name="orientation">
@@ -31,8 +29,20 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>351</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
  </widget>
- <pixmapfunction/>
  <resources/>
  <connections>
   <connection>

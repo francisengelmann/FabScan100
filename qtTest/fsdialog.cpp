@@ -12,3 +12,14 @@ FSDialog::~FSDialog()
 {
     delete ui;
 }
+
+void FSDialog::setText(QString someText)
+{
+    ui->label->setText(someText);
+}
+
+
+void FSDialog::on_buttonBox_accepted()
+{
+    this->hide();
+}
