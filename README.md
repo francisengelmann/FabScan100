@@ -36,11 +36,11 @@ Mac OS X 10.8.1 with XCode 4.5 installed
 6. Install eigen: brew install eigen
 7. Install the experimental version from trunck of PCL 1.7
 
-    svn co http://svn.pointclouds.org/pcl/trunk pcl-trunk
-    cd pcl-trunk && mkdir build && cd build
-    cmake -DCMAKE_BUILD_TYPE=Release .. 
-    make
-    sudo make install
+  * svn co http://svn.pointclouds.org/pcl/trunk pcl-trunk
+  * cd pcl-trunk && mkdir build && cd build
+  * cmake -DCMAKE_BUILD_TYPE=Release .. 
+  * make
+  * sudo make install
 
 Ubuntu 12.04 LTS:
 =======
@@ -53,20 +53,23 @@ Ubuntu 12.04 LTS:
   Important: OpenCV 2.4.2 is the most recent at the time of writing, so just replace 2.4.1 with 2.4.2 everywhere it occurs.
   
 3. Install PCL
-
   * sudo apt-get install libeigen3-dev
   * sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
   * sudo apt-get update
   * sudo apt-get install libpcl-all
 
+4. Install uvccapture
+  * sudo apt-get install uvccapture
+  * to test run the following command: uvccapture -d/dev/video0 -oshot.jpg
+
 Windows:
 ========
- Here I need people to test! If you are interessted please send me an email!
+ Send me an email in case you want to help me here.
 
 Other platforms
 ===============
 
-Make sure to adapt the .pro file e.g. current lib+header pathes 
+Make sure to adapt the .pro file e.g. correct lib and header pathes.
 
 Get the source code
 ===================
