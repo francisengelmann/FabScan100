@@ -110,16 +110,19 @@ macx {
 
 linux-g++ {
     message("Buildng for Linux.")
-    INCLUDEPATH += /usr/local/include/opencv2/
+
+    #CONFIG += link_pkgconfig
+    #PKGCONFIG += opencv
+    #INCLUDEPATH += /usr/local/include/opencv2/
+
     INCLUDEPATH += /usr/include/eigen3/
+
     LIBS += -LC:/usr/local/lib/ \
    -lopencv_core \
    -lopencv_highgui \
    -lopencv_imgproc \
    -lopencv_features2d \
    -lopencv_calib3d
-    #CONFIG += link_pkgconfig
-    #PKGCONFIG += opencv
 
     INCLUDEPATH += /usr/include/pcl-1.6
     LIBS += -LC:/usr/lib \
@@ -132,7 +135,6 @@ linux-g++ {
     -lpcl_segmentation \
     -lpcl_surface \
     -lpcl_search
-
 }
 
 win32 {
