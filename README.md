@@ -36,11 +36,11 @@ Mac OS X 10.8.1 with XCode 4.5 installed
 6. Install eigen: brew install eigen
 7. Install the experimental version from trunck of PCL 1.7
 
-    svn co http://svn.pointclouds.org/pcl/trunk pcl-trunk
-    cd pcl-trunk && mkdir build && cd build
-    cmake -DCMAKE_BUILD_TYPE=Release .. 
-    make
-    sudo make install
+      svn co http://svn.pointclouds.org/pcl/trunk pcl-trunk
+      cd pcl-trunk && mkdir build && cd build
+      cmake -DCMAKE_BUILD_TYPE=Release .. 
+      make
+      sudo make install
 
 Ubuntu 12.04 LTS:
 =======
@@ -60,8 +60,8 @@ Ubuntu 12.04 LTS:
   * sudo apt-get install libpcl-all
 
 4. Install uvccapture
-    * sudo apt-get install uvccapture
-    * to test run the following command: uvccapture -d/dev/video0 -oshot.jpg
+  * sudo apt-get install uvccapture
+  * to test run the following command: uvccapture -d/dev/video0 -oshot.jpg
 
 Windows:
 ========
