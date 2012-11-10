@@ -65,12 +65,12 @@ Ubuntu 12.04 LTS:
 
 Windows:
 ========
- Here I need people to test! If you are interessted please send me an email!
+ Send me an email in case you want to help me here.
 
 Other platforms
 ===============
 
-Make sure to adapt the .pro file e.g. current lib+header pathes 
+Make sure to adapt the .pro file e.g. correct lib and header pathes.
 
 Get the source code
 ===================
