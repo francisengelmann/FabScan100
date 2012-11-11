@@ -6,11 +6,13 @@
 #include "geometryengine.h"
 #include "fsserial.h"
 #include "fswebcam.h"
+#include "mainwindow.h"
 
 class GeometryEngine;
 class FSModel;
 class FSSerial;
 class FSWebCam;
+class MainWindow;
 
 class FSController
 {
@@ -23,11 +25,13 @@ class FSController
         GeometryEngine* geometries;
         FSSerial* serial;
         FSWebCam* webcam;
+        MainWindow* mainwindow;
 
         //Singleton Pattern
         static FSController* getInstance();
         static void destroy();
 
+        //FabScan Functionality
         void fetchFrame();
         void hideFrame();
 

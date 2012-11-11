@@ -7,14 +7,14 @@ struct VertexData
     QVector3D color;
 };
 
-GeometryEngine::GeometryEngine() : vboIds(new GLuint[4])
+GeometryEngine::GeometryEngine() : vboIds(new GLuint[6])
 {
     numberOfIndices = 0;
 }
 
 GeometryEngine::~GeometryEngine()
 {
-    glDeleteBuffers(4, vboIds);
+    glDeleteBuffers(6, vboIds);
     delete[] vboIds;
 }
 
@@ -24,14 +24,15 @@ void GeometryEngine::init()
 
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 //! [0]
-    // Generate 4 VBOs
-    glGenBuffers(4, vboIds);
+    // Generate 6 VBOs
+    glGenBuffers(6, vboIds);
 
 //! [0]
 
     // Initializes cube geometry and transfers it to VBOs
     initSurfaceMesh();
     initPointCloud();
+    initGroundPlane();
 }
 
 void GeometryEngine::initPointCloud()
@@ -255,4 +256,51 @@ void GeometryEngine::drawSurfaceMesh(QGLShaderProgram *program)
 
     // Draw cube geometry using indices from VBO 1
     glDrawElements(GL_TRIANGLES, numberOfIndices, GL_UNSIGNED_INT, 0);
+}
+
+void GeometryEngine::initGroundPlane() {
+    VertexData vertices[] = {
+        {QVector3D(-5.0, 0.0,  5.0), QVector3D(255.0, 150.0, 0.0)}, // v0
+        {QVector3D( 5.0, 0.0,  5.0), QVector3D(255.0, 150.0, 0.0)}, // v1
+        {QVector3D( 5.0, 0.0, -5.0), QVector3D(255.0, 150.0, 0.0)}, // v2
+        {QVector3D(-5.0, 0.0, -5.0), QVector3D(255.0, 150.0, 0.0)}, // v3
+    };
+
+    GLuint indices[] = {
+         0,  1,  2,  3
+    };
+
+    // Transfer vertex data to VBO 0
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[4]);
+    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+
+    // Transfer index data to VBO 1
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[5]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLuint), indices, GL_STATIC_DRAW);
+}
+
+void GeometryEngine::drawGroundPlane(QGLShaderProgram *program){
+    // Tell OpenGL which VBOs to use
+    glBindBuffer(GL_ARRAY_BUFFER, vboIds[4]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIds[5]);
+
+    // Offset for position
+    int offset = 0;
+
+    // Tell OpenGL programmable pipeline how to locate vertex position data
+    int vertexLocation = program->attributeLocation("a_position");
+    program->enableAttributeArray(vertexLocation);
+    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+
+    // Offset for texture coordinate
+    offset += sizeof(QVector3D);
+
+    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
+    int vertexColor = program->attributeLocation("a_col");
+    program->enableAttributeArray(vertexColor);
+    glVertexAttribPointer(vertexColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
+
+    // Draw cube geometry using indices from VBO 3
+    unsigned int numberOfPoints = 4;
+    glDrawElements(GL_LINE_LOOP, numberOfPoints, GL_UNSIGNED_INT, 0);
 }

@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusLabel->setText("Not connected to FabScan.");
     dialog = new FSDialog(this);
     controlPanel = new FSControlPanel(this);
+    FSController::getInstance()->mainwindow=this;
 }
 
 MainWindow::~MainWindow()

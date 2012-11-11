@@ -17,6 +17,17 @@ MainWidget::MainWidget(QWidget *parent) :
     timer(new QBasicTimer),
     program(new QGLShaderProgram)
 {
+    distance = 15;
+    angleX = (float)M_PI/2.0f;
+    angleY = 1;
+
+    angleXtmp = angleX;
+    angleYtmp = angleY;
+
+    eye =     QVector3D(0.0, 5.0, 10.0);
+    center =  QVector3D(0.0, 2.0, 0.0);
+    up =      QVector3D(0.0, 1.0, 0.0);
+
 }
 
 MainWidget::~MainWidget()
@@ -33,23 +44,38 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
     mousePressPosition = QVector2D(e->posF());
 }
 
-void MainWidget::mouseReleaseEvent(QMouseEvent *e)
-{
-    // Mouse release position - mouse press position
+void MainWidget::wheelEvent(QWheelEvent *e){
+    distance -= e->delta()/300.0f;
+    if(distance<1.0){
+        distance=1.0;
+    }else if(distance>30.0){
+        distance=30.0;
+    }
+    this->updateGL();
+}
+
+void MainWidget::mouseMoveEvent(QMouseEvent *e){
     QVector2D diff = QVector2D(e->posF()) - mousePressPosition;
 
-    // Rotation axis is perpendicular to the mouse position difference
-    // vector
-    QVector3D n = QVector3D(diff.y(), diff.x(), 0.0).normalized();
+    double newAngleX = angleX-diff.x()/300.0f;
+    if(newAngleX>M_PI ){ newAngleX-=2*(float)M_PI;}
+    if(newAngleX<-M_PI){ newAngleX+=2*(float)M_PI;}
 
-    // Accelerate angular speed relative to the length of the mouse sweep
-    qreal acc = diff.length() / 100.0;
+    double newAngleY = angleY-diff.y()/300.0f;
+    if(newAngleY>M_PI-0.01){ newAngleY=(float)(M_PI-0.01);}
+    if(newAngleY<0.01){ newAngleY=(float)0.01; }
+    angleXtmp=newAngleX;
+    angleYtmp=newAngleY;
 
-    // Calculate new rotation axis as weighted sum
-    rotationAxis = (rotationAxis * angularSpeed + n * acc).normalized();
 
-    // Increase angular speed
-    angularSpeed += acc;
+    this->updateGL();
+    //qDebug() << diff.lengthSquared();
+}
+
+void MainWidget::mouseReleaseEvent(QMouseEvent *e)
+{
+    angleX=angleXtmp;
+    angleY=angleYtmp;
 }
 //! [0]
 
@@ -161,7 +187,7 @@ void MainWidget::resizeGL(int w, int h)
     qreal aspect = (qreal)w / ((qreal)h?h:1);
 
     // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 1.0, zFar = 27.0, fov = 45.0;
+    const qreal zNear = 1.0, zFar = 40.0, fov = 45.0;
 
     // Reset projection
     projection.setToIdentity();
@@ -177,14 +203,27 @@ void MainWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 //! [6]
+
+    QMatrix4x4 view;
+    view.setToIdentity();
+    QMatrix4x4 model;
+    model.setToIdentity();
+
     // Calculate model view transformation
-    QMatrix4x4 matrix;
-    matrix.translate(0.0, 0.0, -15.0);
-    matrix.rotate(rotation);
-    matrix.translate(0.0, -5.0, 0.0);
+    //model.rotate(rotation);
+
+
+    eye.setX(-distance*sin(angleYtmp)*cos(angleXtmp)+center.x() );
+    eye.setY( distance*cos(angleYtmp)+center.y() );
+    eye.setZ( distance*sin(angleYtmp)*sin(angleXtmp)+center.z() );
+
+    view.lookAt(eye, center, up);
+
+    //matrix.translate(0.0, -5.0, -15.0);
+    //matrix.translate(0.0, -5.0, 0.0);
 
     // Set modelview-projection matrix
-    program->setUniformValue("mvp_matrix", projection * matrix);
+    program->setUniformValue("mvp_matrix", projection * view * model);
 //! [6]
 
     // Using texture unit 0 which contains cube.png
@@ -193,9 +232,11 @@ void MainWidget::paintGL()
     // Draw cube geometry
     //geometries->drawCubeGeometry(program);
 
+
     if(drawState == 0){//POINT_CLOUD
         FSController::getInstance()->geometries->drawPointCloud(program);
     }else if(drawState == 1){//SURFACE_MESH
         FSController::getInstance()->geometries->drawSurfaceMesh(program);
     }
+    FSController::getInstance()->geometries->drawGroundPlane(program);
 }

@@ -1,4 +1,5 @@
 #include "fscontroller.h"
+#include "fsdialog.h"
 
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -28,7 +29,7 @@ void FSController::destroy() {
 
 void FSController::fetchFrame(){
     if(webcam->info.portName.isEmpty()){
-        //showDialog("No webcam selected!");
+        mainwindow->showDialog("No webcam selected!");
         return;
     }
 

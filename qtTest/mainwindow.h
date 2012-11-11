@@ -21,7 +21,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    
+    void showDialog(QString dialogText);
+
 private slots:
     void on_convertButton_clicked();
     void on_toggleViewButton_clicked();
@@ -37,12 +38,11 @@ private slots:
 private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...
     Ui::MainWindow *ui;
-    cv::Mat image;
+
     FSDialog* dialog;
     FSControlPanel* controlPanel;
 
     void setupMenu();
-    void showDialog(QString dialogText);
     void enumerateSerialPorts();
     void enumerateWebCams();
 };

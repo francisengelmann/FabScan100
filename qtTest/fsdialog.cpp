@@ -23,7 +23,6 @@ void FSDialog::setStandardButtons(QDialogButtonBox::StandardButton bts)
     ui->buttonBox->setStandardButtons(bts);
 }
 
-
 void FSDialog::on_buttonBox_accepted()
 {
     this->hide();

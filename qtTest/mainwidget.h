@@ -24,7 +24,9 @@ signals:
 public slots:
 
 protected:
+    void wheelEvent(QWheelEvent *e);
     void mousePressEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     void timerEvent(QTimerEvent *e);
 
@@ -41,7 +43,16 @@ private:
 
     GLuint texture;
 
+    //Transformation matrices for the camera
     QMatrix4x4 projection;
+    QVector3D eye;
+    QVector3D center;
+    QVector3D up;
+    double angleX;
+    double angleY;
+    double angleXtmp;
+    double angleYtmp;
+    double distance;
 
     QVector2D mousePressPosition;
     QVector3D rotationAxis;
