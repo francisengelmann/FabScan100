@@ -34,42 +34,21 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="4" column="0">
        <widget class="QPushButton" name="convertButton">
         <property name="text">
          <string>Compute Surface Mesh...</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="6" column="0">
        <widget class="QPushButton" name="toggleViewButton">
         <property name="text">
          <string>Toggle Point Cloud / Surface Mesh</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="myButton">
-        <property name="text">
-         <string>Start Scan</string>
-        </property>
-       </widget>
-      </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QPushButton" name="laserOnButton">
-      <property name="text">
-       <string>laser On</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pingButton">
-      <property name="text">
-       <string>laser Off</string>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>

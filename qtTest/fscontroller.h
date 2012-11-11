@@ -28,7 +28,18 @@ class FSController
         static FSController* getInstance();
         static void destroy();
 
-        //Class Funtionality
+        void fetchFrame();
+        void hideFrame();
+
+        void turnLaserOn();
+        void turnLaserOff();
+        void detectLaserLine();
+
+        void turnStepperOn();
+        void turnStepperOff();
+        void performStep();
+        void setDirectionCW();
+        void setDirectionCCW();
 };
 
 #endif // FSCONTROLLER_H

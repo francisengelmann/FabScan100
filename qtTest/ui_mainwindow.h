@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sat Nov 10 19:15:13 2012
-**      by: Qt User Interface Compiler version 4.8.3
+** Created: Sun Nov 11 02:10:24 2012
+**      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -39,9 +39,6 @@ public:
     QLabel *statusLabel;
     QPushButton *convertButton;
     QPushButton *toggleViewButton;
-    QPushButton *myButton;
-    QPushButton *laserOnButton;
-    QPushButton *pingButton;
     QMenuBar *menuBar;
     QMenu *menuSerialPort;
     QMenu *menuCamera;
@@ -83,30 +80,15 @@ public:
         convertButton = new QPushButton(centralWidget);
         convertButton->setObjectName(QString::fromUtf8("convertButton"));
 
-        gridLayout->addWidget(convertButton, 5, 0, 1, 1);
+        gridLayout->addWidget(convertButton, 4, 0, 1, 1);
 
         toggleViewButton = new QPushButton(centralWidget);
         toggleViewButton->setObjectName(QString::fromUtf8("toggleViewButton"));
 
-        gridLayout->addWidget(toggleViewButton, 7, 0, 1, 1);
-
-        myButton = new QPushButton(centralWidget);
-        myButton->setObjectName(QString::fromUtf8("myButton"));
-
-        gridLayout->addWidget(myButton, 3, 0, 1, 1);
+        gridLayout->addWidget(toggleViewButton, 6, 0, 1, 1);
 
 
         verticalLayout_2->addLayout(gridLayout);
-
-        laserOnButton = new QPushButton(centralWidget);
-        laserOnButton->setObjectName(QString::fromUtf8("laserOnButton"));
-
-        verticalLayout_2->addWidget(laserOnButton);
-
-        pingButton = new QPushButton(centralWidget);
-        pingButton->setObjectName(QString::fromUtf8("pingButton"));
-
-        verticalLayout_2->addWidget(pingButton);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -138,9 +120,6 @@ public:
         statusLabel->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
         convertButton->setText(QApplication::translate("MainWindow", "Compute Surface Mesh...", 0, QApplication::UnicodeUTF8));
         toggleViewButton->setText(QApplication::translate("MainWindow", "Toggle Point Cloud / Surface Mesh", 0, QApplication::UnicodeUTF8));
-        myButton->setText(QApplication::translate("MainWindow", "Start Scan", 0, QApplication::UnicodeUTF8));
-        laserOnButton->setText(QApplication::translate("MainWindow", "laser On", 0, QApplication::UnicodeUTF8));
-        pingButton->setText(QApplication::translate("MainWindow", "laser Off", 0, QApplication::UnicodeUTF8));
         menuSerialPort->setTitle(QApplication::translate("MainWindow", "SerialPort", 0, QApplication::UnicodeUTF8));
         menuCamera->setTitle(QApplication::translate("MainWindow", "Camera", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));

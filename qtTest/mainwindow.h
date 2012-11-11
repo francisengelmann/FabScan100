@@ -3,6 +3,7 @@
 
 #include "staticHeaders.h"
 #include "fsdialog.h"
+#include "fscontrolpanel.h"
 
 QT_BEGIN_NAMESPACE
 class QBasicTimer;
@@ -22,11 +23,8 @@ public:
     ~MainWindow();
     
 private slots:
-    void on_myButton_clicked();
     void on_convertButton_clicked();
     void on_toggleViewButton_clicked();
-
-    void on_pingButton_clicked();
 
     void timerEvent(QTimerEvent *e);
 
@@ -34,28 +32,17 @@ private slots:
     void onSelectWebCam();
     void openPointCloud();
     void newPointCloud();
-
-    //void onDataAvailable();
-    //void onReadyRead(); //oudated
-    //void onDsrChanged(bool); //oudated
-    //void sendChar(char c); //oudated
-
-    void on_laserOnButton_clicked();
+    void showControlPanel();
 
 private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...
     Ui::MainWindow *ui;
     cv::Mat image;
     FSDialog* dialog;
-
-    //QString *serialPortPath; //oudated
-    //QextSerialPort *serialPort; //oudated
+    FSControlPanel* controlPanel;
 
     void setupMenu();
     void showDialog(QString dialogText);
-
-    //serial port functionality
-    //bool connectToSerialPort(); //outdated
     void enumerateSerialPorts();
     void enumerateWebCams();
 };

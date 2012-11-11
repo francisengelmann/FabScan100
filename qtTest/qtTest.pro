@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     fscontroller.cpp \
     fsmodel.cpp \
     fsserial.cpp \
-    fsdialog.cpp
+    fsdialog.cpp \
+    fscontrolpanel.cpp
+
 macx {
     SOURCES += fswebcam_osx.cpp
 }
@@ -37,10 +39,12 @@ HEADERS  += mainwindow.h \
     staticHeaders.h \
     fsserial.h \
     fswebcam.h \
-    fsdialog.h
+    fsdialog.h \
+    fscontrolpanel.h
 
 FORMS    += mainwindow.ui \
-    fsdialog.ui
+    fsdialog.ui \
+    fscontrolpanel.ui
 
 OTHER_FILES += \
     fshader.glsl \

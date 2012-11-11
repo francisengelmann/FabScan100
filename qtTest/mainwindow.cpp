@@ -5,7 +5,6 @@
 
 #include <QBasicTimer>
 #include <QDialogButtonBox>
-#include <opencv2/imgproc/imgproc.hpp>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     hwTimer->start(5000, this);
     ui->statusLabel->setText("Not connected to FabScan.");
     dialog = new FSDialog(this);
-
+    controlPanel = new FSControlPanel(this);
 }
 
 MainWindow::~MainWindow()
@@ -40,8 +39,8 @@ void MainWindow::setupMenu()
     ui->menuFile->addAction(openPointCloudAction);
 
     QAction* showControlPanelAction = new QAction("Control Panel...", this);
-    showControlPanelAction->setShortcuts(QKeySequence::Open);
-    connect(showControlPanelAction,SIGNAL(triggered()),this, SLOT(openPointCloud()));
+    showControlPanelAction->setShortcuts(QKeySequence::Preferences);
+    connect(showControlPanelAction,SIGNAL(triggered()),this, SLOT(showControlPanel()));
     ui->menuFile->addAction(showControlPanelAction);
 }
 
@@ -57,22 +56,6 @@ void MainWindow::showDialog(QString dialogText)
 //===========================================
 // Action Methods
 //===========================================
-
-void MainWindow::on_myButton_clicked()
-{
-    if(FSController::getInstance()->webcam->info.portName.isEmpty()){
-        showDialog("No webcam selected!");
-        return;
-    }
-
-    ui->statusLabel->setText("Press a button to close...");
-    cv::Mat frame;
-    frame = FSController::getInstance()->webcam->getFrame();
-    cv::resize(frame,frame,cv::Size(400,300));
-    cv::imshow("Extracted Frame",frame);
-    cv::waitKey(0);
-    cvDestroyWindow("Extracted Frame");
-}
 
 void MainWindow::on_convertButton_clicked()
 {
@@ -95,24 +78,12 @@ void MainWindow::on_toggleViewButton_clicked()
     ui->widget->updateGL();
 }
 
-void MainWindow::on_pingButton_clicked()
+void MainWindow::showControlPanel()
 {
-    FSController::getInstance()->serial->writeChar(200);
-    /*if(serialPortPath->isEmpty())
-        return;
-    qDebug("button pressed");
-    if(!serialPort->isOpen() )
-        return;
-
-    if(serialPort->isWritable() ){
-        qDebug("is writable");
-        const char c = 255;
-        serialPort->write(&c);
-    }else{
-        qDebug("is not writable");
-    }*/
+    controlPanel->show();
+    controlPanel->raise();
+    controlPanel->activateWindow();
 }
-
 
 void MainWindow::timerEvent(QTimerEvent *e)
 {
@@ -188,7 +159,6 @@ void MainWindow::enumerateSerialPorts()
 void MainWindow::enumerateWebCams()
 {
     QList<FSWebCamInfo> ports = FSWebCam::enumerate();
-
     if(ports.size()==0){
        QAction* a = new QAction("No camera found", this);
        a->setEnabled(false);
@@ -209,33 +179,4 @@ void MainWindow::enumerateWebCams()
             ui->menuCamera->addAction(ac);
         }
     }
-}
-
-/*bool MainWindow::connectToSerialPort() //outdated
-{
-    this->serialPort = new QextSerialPort(*serialPortPath, QextSerialPort::EventDriven);
-    serialPort->setBaudRate(BAUD9600);
-    serialPort->setFlowControl(FLOW_OFF);
-    serialPort->setParity(PAR_NONE);
-    serialPort->setDataBits(DATA_8);
-    serialPort->setStopBits(STOP_2);
-
-    if (serialPort->open(QIODevice::ReadWrite) == true) {
-        connect(serialPort, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
-        connect(serialPort, SIGNAL(dsrChanged(bool)), this, SLOT(onDsrChanged(bool)));
-        if (!(serialPort->lineStatus() & LS_DSR)){
-            qDebug() << "warning: device is not turned on";
-            return false;
-        }
-        qDebug() << "listening for data on" << serialPort->portName();
-        return true;
-    }else{
-        qDebug() << "device failed to open:" << serialPort->errorString();
-        return true;
-    }
-}*/
-
-void MainWindow::on_laserOnButton_clicked()
-{
-    FSController::getInstance()->serial->writeChar(201);
 }
