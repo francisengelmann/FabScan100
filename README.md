@@ -3,6 +3,10 @@ FabScan100
 The FabScan100 software is planned to run on Mac and Linux (and maybe also Windows).
 This git repository stores all the files for the project, software as well as the hardware.
 
+Also check these links for more information:
+* http://hci.rwth-aachen.de/fabscan100
+* http://groups.google.com/group/fabscan
+
 Progress
 ========
 
@@ -12,7 +16,9 @@ The following checklist shows the projects progress:
 * OpenCV - works on Mac, works on Ubuntu, not tested on Windows
 * PCL - works on Mac, works on Ubuntu, not tested on Windows
 * SerialPort - works on Mac, works on Ubuntu, not tested on Windows
-* accessing arbitrary webcams - not implemented
+* accessing arbitrary webcams - not implemented on Mac, works on Ubuntu (but slow), not tested on Windows
+* Serial talk to FabScan - should work, needs to be tested
+* Scanning - needs to be implemented
 
 Current Setup on Mac: Qt 4.8.1 with Qt-Creator 2.4.1
 Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1
