@@ -1,5 +1,6 @@
 #include "fscontroller.h"
 #include "fsdialog.h"
+#include "FSDefines.h"
 
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -13,21 +14,24 @@ FSController::FSController()
     webcam = new FSWebCam();
 }
 
-FSController* FSController::getInstance() {
+FSController* FSController::getInstance()
+{
     if (singleton == 0){
         singleton = new FSController();
     }
     return singleton;
 }
 
-void FSController::destroy() {
+void FSController::destroy()
+{
     if (singleton != 0) {
         delete singleton;
         singleton = 0;
     }
 }
 
-void FSController::fetchFrame(){
+void FSController::fetchFrame()
+{
     if(webcam->info.portName.isEmpty()){
         mainwindow->showDialog("No webcam selected!");
         return;
@@ -41,45 +45,53 @@ void FSController::fetchFrame(){
     cvDestroyWindow("Extracted Frame");
 }
 
-void FSController::hideFrame(){
+void FSController::hideFrame()
+{
     cvDestroyWindow("Extracted Frame");
 }
 
-void FSController::turnLaserOn(){
+void FSController::turnLaserOn()
+{
     qDebug("turnLaserOn");
-    serial->writeChar(201);
+    serial->writeChar(MC_TURN_LASER_ON);
 }
 
 void FSController::turnLaserOff(){
     qDebug("turnLaserOff");
-    serial->writeChar(200);
+    serial->writeChar(MC_TURN_LASER_OFF);
 }
 
-void FSController::detectLaserLine(){
+void FSController::detectLaserLine()
+{
     qDebug("detectLaserLiner");
 }
 
-void FSController::turnStepperOn(){
+void FSController::turnStepperOn()
+{
     qDebug("turnStepperOn");
-    serial->writeChar(205);
+    serial->writeChar(MC_TURN_STEPPER_ON);
 }
 
-void FSController::turnStepperOff(){
+void FSController::turnStepperOff()
+{
     qDebug("turnStepperOff");
-    serial->writeChar(206);
+    serial->writeChar(MC_TURN_STEPPER_OFF);
 }
 
-void FSController::performStep(){
+void FSController::performStep()
+{
     qDebug("performStep");
-    serial->writeChar(202);
+    serial->writeChar(MC_PERFORM_STEP);
 }
 
-void FSController::setDirectionCW(){
+void FSController::setDirectionCW()
+{
     qDebug("setDirectionCW");
-    serial->writeChar(203);
+    serial->writeChar(MC_SET_DIRECTION_CW);
 }
 
-void FSController::setDirectionCCW(){
+void FSController::setDirectionCCW()
+{
     qDebug("setDirectionCCW");
-    serial->writeChar(204);
+    serial->writeChar(MC_SET_DIRECTION_CCW);
 }

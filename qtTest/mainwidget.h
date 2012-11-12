@@ -40,7 +40,6 @@ private:
     QBasicTimer *timer;
     QGLShaderProgram *program;
     GeometryEngine *geometries;
-
     GLuint texture;
 
     //Transformation matrices for the camera

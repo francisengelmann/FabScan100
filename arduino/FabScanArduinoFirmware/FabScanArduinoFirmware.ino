@@ -114,7 +114,7 @@ void setup()
  digitalWrite(LASER_PIN, 1); //turn laser on
  Serial.write(FABSCAN_PONG); //send a pong back to the computer so we know setup is done and that we are actually dealing with a FabScan
  
- currStepper = 0;  //turntable is default stepper
+ currStepper = 0;  //0==turntable is default stepper, change here if turntable and laser are incorrectly connected and not possible to easily change it
 
   digitalWrite(MS_PIN, 0);
   
@@ -127,11 +127,10 @@ void loop()
     
     digitalWrite(LED_PIN, 1);
     incomingByte = Serial.read();
-    Serial.write("a");
+    //Serial.write("a");
 
     switch(byteType){
       case ACTION_BYTE:
-https://github.com/francisengelmann/FabScan100
           switch(incomingByte){    //this switch always handles the first byte
             //Laser
             case TURN_LASER_OFF:

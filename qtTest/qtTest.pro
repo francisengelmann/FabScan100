@@ -40,7 +40,8 @@ HEADERS  += mainwindow.h \
     fsserial.h \
     fswebcam.h \
     fsdialog.h \
-    fscontrolpanel.h
+    fscontrolpanel.h \
+    FSDefines.h
 
 FORMS    += mainwindow.ui \
     fsdialog.ui \
