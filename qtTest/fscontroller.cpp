@@ -1,6 +1,5 @@
 #include "fscontroller.h"
 #include "fsdialog.h"
-#include "FSDefines.h"
 
 #include <opencv2/imgproc/imgproc.hpp>
 
@@ -12,6 +11,7 @@ FSController::FSController()
     geometries = new GeometryEngine();
     serial = new FSSerial();
     webcam = new FSWebCam();
+    stepper = new FSStepper();
 }
 
 FSController* FSController::getInstance()

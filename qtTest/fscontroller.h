@@ -6,6 +6,7 @@
 #include "geometryengine.h"
 #include "fsserial.h"
 #include "fswebcam.h"
+#include "fsstepper.h"
 #include "mainwindow.h"
 
 class GeometryEngine;
@@ -21,11 +22,12 @@ class FSController
         FSController();
 
     public:
-        FSModel* model;
         GeometryEngine* geometries;
+        MainWindow* mainwindow;
+        FSModel* model;
         FSSerial* serial;
         FSWebCam* webcam;
-        MainWindow* mainwindow;
+        FSStepper* stepper;
 
         //Singleton Pattern
         static FSController* getInstance();

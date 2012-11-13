@@ -1,6 +1,7 @@
 #ifndef FSCONTROLPANEL_H
 #define FSCONTROLPANEL_H
 
+#include "staticHeaders.h"
 #include <QDialog>
 
 namespace Ui {

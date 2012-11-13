@@ -4,7 +4,6 @@
 #include <Eigen/Core>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-
 #include <pcl/point_types.h>
 
 #if defined __cplusplus
@@ -22,6 +21,9 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/ply_io.h>
 #include <pcl/io/vtk_io.h>
+
+#include "fsdefines.h"
+#include "fsgeometries.h"
 
 #endif
 

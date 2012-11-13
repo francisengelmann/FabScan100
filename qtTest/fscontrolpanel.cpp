@@ -40,22 +40,27 @@ void FSControlPanel::on_laserOffButton_clicked()
 void FSControlPanel::on_checkBox_stateChanged(int state)
 {
     if(state==2){
-        FSController::getInstance()->turnStepperOn();
+        FSController::getInstance()->stepper->enable();
     }else{
-        FSController::getInstance()->turnStepperOff();
+        FSController::getInstance()->stepper->disable();
     }
 }
 
 void FSControlPanel::on_stepLeftButton_clicked()
 {
-    FSController::getInstance()->setDirectionCCW();
-    FSController::getInstance()->performSteps(100);
+    FSController::getInstance()->stepper->setDirection(FS_DIRECTION_CW);
+    QString str = ui->degreesEdit->text();
+    double degrees = str.toDouble();
+    FSController::getInstance()->stepper->turnNumberOfDegrees(degrees);
 }
 
 void FSControlPanel::on_stepRightButton_clicked()
 {
-    FSController::getInstance()->setDirectionCW();
-    FSController::getInstance()->performSteps(100);}
+    FSController::getInstance()->stepper->setDirection(FS_DIRECTION_CCW);
+    QString str = ui->degreesEdit->text();
+    double degrees = str.toDouble();
+    FSController::getInstance()->stepper->turnNumberOfDegrees(degrees);
+}
 
 void FSControlPanel::on_autoResetButton_clicked()
 {
