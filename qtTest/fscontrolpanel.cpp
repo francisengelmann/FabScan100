@@ -49,13 +49,13 @@ void FSControlPanel::on_checkBox_stateChanged(int state)
 void FSControlPanel::on_stepLeftButton_clicked()
 {
     FSController::getInstance()->setDirectionCCW();
-    FSController::getInstance()->performStep();
+    FSController::getInstance()->performSteps(100);
 }
 
 void FSControlPanel::on_stepRightButton_clicked()
 {
     FSController::getInstance()->setDirectionCW();
-    FSController::getInstance()->performStep();}
+    FSController::getInstance()->performSteps(100);}
 
 void FSControlPanel::on_autoResetButton_clicked()
 {

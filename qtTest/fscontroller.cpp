@@ -81,17 +81,25 @@ void FSController::turnStepperOff()
 void FSController::performStep()
 {
     qDebug("performStep");
-    serial->writeChar(MC_PERFORM_STEP);
+    char bla[] = {MC_PERFORM_STEP,1};
+    serial->writeChars(bla);
+}
+
+void FSController::performSteps(unsigned char steps)
+{
+    qDebug("performStep");
+    char bla[] = {MC_PERFORM_STEP,steps};
+    serial->writeChars(bla);
 }
 
 void FSController::setDirectionCW()
 {
-    qDebug("setDirectionCW");
-    serial->writeChar(MC_SET_DIRECTION_CW);
+    qDebug("setDirectionCCW");
+    serial->writeChar(MC_SET_DIRECTION_CCW);
 }
 
 void FSController::setDirectionCCW()
 {
-    qDebug("setDirectionCCW");
-    serial->writeChar(MC_SET_DIRECTION_CCW);
+    qDebug("setDirectionCW");
+    serial->writeChar(MC_SET_DIRECTION_CW);
 }

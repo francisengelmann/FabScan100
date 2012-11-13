@@ -42,6 +42,7 @@ class FSController
         void turnStepperOn();
         void turnStepperOff();
         void performStep();
+        void performSteps(unsigned char steps);
         void setDirectionCW();
         void setDirectionCCW();
 };

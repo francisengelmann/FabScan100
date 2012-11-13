@@ -12,11 +12,11 @@ class FSSerial : public QObject
 
 Q_OBJECT
 public:
-
     FSSerial();
     QString *serialPortPath;
     bool connectToSerialPort();
     void writeChar(char c);
+    void writeChars(char* c);
 
 private slots:
     void onReadyRead();

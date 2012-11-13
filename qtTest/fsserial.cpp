@@ -1,4 +1,5 @@
 #include "fsserial.h"
+#include <QThread>
 
 FSSerial::FSSerial()
 {
@@ -49,8 +50,22 @@ void FSSerial::writeChar(char c)
     if( serialPortPath->isEmpty() ) return;
     if( !serialPort->isOpen() ) return;
     if( serialPort->isWritable() ){
-        qDebug("is writable");
+        //qDebug("is writable");
+        //usleep(100000);
         serialPort->write(&c);
+    }else{
+        qDebug("is not writable");
+    }
+}
+
+void FSSerial::writeChars(char* c)
+{
+    if( serialPortPath->isEmpty() ) return;
+    if( !serialPort->isOpen() ) return;
+    if( serialPort->isWritable() ){
+        //qDebug("is writable");
+        //usleep(100000);
+        serialPort->write(c);
     }else{
         qDebug("is not writable");
     }
