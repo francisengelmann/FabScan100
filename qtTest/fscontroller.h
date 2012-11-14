@@ -2,18 +2,21 @@
 #define FSCONTROLLER_H
 
 #include "staticHeaders.h"
-#include "fsmodel.h"
+#include "mainwindow.h"
 #include "geometryengine.h"
+#include "fsmodel.h"
 #include "fsserial.h"
 #include "fswebcam.h"
-#include "fsstepper.h"
-#include "mainwindow.h"
+#include "fsturntable.h"
+#include "fslaser.h"
+#include "fsvision.h"
 
 class GeometryEngine;
 class FSModel;
-class FSSerial;
+/*class FSSerial;
 class FSWebCam;
 class MainWindow;
+class FSLaser;*/
 
 class FSController
 {
@@ -22,12 +25,14 @@ class FSController
         FSController();
 
     public:
-        GeometryEngine* geometries;
         MainWindow* mainwindow;
+        GeometryEngine* geometries;
         FSModel* model;
         FSSerial* serial;
         FSWebCam* webcam;
-        FSStepper* stepper;
+        FSTurntable* turntable;
+        FSLaser* laser;
+        FSVision* vision;
 
         //Singleton Pattern
         static FSController* getInstance();
@@ -37,16 +42,7 @@ class FSController
         void fetchFrame();
         void hideFrame();
 
-        void turnLaserOn();
-        void turnLaserOff();
         void detectLaserLine();
-
-        void turnStepperOn();
-        void turnStepperOff();
-        void performStep();
-        void performSteps(unsigned char steps);
-        void setDirectionCW();
-        void setDirectionCCW();
 };
 
 #endif // FSCONTROLLER_H

@@ -1,13 +1,13 @@
-#include "fsstepper.h"
+#include "fsturntable.h"
 #include "fscontroller.h"
 
-FSStepper::FSStepper()
+FSTurntable::FSTurntable()
 {
     degreesPerStep = 360.0f/200.0f/16.0f; //the size of a microstep
     direction = FS_DIRECTION_CW;
 }
 
-void FSStepper::turnNumberOfSteps(unsigned int steps)
+void FSTurntable::turnNumberOfSteps(unsigned int steps)
 {
     unsigned char size = steps/256*2;
     char c[size];
@@ -24,30 +24,30 @@ void FSStepper::turnNumberOfSteps(unsigned int steps)
     FSController::getInstance()->serial->writeChars(c);
 }
 
-void FSStepper::turnNumberOfDegrees(double degrees)
+void FSTurntable::turnNumberOfDegrees(double degrees)
 {
     int steps = (int)(degrees/degreesPerStep);
     turnNumberOfSteps(steps);
 }
 
-void FSStepper::setDirection(FSDirection d)
+void FSTurntable::setDirection(FSDirection d)
 {
     direction = d;
     char c = (d==FS_DIRECTION_CW)?MC_SET_DIRECTION_CW:MC_SET_DIRECTION_CCW;
     FSController::getInstance()->serial->writeChar(c);
 }
 
-void FSStepper::toggleDirection(){
+void FSTurntable::toggleDirection(){
     FSDirection d = (direction == FS_DIRECTION_CW)?FS_DIRECTION_CCW:FS_DIRECTION_CW;
     setDirection(d);
 }
 
-void FSStepper::enable(void)
+void FSTurntable::enable(void)
 {
     FSController::getInstance()->serial->writeChar(MC_TURN_STEPPER_ON);
 }
 
-void FSStepper::disable(void)
+void FSTurntable::disable(void)
 {
     FSController::getInstance()->serial->writeChar(MC_TURN_STEPPER_OFF);
 }

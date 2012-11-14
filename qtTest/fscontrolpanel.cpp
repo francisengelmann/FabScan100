@@ -1,6 +1,9 @@
 #include "fscontrolpanel.h"
 #include "ui_fscontrolpanel.h"
 #include "fscontroller.h"
+#include "fslaser.h"
+#include "fsturntable.h"
+#include "fsserial.h"
 
 #include <QDebug>
 
@@ -29,37 +32,37 @@ void FSControlPanel::on_hideFrameButton_clicked()
 
 void FSControlPanel::on_laserOnButton_clicked()
 {
-    FSController::getInstance()->turnLaserOn();
+    FSController::getInstance()->laser->turnOn();
 }
 
 void FSControlPanel::on_laserOffButton_clicked()
 {
-    FSController::getInstance()->turnLaserOff();
+    FSController::getInstance()->laser->turnOff();
 }
 
 void FSControlPanel::on_checkBox_stateChanged(int state)
 {
     if(state==2){
-        FSController::getInstance()->stepper->enable();
+        FSController::getInstance()->turntable->enable();
     }else{
-        FSController::getInstance()->stepper->disable();
+        FSController::getInstance()->turntable->disable();
     }
 }
 
 void FSControlPanel::on_stepLeftButton_clicked()
 {
-    FSController::getInstance()->stepper->setDirection(FS_DIRECTION_CW);
+    FSController::getInstance()->turntable->setDirection(FS_DIRECTION_CW);
     QString str = ui->degreesEdit->text();
     double degrees = str.toDouble();
-    FSController::getInstance()->stepper->turnNumberOfDegrees(degrees);
+    FSController::getInstance()->turntable->turnNumberOfDegrees(degrees);
 }
 
 void FSControlPanel::on_stepRightButton_clicked()
 {
-    FSController::getInstance()->stepper->setDirection(FS_DIRECTION_CCW);
+    FSController::getInstance()->turntable->setDirection(FS_DIRECTION_CCW);
     QString str = ui->degreesEdit->text();
     double degrees = str.toDouble();
-    FSController::getInstance()->stepper->turnNumberOfDegrees(degrees);
+    FSController::getInstance()->turntable->turnNumberOfDegrees(degrees);
 }
 
 void FSControlPanel::on_autoResetButton_clicked()

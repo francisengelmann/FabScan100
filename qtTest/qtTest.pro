@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     fsserial.cpp \
     fsdialog.cpp \
     fscontrolpanel.cpp \
-    fsstepper.cpp
+    fslaser.cpp \
+    fsturntable.cpp \
+    fsvision.cpp
 
 macx {
     SOURCES += fswebcam_osx.cpp
@@ -42,9 +44,11 @@ HEADERS  += mainwindow.h \
     fswebcam.h \
     fsdialog.h \
     fscontrolpanel.h \
-    fsstepper.h \
     fsdefines.h \
-    fsgeometries.h
+    fsgeometries.h \
+    fslaser.h \
+    fsvision.h \
+    fsturntable.h
 
 FORMS    += mainwindow.ui \
     fsdialog.ui \

@@ -23,11 +23,8 @@ void GeometryEngine::init()
     initializeGLFunctions();
 
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-//! [0]
     // Generate 6 VBOs
     glGenBuffers(6, vboIds);
-
-//! [0]
 
     // Initializes cube geometry and transfers it to VBOs
     initSurfaceMesh();
@@ -44,9 +41,7 @@ void GeometryEngine::initPointCloud()
         {QVector3D( 1.0,  1.0,  1.0), QVector3D(0.33, 0.5, 0.0)}, // v3
     };
 
-    GLushort indices[] = {
-         0,  1,  2,  3
-    };
+    GLushort indices[] = {0,1,2,3};
 
     // Transfer vertex data to VBO 0
     glBindBuffer(GL_ARRAY_BUFFER, vboIds[0]);

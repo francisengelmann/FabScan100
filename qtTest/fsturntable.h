@@ -4,14 +4,14 @@
 #include "staticHeaders.h"
 #include "fsserial.h"
 
-class FSStepper
+class FSTurntable
 {
 private:
     double degreesPerStep;
     double direction;
 
 public:
-    FSStepper();
+    FSTurntable();
     void turnNumberOfSteps(unsigned int steps);
     void turnNumberOfDegrees(double degrees);
     void setDirection(FSDirection direction);

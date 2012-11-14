@@ -9,8 +9,8 @@ FSWebCam::FSWebCam()
 {
     info.portName = "";
     info.friendlyName = "";
-    info.sizeX = 1280;
-    info.sizeY = 960;
+    info.sizeX = CAM_IMAGE_WIDTH;
+    info.sizeY = CAM_IMAGE_HEIGHT;
     //enumerate();
 }
 
