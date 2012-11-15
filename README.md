@@ -10,15 +10,7 @@ Also check these links for more information:
 Progress
 ========
 
-The following checklist shows the projects progress:
-    
-* OpenGL - works on Mac, works on Ubuntu, not tested on Windows
-* OpenCV - works on Mac, works on Ubuntu, not tested on Windows
-* PCL - works on Mac, works on Ubuntu, not tested on Windows
-* SerialPort - works on Mac, works on Ubuntu, not tested on Windows
-* accessing arbitrary webcams - not implemented on Mac, works on Ubuntu (but slow), not tested on Windows
-* Serial talk to FabScan - should work, needs to be tested
-* Scanning - needs to be implemented
+FabScan100 is now functional! Runs on Mac and Ubuntu, still needs to be ported to Windows.
 
 Current Setup on Mac: Qt 4.8.1 with Qt-Creator 2.4.1
 Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1
