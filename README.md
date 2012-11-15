@@ -10,20 +10,11 @@ Also check these links for more information:
 Progress
 ========
 
-The following checklist shows the projects progress:
-    
-* OpenGL - works on Mac, works on Ubuntu, not tested on Windows
-* OpenCV - works on Mac, works on Ubuntu, not tested on Windows
-* PCL - works on Mac, works on Ubuntu, not tested on Windows
-* SerialPort - works on Mac, works on Ubuntu, not tested on Windows
-* accessing arbitrary webcams - not implemented on Mac, works on Ubuntu (but slow), not tested on Windows
-* Serial talk to FabScan - should work, needs to be tested
-* Scanning - needs to be implemented
+FabScan100 is now functional! Runs on Mac and Ubuntu, still needs to be ported to Windows.
 
 Current Setup on Mac: Qt 4.8.1 with Qt-Creator 2.4.1
 Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1
 Current Setup on Windows: not tested, who wants to do this ?
-
 Qt 4.8 is needed for QGLFunctions.
 
 Installation
@@ -68,6 +59,10 @@ Ubuntu 12.04 LTS:
   * sudo apt-get install uvccapture
   * to test run the following command: uvccapture -d/dev/video0 -oshot.jpg
 
+5. Give permissions for serial port
+  * sudo adduser USER_NAME dialout
+  * log out and back in
+
 Windows:
 ========
  Send me an email in case you want to help me here.
@@ -89,3 +84,21 @@ To get read-only access to the code, type into the console:
 git clone git://github.com/francisengelmann/FabScan.git
 
 If you also want to modify the code please send me an email with your ssh public key so i can give you access.
+
+Usage Instructions
+==================
+How to opperate the FabScan:
+* 1. Select the serial port from the menu "SerialPort"
+* 2. Select the webcam from the menu "WebCam" (only works on linux now, on mac the cam is selected automagically, sometimes the built in iSight is selected. then e.g. you can start a VM and make the cam used by it, then FabScan selects the Logitech)
+* 3. Open the Control Panel from the menu.
+* 4. Remove all objects from the scanner. Then click "Detect Laser". A window will open. If a red line lies on top of the laser, the laser line has correctly been detected.
+* 5. Click on "Fetch Frame" and make sure that the blue horizontal line touches the top of the turning table.
+* 6. Click "enable", then clicken on "<" and/or ">" to check if the turntable/stepper is working correctly.
+* 7. Click the "Close" button.
+* 8. Click Scan.
+* 9. Wait until the scan is finished.
+* 10. Click "Compute Surface Mesh..." and wait a little. 
+* 11. Use "Toggle Point Cloud / Surface Mesh" to switch between the PointCloud and the SurfaceMesh.
+* 12. Save your scan: Menu/File/SavePointCloud...
+* 13. Open an older scan: Menu/File/OpenPointCloud...
+
