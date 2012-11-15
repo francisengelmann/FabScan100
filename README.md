@@ -68,6 +68,10 @@ Ubuntu 12.04 LTS:
   * sudo apt-get install uvccapture
   * to test run the following command: uvccapture -d/dev/video0 -oshot.jpg
 
+5. Give permissions for serial port
+  * sudo adduser USER_NAME dialout
+  * log out and back in
+
 Windows:
 ========
  Send me an email in case you want to help me here.
