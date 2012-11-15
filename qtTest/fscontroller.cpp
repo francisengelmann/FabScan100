@@ -59,34 +59,55 @@ void FSController::hideFrame()
 
 void FSController::scan()
 {
-    laser->turnOff();
-    cv::Mat laserOff = webcam->getFrame();
-    laser->turnOn();
-    cv::Mat laserOn = webcam->getFrame();
+    //if(!detectLaserLine()){return;}
+
+    //laser->turnOff();
+    //cv::Mat laserOff = webcam->getFrame();
+    //laser->turnOn();
+    //cv::Mat laserOn = webcam->getFrame();
     //cv::Mat laserOn = cv::imread("../../../laser_on.jpg");
     //cv::Mat laserOff = cv::imread("../../../laser_off.jpg");
-    cv::resize(laserOn,laserOn,cv::Size(1280,960));
-    cv::resize(laserOff,laserOff,cv::Size(1280,960));
+    //cv::resize(laserOn,laserOn,cv::Size(1280,960));
+    //cv::resize(laserOff,laserOff,cv::Size(1280,960));
     //cv::Mat subLaser = vision->subLaser(laserOff,laserOn,100);
     //cv::Mat result = vision->drawHelperLinesToFrame(laserOn);
     //result = vision->drawLaserLineToFrame(laserOn);
-    cv::imshow("Laser Frame",laserOn);
-    cv::waitKey(0);
-    cv::imshow("Laser Frame",laserOff);
-    cv::waitKey(0);
-    cvDestroyWindow("Laser Frame");
+    //cv::imshow("Laser Frame",laserOn);
+    //cv::waitKey(0);
+    //cv::imshow("Laser Frame",laserOff);
+    //cv::waitKey(0);
+    //cvDestroyWindow("Laser Frame");
 
-    vision->putPointsFromFrameToCloud(laserOff,laserOn,5,0,100);
-    FSController::getInstance()->geometries->setPointCloudTo(
-                FSController::getInstance()->model->pointCloud
-                );
+    //vision->putPointsFromFrameToCloud(laserOff,laserOn,5,0,40);
+    //FSController::getInstance()->geometries->setPointCloudTo(
+      //          FSController::getInstance()->model->pointCloud
+        //        );
 
     /*cv::resize(result,result,cv::Size(800,600));
     cv::imshow("Laser Frame",result);
     cv::waitKey(0);*/
+//-------------------------------------------------------------------------------------------------
+
+    FSFloat stepDegrees = 16*turntable->degreesPerStep;// dpiHorizontal/200.0f/16.0f*360.0f;
+    laser->turnOn();
+
+    turntable->setDirection(FS_DIRECTION_CCW);
+    turntable->enable();
+
+    for(FSFloat i=0; i<360; i+=stepDegrees){
+        laser->turnOff();
+        cv::Mat laserOff = webcam->getFrame();
+        laser->turnOn();
+        cv::Mat laserOn = webcam->getFrame();
+        vision->putPointsFromFrameToCloud(laserOff,laserOn,5,0,40);
+        geometries->setPointCloudTo(model->pointCloud);
+        mainwindow->redraw();
+        turntable->turnNumberOfDegrees(stepDegrees);
+        usleep(stepDegrees*100);
+    }
 }
 
-void FSController::detectLaserLine()
+bool FSController::detectLaserLine()
 {
     laser->turnOff();
     cv::Mat laserOffFrame = webcam->getFrame();
@@ -106,8 +127,10 @@ void FSController::detectLaserLine()
 
     qDebug("images loaded, now detecting...");
     FSPoint p = vision->detectLaserLine( laserOffFrame, laserOnFrame, 40 );
+    if(p.x == 0.0){return false;}
     laser->setLaserPointPosition(p);
     //laser->setRotation(); ??
+    return true;
 }
 
 void FSController::computeSurfaceMesh()

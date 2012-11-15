@@ -23,20 +23,21 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void showDialog(QString dialogText);
+    void redraw();
 
 private slots:
     void on_convertButton_clicked();
     void on_toggleViewButton_clicked();
+    void on_scanButton_clicked();
 
     void timerEvent(QTimerEvent *e);
 
     void onSelectSerialPort();
     void onSelectWebCam();
     void openPointCloud();
+    void savePointCloud();
     void newPointCloud();
     void showControlPanel();
-
-    void on_scanButton_clicked();
 
 private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...

@@ -73,7 +73,17 @@ cv::Mat FSVision::subLaser(cv::Mat &laserOff, cv::Mat &laserOn, FSFloat threshol
     cv::cvtColor(laserOn, bwLaserOn, CV_RGB2GRAY); //convert to grayscale
     cv::subtract(bwLaserOn,bwLaserOff,diffImage); //subtract both grayscales
     cv::GaussianBlur(diffImage,diffImage,cv::Size(5,5),3); //gaussian filter
+    //cv::adaptiveThreshold(diffImage,treshImage,255,CV_ADAPTIVE_THRESH_MEAN_C,CV_THRESH_BINARY,501,0);
+
+    //cv::AdaptiveThreshold(subImage,subImage,255,CV_ADAPTIVE_THRESH_MEAN_C,CV_THRESH_BINARY,501,0);
     cv::threshold(diffImage,treshImage,threshold,255,cv::THRESH_BINARY); //apply threshold
+
+    /*cv::namedWindow("extracted laserLine");
+    cv::imshow("extracted laserLine",diffImage);
+    cv::waitKey(0);
+    cv::imshow("extracted laserLine",treshImage);
+    cv::waitKey(0);
+    cvDestroyWindow("extracted laserLine");*/
 
     //cv::morphologyEx(treshImage,treshImage,cv::MORPH_GRADIENT,cv::Mat());
     cv::Mat element5(3,3,CV_8U,cv::Scalar(1));
@@ -99,7 +109,6 @@ cv::Mat FSVision::subLaser(cv::Mat &laserOff, cv::Mat &laserOn, FSFloat threshol
     cvThreshold(subImage, subImage, 200, 255, CV_THRESH_BINARY);
     */
 
-
     cv::cvtColor(treshImage, result, CV_GRAY2RGB); //convert back ro rgb
     return result;
 }
@@ -111,13 +120,13 @@ cv::Mat FSVision::drawHelperLinesToFrame(cv::Mat &frame)
              cv::Point(0,frame.rows*ORIGIN_Y),
              cv::Point(frame.cols,frame.rows*ORIGIN_Y),
              CV_RGB( 0,255,0 ),
-             1);
+             2);
 
     //two lines for center of frame
     cv::line(frame,
              cv::Point(frame.cols*0.5f,0),
              cv::Point(frame.cols*0.5f,frame.rows),
-             CV_RGB( 0,255,0 ),
+             CV_RGB( 255,255,0 ),
              1);
     cv::line(frame,
              cv::Point(0,frame.rows*0.5f),
@@ -162,7 +171,7 @@ void FSVision::putPointsFromFrameToCloud(
         FSFloat lowerLimit, //remove points below this limit
         FSFloat threshold)  //threshold for binary images
 {
-    qDebug() << "putPointsFromFrameToCloud";
+    //qDebug() << "putPointsFromFrameToCloud";
     //the following lines are just to make to code more readable
     FSModel* model = FSController::getInstance()->model;
     FSLaser* laser = FSController::getInstance()->laser;
@@ -171,6 +180,11 @@ void FSVision::putPointsFromFrameToCloud(
 
     //extract laser line from the two images
     cv::Mat laserLine = subLaser(laserOff,laserOn,threshold);
+
+    //cv::namedWindow("extracted laserLine");
+    //cv::imshow("extracted laserLine",laserLine);
+    //cv::waitKey(0);
+    //cvDestroyWindow("extracted laserLine");
 
     //calculate position of laser in cv frame
     FSPoint fsLaserLinePosition = laser->getLaserPointPosition();
@@ -221,9 +235,9 @@ void FSVision::putPointsFromFrameToCloud(
                 //Redo the translation to the box centered cartesion system.
                 fsNewPoint.y += (webcam->getPosition()).y;
 
-                FSUChar r = laserOff.at<cv::Vec3b>(y,x)[0];
+                FSUChar r = laserOff.at<cv::Vec3b>(y,x)[2];
                 FSUChar g = laserOff.at<cv::Vec3b>(y,x)[1];
-                FSUChar b = laserOff.at<cv::Vec3b>(y,x)[2];
+                FSUChar b = laserOff.at<cv::Vec3b>(y,x)[0];
                 fsNewPoint.color = FSMakeColor(r, g, b);
 
                 //turning new point according to current angle of turntable
@@ -243,7 +257,7 @@ void FSVision::putPointsFromFrameToCloud(
                 fsNewPoint.x = (float)cos(alphaNew)*hypotenuse;
 
                 if(fsNewPoint.y>lowerLimit && hypotenuse < 7){ //eliminate points from the grounds, that are not part of the model
-                    qDebug("adding point");
+                    //qDebug("adding point");
                     model->addPointToPointCloud(fsNewPoint);
                 }
                 break;
@@ -276,7 +290,7 @@ FSPoint FSVision::detectLaserLine( cv::Mat &laserOff, cv::Mat &laserOn, unsigned
 
     //should at least detect the laser line
     if(lines.size()==0){
-        qDebug("Did not detect any laser line, maybe change the lighning conditions?");
+        qDebug("Did not detect any laser line, did you select a SerialPort form the menu?");
         FSPoint p = FSMakePoint(0.0,0.0,0.0);
         return(p);
     }

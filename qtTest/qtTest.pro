@@ -73,9 +73,6 @@ macx {
     -lopencv_features2d \
     -lopencv_calib3d
 
-#LIBS += /Users/francis/QtSDK/Desktop/Qt/4.8.1/gcc/lib \
-#    -lSerialPort
-
     INCLUDEPATH += /usr/local/include/pcl-1.7
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.1/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include

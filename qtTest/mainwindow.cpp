@@ -39,6 +39,11 @@ void MainWindow::setupMenu()
     connect(openPointCloudAction,SIGNAL(triggered()),this, SLOT(openPointCloud()));
     ui->menuFile->addAction(openPointCloudAction);
 
+    QAction* savePointCloudAction = new QAction("Save PointCloud...", this);
+    savePointCloudAction->setShortcuts(QKeySequence::Save);
+    connect(savePointCloudAction,SIGNAL(triggered()),this, SLOT(savePointCloud()));
+    ui->menuFile->addAction(savePointCloudAction);
+
     QAction* showControlPanelAction = new QAction("Control Panel...", this);
     showControlPanelAction->setShortcuts(QKeySequence::Preferences);
     connect(showControlPanelAction,SIGNAL(triggered()),this, SLOT(showControlPanel()));
@@ -118,6 +123,14 @@ void MainWindow::openPointCloud()
     ui->widget->updateGL();
 }
 
+void MainWindow::savePointCloud()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save File","","Files (*.pcd)");
+    FSController::getInstance()->model->savePointCloud(fileName.toStdString());
+    ui->widget->drawState = 0;
+    ui->widget->updateGL();
+}
+
 void MainWindow::newPointCloud()
 {
     FSController::getInstance()->model->pointCloud->clear();
@@ -180,4 +193,10 @@ void MainWindow::on_scanButton_clicked()
     qDebug("Starting scan...");
     FSController::getInstance()->scan();
     qDebug("Scan done!");
+}
+
+void MainWindow::redraw()
+{
+    ui->widget->drawState = 0;
+    ui->widget->updateGL();
 }

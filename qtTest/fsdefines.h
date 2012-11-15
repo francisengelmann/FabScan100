@@ -31,7 +31,8 @@
 //defining the origin in the cvFrame
 //the position of intersection of back plane with ground plane in cvFrame in procent
 //check the yellow laser line to calibrate, the yellow laser line should touch the bottom plane
-#define ORIGIN_Y 0.825
+//#define ORIGIN_Y 0.825
+#define ORIGIN_Y 0.75
 
 #define DELAY_UNTIL_CAM_SHOT 0
 
@@ -54,8 +55,9 @@
 #define LASER_POS_Z 28.5f //precise by construction
 
 //position of the c270
-#define CAM_POS_X 0.0f
-#define CAM_POS_Y 4.07f //precise by construction
+#define CAM_POS_X 0.0f //precise by construction
+//#define CAM_POS_Y 4.07f
+#define CAM_POS_Y 3.57f
 #define CAM_POS_Z 30.7f
 
 //position of the turntable

@@ -20,7 +20,6 @@ public:
             FSFloat threshold);
 
     FSPoint detectLaserLine(cv::Mat &laserOff, cv::Mat &laserOn, unsigned int threshold);
-
 };
 
 #endif // FSVISION_H

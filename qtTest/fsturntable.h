@@ -7,11 +7,12 @@
 class FSTurntable
 {
 private:
-    double degreesPerStep;
     double direction;
     FSPoint rotation;
 
 public:
+    double degreesPerStep;
+
     FSTurntable();
     void turnNumberOfSteps(unsigned int steps);
     void turnNumberOfDegrees(double degrees);
