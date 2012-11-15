@@ -25,7 +25,7 @@ MainWidget::MainWidget(QWidget *parent) :
     angleYtmp = angleY;
 
     eye =     QVector3D(0.0, 5.0, 10.0);
-    center =  QVector3D(0.0, 2.0, 0.0);
+    center =  QVector3D(0.0, 5.0, 0.0);
     up =      QVector3D(0.0, 1.0, 0.0);
 
 }

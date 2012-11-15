@@ -119,7 +119,7 @@ cv::Mat FSVision::drawHelperLinesToFrame(cv::Mat &frame)
     cv::line(frame,
              cv::Point(0,frame.rows*ORIGIN_Y),
              cv::Point(frame.cols,frame.rows*ORIGIN_Y),
-             CV_RGB( 0,255,0 ),
+             CV_RGB( 0,0,255 ),
              2);
 
     //two lines for center of frame
