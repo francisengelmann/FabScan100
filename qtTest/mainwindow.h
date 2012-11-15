@@ -5,6 +5,7 @@
 #include "fsdialog.h"
 #include "fscontrolpanel.h"
 
+
 QT_BEGIN_NAMESPACE
 class QBasicTimer;
 class QGLShaderProgram;
@@ -34,6 +35,8 @@ private slots:
     void openPointCloud();
     void newPointCloud();
     void showControlPanel();
+
+    void on_scanButton_clicked();
 
 private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...

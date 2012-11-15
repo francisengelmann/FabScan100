@@ -16,6 +16,7 @@ class FSModel
         void loadPointCloud(const std::string &file_name);
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloud;
         pcl::PolygonMesh triangles;
+        void addPointToPointCloud(FSPoint point);
         // make sure to add these macro
         // see http://eigen.tuxfamily.org/dox-devel/TopicStructHavingEigenMembers.html
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW

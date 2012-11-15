@@ -9,6 +9,7 @@ class FSTurntable
 private:
     double degreesPerStep;
     double direction;
+    FSPoint rotation;
 
 public:
     FSTurntable();
@@ -16,6 +17,8 @@ public:
     void turnNumberOfDegrees(double degrees);
     void setDirection(FSDirection direction);
     void toggleDirection();
+    void setRotation(FSPoint r);
+    FSPoint getRotation(void);
     void enable(void);
     void disable(void);
 };

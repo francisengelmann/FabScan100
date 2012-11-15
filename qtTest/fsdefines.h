@@ -25,10 +25,15 @@
 #define UPPER_ANALYZING_FRAME_LIMIT 250
 #define LOWER_ANALYZING_FRAME_LIMIT 30
 
+//as the actual position in the frame differs a little from calculated laserline we stop a little befor as we might catch the real non reflected laser line which creates noise
+#define ANALYZING_LASER_OFFSET 100
+
 //defining the origin in the cvFrame
 //the position of intersection of back plane with ground plane in cvFrame in procent
 //check the yellow laser line to calibrate, the yellow laser line should touch the bottom plane
 #define ORIGIN_Y 0.825
+
+#define DELAY_UNTIL_CAM_SHOT 0
 
 /********************************/
 /*       CAMERA DEFINES         */

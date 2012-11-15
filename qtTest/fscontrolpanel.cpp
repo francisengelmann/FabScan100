@@ -68,6 +68,13 @@ void FSControlPanel::on_stepRightButton_clicked()
 void FSControlPanel::on_autoResetButton_clicked()
 {
     FSController::getInstance()->detectLaserLine();
+    cv::Mat shot = FSController::getInstance()->webcam->getFrame();
+    cv::resize( shot,shot,cv::Size(1280,960) );
+    shot = FSController::getInstance()->vision->drawLaserLineToFrame(shot);
+    cv::resize(shot,shot,cv::Size(800,600));
+    cv::imshow("Laser Frame",shot);
+    cv::waitKey(0);
+    cvDestroyWindow("Laser Frame");
 }
 
 void FSControlPanel::on_pushButton_clicked()

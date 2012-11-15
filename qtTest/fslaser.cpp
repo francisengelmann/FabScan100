@@ -4,7 +4,7 @@
 
 FSLaser::FSLaser()
 {
-    laserPointPosition = FSMakePoint(10.0f, 0.0f, 0.0f);
+    laserPointPosition = FSMakePoint(-4.0f, 0.0f, 0.0f);
 }
 
 void FSLaser::turnOn()
@@ -25,4 +25,9 @@ void FSLaser::setLaserPointPosition(FSPoint p)
 FSPoint FSLaser::getLaserPointPosition(void)
 {
     return laserPointPosition;
+}
+
+FSPoint FSLaser::getPosition()
+{
+    return FSMakePoint(LASER_POS_X,LASER_POS_Y,LASER_POS_Z);
 }

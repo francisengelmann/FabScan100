@@ -60,14 +60,7 @@ void MainWindow::showDialog(QString dialogText)
 
 void MainWindow::on_convertButton_clicked()
 {
-    if(FSController::getInstance()->model->pointCloud->empty()){
-        return;
-    }
-    qDebug("converting...");
-    FSController::getInstance()->model->convertPointCloudToSurfaceMesh();
-    FSController::getInstance()->geometries->setSurfaceMeshTo(
-                FSController::getInstance()->model->triangles,
-                FSController::getInstance()->model->pointCloud);
+    FSController::getInstance()->computeSurfaceMesh();
     ui->widget->drawState = 1; //display surface mesh
     ui->widget->updateGL();
 }
@@ -180,4 +173,11 @@ void MainWindow::enumerateWebCams()
             ui->menuCamera->addAction(ac);
         }
     }
+}
+
+void MainWindow::on_scanButton_clicked()
+{
+    qDebug("Starting scan...");
+    FSController::getInstance()->scan();
+    qDebug("Scan done!");
 }

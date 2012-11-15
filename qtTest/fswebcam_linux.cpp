@@ -34,7 +34,7 @@ cv::Mat FSWebCam::getFrame()
     proc.start("uvccapture",QStringList()<<portName<<sizeX<<sizeY<<"-oshot.jpg");
     proc.waitForFinished();
     frame = cv::imread("shot.jpg");
-    return frame;
+    return frame.clone();
 }
 
 QList<FSWebCamInfo> FSWebCam::enumerate()
@@ -61,4 +61,9 @@ QList<FSWebCamInfo> FSWebCam::enumerate()
         }
     }
     return list;
+}
+
+FSPoint FSWebCam::getPosition()
+{
+    return FSMakePoint(CAM_POS_X, CAM_POS_Y, CAM_POS_Z);
 }

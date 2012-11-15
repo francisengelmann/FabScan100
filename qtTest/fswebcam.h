@@ -6,7 +6,8 @@
 #ifndef FSWEBCAM_H
 #define FSWEBCAM_H
 
-struct FSWebCamInfo{
+struct FSWebCamInfo
+{
     QString portName;       //path to the webcam e.g. /dev/video0
     QString friendlyName;   //name of webcam that is displayed
     int sizeX;
@@ -22,6 +23,8 @@ public:
     static QList<FSWebCamInfo> enumerate();
 
     FSWebCamInfo info;
+
+    FSPoint getPosition(void);
 };
 
 #endif // FSWEBCAM_H

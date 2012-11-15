@@ -16,7 +16,7 @@ void main()
 {
     // Calculate vertex position in screen space
     gl_Position = mvp_matrix * a_position;
-    gl_PointSize = 1.0;
+    gl_PointSize = 4.0;
 
     // Pass texture coordinate to fragment shader
     // Value will be automatically interpolated to fragments inside polygon faces

@@ -164,3 +164,15 @@ void FSModel::loadPointCloud(const std::string &file_name)
       std::cout << "Done from Model" << std::endl;
 
 }
+
+void FSModel::addPointToPointCloud(FSPoint point)
+{
+    qDebug()<<"added Point to cloud";
+    pcl::PointXYZRGB p;
+    p.x = point.x;
+    p.y = point.y;
+    p.z = point.z;
+    int rgb = ((int)point.color.red) << 16 | ((int)point.color.green) << 8 | ((int)point.color.blue);
+    p.rgb = rgb;
+    pointCloud->push_back(p);
+}

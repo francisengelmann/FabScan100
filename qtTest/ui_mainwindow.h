@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Wed Nov 14 14:53:08 2012
+** Created: Thu Nov 15 16:48:44 2012
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,13 +14,14 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
+#include <QtGui/QSpacerItem>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 #include "mainwidget.h"
@@ -33,12 +34,14 @@ public:
     QAction *actionPort1;
     QAction *actionOpenPointCloud;
     QWidget *centralWidget;
-    QVBoxLayout *verticalLayout_2;
+    QVBoxLayout *verticalLayout;
     MainWidget *widget;
-    QGridLayout *gridLayout;
     QLabel *statusLabel;
+    QHBoxLayout *horizontalLayout;
     QPushButton *convertButton;
     QPushButton *toggleViewButton;
+    QSpacerItem *horizontalSpacer;
+    QPushButton *scanButton;
     QMenuBar *menuBar;
     QMenu *menuSerialPort;
     QMenu *menuCamera;
@@ -55,10 +58,10 @@ public:
         actionOpenPointCloud->setObjectName(QString::fromUtf8("actionOpenPointCloud"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        verticalLayout_2 = new QVBoxLayout(centralWidget);
-        verticalLayout_2->setSpacing(6);
-        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        verticalLayout = new QVBoxLayout(centralWidget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         widget = new MainWidget(centralWidget);
         widget->setObjectName(QString::fromUtf8("widget"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -67,28 +70,37 @@ public:
         sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
         widget->setSizePolicy(sizePolicy);
 
-        verticalLayout_2->addWidget(widget);
+        verticalLayout->addWidget(widget);
 
-        gridLayout = new QGridLayout();
-        gridLayout->setSpacing(6);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         statusLabel = new QLabel(centralWidget);
         statusLabel->setObjectName(QString::fromUtf8("statusLabel"));
 
-        gridLayout->addWidget(statusLabel, 0, 0, 1, 1);
+        verticalLayout->addWidget(statusLabel);
 
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         convertButton = new QPushButton(centralWidget);
         convertButton->setObjectName(QString::fromUtf8("convertButton"));
 
-        gridLayout->addWidget(convertButton, 4, 0, 1, 1);
+        horizontalLayout->addWidget(convertButton);
 
         toggleViewButton = new QPushButton(centralWidget);
         toggleViewButton->setObjectName(QString::fromUtf8("toggleViewButton"));
 
-        gridLayout->addWidget(toggleViewButton, 6, 0, 1, 1);
+        horizontalLayout->addWidget(toggleViewButton);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer);
+
+        scanButton = new QPushButton(centralWidget);
+        scanButton->setObjectName(QString::fromUtf8("scanButton"));
+
+        horizontalLayout->addWidget(scanButton);
 
 
-        verticalLayout_2->addLayout(gridLayout);
+        verticalLayout->addLayout(horizontalLayout);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -120,6 +132,7 @@ public:
         statusLabel->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
         convertButton->setText(QApplication::translate("MainWindow", "Compute Surface Mesh...", 0, QApplication::UnicodeUTF8));
         toggleViewButton->setText(QApplication::translate("MainWindow", "Toggle Point Cloud / Surface Mesh", 0, QApplication::UnicodeUTF8));
+        scanButton->setText(QApplication::translate("MainWindow", "Scan", 0, QApplication::UnicodeUTF8));
         menuSerialPort->setTitle(QApplication::translate("MainWindow", "SerialPort", 0, QApplication::UnicodeUTF8));
         menuCamera->setTitle(QApplication::translate("MainWindow", "Camera", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));

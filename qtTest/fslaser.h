@@ -16,6 +16,8 @@ public:
     void setLaserPointPosition(FSPoint p);
     FSPoint getLaserPointPosition(void);
 
+    FSPoint getPosition(void);
+
 };
 
 #endif // FSLASER_H

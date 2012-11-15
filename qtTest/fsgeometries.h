@@ -67,6 +67,24 @@ static FSSize FSMakeSize(FSFloat width, FSFloat height, FSFloat depth)
 }
 
 /********************************/
+/*          FS_LINE             */
+/********************************/
+
+typedef struct _FSLine
+{
+  FSFloat a;
+  FSFloat b;
+} FSLine;
+
+static FSLine FSMakeLine(FSFloat a, FSFloat b)
+{
+    FSLine l;
+    l.a = a;
+    l.b = b;
+    return l;
+}
+
+/********************************/
 /*          FS_MISC             */
 /********************************/
 
@@ -75,5 +93,23 @@ typedef enum
   FS_DIRECTION_CCW,
   FS_DIRECTION_CW
 } FSDirection;
+
+//points must have same height
+static FSLine computeLineFromPoints(FSPoint p1, FSPoint p2)
+{
+  FSLine l;
+  l.a = (p2.z-p1.z)/(p2.x-p1.x);
+  l.b = p1.z-l.a*p1.x;
+  return l;
+}
+
+//lines must be on same plane
+static FSPoint computeIntersectionOfLines(FSLine l1, FSLine l2)
+{
+  FSPoint i; //intersection of the two coplanar lines
+  i.x = (l2.b-l1.b)/(l1.a-l2.a);
+  i.z = l2.a*i.x+l2.b;
+  return i;
+}
 
 #endif // FSGEOMETRIES_H

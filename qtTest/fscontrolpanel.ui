@@ -89,7 +89,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Auto Reset</string>
+     <string>Detect Laser</string>
     </property>
    </widget>
   </widget>
