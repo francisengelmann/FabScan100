@@ -38,6 +38,7 @@ private slots:
     void savePointCloud();
     void newPointCloud();
     void showControlPanel();
+    void scanThread();
 
 private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...

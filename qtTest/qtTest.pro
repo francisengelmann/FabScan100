@@ -129,7 +129,7 @@ linux-g++ {
 
     INCLUDEPATH += /usr/include/eigen3/
 
-    LIBS += -LC:/usr/local/lib/ \
+    LIBS += -L/usr/local/lib/ \
    -lopencv_core \
    -lopencv_highgui \
    -lopencv_imgproc \
@@ -137,7 +137,7 @@ linux-g++ {
    -lopencv_calib3d
 
     INCLUDEPATH += /usr/include/pcl-1.6
-    LIBS += -LC:/usr/lib \
+    LIBS += -L/usr/lib \
     -lpcl_common \
     -lpcl_io \
     -lpcl_filters \

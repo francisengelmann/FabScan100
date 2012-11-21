@@ -5,6 +5,10 @@
 
 #include <QBasicTimer>
 #include <QDialogButtonBox>
+#include <QFuture>
+#include <QtCore>
+
+#include <boost/bind.hpp>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -189,6 +193,13 @@ void MainWindow::enumerateWebCams()
 }
 
 void MainWindow::on_scanButton_clicked()
+{
+
+    //QFuture<void> future = QtConcurrent::run(boost::bind(&MainWindow::scanThread, this) );
+    FSController::getInstance()->scan();
+}
+
+void MainWindow::scanThread()
 {
     qDebug("Starting scan...");
     FSController::getInstance()->scan();
