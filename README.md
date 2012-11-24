@@ -66,7 +66,7 @@ Ubuntu 12.04 LTS:
 Windows:
 ========
 1. Install Cygwin http://www.cygwin.com/install.html
-1. Install 
+1. Install Eigen
 2. Install OpenCV
 3. Install PCL
 4.
