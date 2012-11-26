@@ -65,8 +65,13 @@ Ubuntu 12.04 LTS:
 
 Windows:
 ========
- Send me an email in case you want to help me here.
-
+1. Install Cygwin http://www.cygwin.com/install.html
+1. Install Eigen
+2. Install OpenCV
+3. Install PCL
+4.
+5.
+ 
 Other platforms
 ===============
 
@@ -101,4 +106,8 @@ How to opperate the FabScan:
 * 11. Use "Toggle Point Cloud / Surface Mesh" to switch between the PointCloud and the SurfaceMesh.
 * 12. Save your scan: Menu/File/SavePointCloud...
 * 13. Open an older scan: Menu/File/OpenPointCloud...
+
+Hardware
+========
+http://hci.rwth-aachen.de/fabscancamera
 
