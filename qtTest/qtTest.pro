@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl
+QT += core gui opengl
 
 TARGET = FabScan100
 TEMPLATE = app
@@ -66,7 +66,7 @@ macx {
     message("Buildng for Mac.")
     INCLUDEPATH += /usr/local/Cellar/opencv/2.4.2/include
 
-    LIBS += -LC:/usr/local/Cellar/opencv/2.4.2 \
+    LIBS += -L/usr/local/Cellar/opencv/2.4.2 \
     -lopencv_core \
     -lopencv_highgui \
     -lopencv_imgproc \
@@ -78,7 +78,7 @@ macx {
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
     INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
 
-    LIBS += -LC:/usr/local/Cellar/boost/1.51.0 \
+    LIBS += -L/usr/local/Cellar/boost/1.51.0 \
     -lboost_chrono-mt \
     -lboost_context-mt \
     -lboost_date_time-mt \
@@ -108,7 +108,7 @@ macx {
     -lboost_wave-mt \
     -lboost_wserialization-mt \
 
-    LIBS += -LC:/usr/local/lib \
+    LIBS += -L/usr/local/lib \
     -lpcl_common \
     -lpcl_io \
     -lpcl_filters \

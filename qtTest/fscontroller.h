@@ -43,6 +43,7 @@ class FSController
         void hideFrame();
 
         void scan();
+        void scanThread();
         bool detectLaserLine();
         void computeSurfaceMesh();
 };

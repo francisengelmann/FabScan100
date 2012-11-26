@@ -70,7 +70,10 @@ cv::Mat FSVision::subLaser(cv::Mat &laserOff, cv::Mat &laserOn, FSFloat threshol
     cv::Mat result( cols,rows,CV_8UC3,cv::Scalar(100) );
 
     cv::cvtColor(laserOff, bwLaserOff, CV_RGB2GRAY); //convert to grayscale
+    //qDebug("works here 1");
+
     cv::cvtColor(laserOn, bwLaserOn, CV_RGB2GRAY); //convert to grayscale
+    //qDebug("works here 2");
     cv::subtract(bwLaserOn,bwLaserOff,diffImage); //subtract both grayscales
     cv::GaussianBlur(diffImage,diffImage,cv::Size(5,5),3); //gaussian filter
     //cv::adaptiveThreshold(diffImage,treshImage,255,CV_ADAPTIVE_THRESH_MEAN_C,CV_THRESH_BINARY,501,0);
@@ -194,7 +197,9 @@ void FSVision::putPointsFromFrameToCloud(
     unsigned int cols = laserLine.cols;
     unsigned int rows = laserLine.rows;
     cv::Mat bwImage( cols,rows,CV_8U,cv::Scalar(100) );
+    //qDebug("still works here");
     cv::cvtColor(laserLine, bwImage, CV_RGB2GRAY); //convert to grayscale
+    //qDebug("and here");
     //now iterating from top to bottom over bwLaserLine frame
     //no bear outside of these limits :) cutting of top and bottom of frame
     for(int y = UPPER_ANALYZING_FRAME_LIMIT;
