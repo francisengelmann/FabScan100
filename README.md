@@ -65,12 +65,7 @@ Ubuntu 12.04 LTS:
 
 Windows:
 ========
-1. Install Cygwin http://www.cygwin.com/install.html
-1. Install Eigen
-2. Install OpenCV
-3. Install PCL
-4.
-5.
+People are working on this :)
  
 Other platforms
 ===============
@@ -89,25 +84,4 @@ To get read-only access to the code, type into the console:
 git clone git://github.com/francisengelmann/FabScan.git
 
 If you also want to modify the code please send me an email with your ssh public key so i can give you access.
-
-Usage Instructions
-==================
-How to opperate the FabScan:
-* 1. Select the serial port from the menu "SerialPort"
-* 2. Select the webcam from the menu "WebCam" (only works on linux now, on mac the cam is selected automagically, sometimes the built in iSight is selected. then e.g. you can start a VM and make the cam used by it, then FabScan selects the Logitech)
-* 3. Open the Control Panel from the menu.
-* 4. Remove all objects from the scanner. Then click "Detect Laser". A window will open. If a red line lies on top of the laser, the laser line has correctly been detected.
-* 5. Click on "Fetch Frame" and make sure that the blue horizontal line touches the top of the turning table.
-* 6. Click "enable", then clicken on "<" and/or ">" to check if the turntable/stepper is working correctly.
-* 7. Click the "Close" button.
-* 8. Click Scan.
-* 9. Wait until the scan is finished.
-* 10. Click "Compute Surface Mesh..." and wait a little. 
-* 11. Use "Toggle Point Cloud / Surface Mesh" to switch between the PointCloud and the SurfaceMesh.
-* 12. Save your scan: Menu/File/SavePointCloud...
-* 13. Open an older scan: Menu/File/OpenPointCloud...
-
-Hardware
-========
-http://hci.rwth-aachen.de/fabscancamera
 
