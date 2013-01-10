@@ -26,6 +26,8 @@ Make sure you have OpenGL installed. Preinstalled on Ubuntu, Mac. What about Win
 Mac OS X 10.8.1 with XCode 4.5 installed
 ========================================
 1. Install Homebrew: http://mxcl.github.com/homebrew/
+The next steps need to be executed in Terminal.
+Terminal is located in Applications/Utilities/Terminal.app
 2. Install OpenCV using homebrew: brew install opencv
 3. Install Boost: brew install boost
 4. Install FLANN: brew install flann
