@@ -41,7 +41,8 @@ MainWidget::~MainWidget()
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
     // Saving mouse press position
-    mousePressPosition = QVector2D(e->posF());
+    //mousePressPosition = QVector2D(e->posF());
+    mousePressPosition = QVector2D(e->localPos());
 }
 
 void MainWidget::wheelEvent(QWheelEvent *e){
@@ -55,7 +56,8 @@ void MainWidget::wheelEvent(QWheelEvent *e){
 }
 
 void MainWidget::mouseMoveEvent(QMouseEvent *e){
-    QVector2D diff = QVector2D(e->posF()) - mousePressPosition;
+    //QVector2D diff = QVector2D(e->posF()) - mousePressPosition;
+    QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
 
     double newAngleX = angleX-diff.x()/300.0f;
     if(newAngleX>M_PI ){ newAngleX-=2*(float)M_PI;}

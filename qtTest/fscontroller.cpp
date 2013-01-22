@@ -3,7 +3,7 @@
 
 #include <opencv2/imgproc/imgproc.hpp>
 #include <QFuture>
-#include <QtConcurrentRun>
+#include <QtConcurrent/QtConcurrentRun>
 
 FSController* FSController::singleton=0;
 

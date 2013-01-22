@@ -7,7 +7,8 @@
 #include <QDialogButtonBox>
 #include <QFuture>
 #include <QtCore>
-#include <QtConcurrentRun>
+//#include <QtConcurrentRun>
+#include <QtConcurrent/QtConcurrentRun>
 
 #include <boost/bind.hpp>
 
