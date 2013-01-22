@@ -20,7 +20,7 @@ Qt 4.8 is needed for QGLFunctions.
 Installation
 ===========
 
-Install Qt Creator from http://qt-project.org/downloads
+Install "Qt Creator" and "Qt Libraries Qt 4.8" from http://qt-project.org/downloads.
 Make sure you have OpenGL installed. Preinstalled on Ubuntu, Mac. What about Windows?
 
 Mac OS X 10.8.1 with XCode 4.5 installed
@@ -41,6 +41,14 @@ Terminal is located in Applications/Utilities/Terminal.app
   * make
   * sudo make install
 
+At this point we have installed all the dependencies needed for FabScan. We can now proceed with actually compiling FabScan:
+8. Install git which is a tool to access source repositories: brew install git
+9. Then download the code using git: git clone git@github.com:francisengelmann/FabScan100.git
+10. Open qtTest/qtTest.pro in "Qt Creator".
+11. If asked select "Qt 4.8.*" Kit, then click "Configure Project".
+12. Run the project by clicking on the green arrow on the bottom left.
+13. Wait for it to compile, this can take a few minutes.
+ 
 Ubuntu 12.04 LTS:
 =======
 1. Install Qt
@@ -83,7 +91,7 @@ Ubunutu: sudo apt-get install git
 Windows: ?
 
 To get read-only access to the code, type into the console:
-git clone git://github.com/francisengelmann/FabScan.git
+git clone git://github.com/francisengelmann/FabScan100.git
 
 If you also want to modify the code please send me an email with your ssh public key so i can give you access.
 
