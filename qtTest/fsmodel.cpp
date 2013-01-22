@@ -3,6 +3,7 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/gp3.h>
+#include <pcl/surface/poisson.h>
 
 FSModel::FSModel()
 {
@@ -76,10 +77,6 @@ void FSModel::convertPointCloudToSurfaceMesh2()
 {
     // Load input file into a PointCloud<T> with an appropriate type
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-    //sensor_msgs::PointCloud2 cloud_blob;
-    //pcl::io::loadPCDFile ("bearHigh.pcd", cloud_blob);
-    //pcl::fromROSMsg (cloud_blob, *cloud);
-    //* the data should be available in cloud
 
     cloud->points.resize(pointCloud->size());
     for (size_t i = 0; i < pointCloud->points.size(); i++) {
@@ -95,6 +92,7 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     tree->setInputCloud (cloud);
     n.setInputCloud (cloud);
     n.setSearchMethod (tree);
+    //n.setRadiusSearch(15.0);
     n.setKSearch (20);
     n.compute (*normals);
     //* normals should not contain the point normals + surface curvatures
@@ -102,40 +100,24 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     // Concatenate the XYZ and normal fields*
     pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
     pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
-    //* cloud_with_normals = cloud + normals
-
-    // Create search tree*
-    pcl::search::KdTree<pcl::PointNormal>::Ptr tree2 (new pcl::search::KdTree<pcl::PointNormal>);
-    tree2->setInputCloud (cloud_with_normals);
-
-    // Initialize objects
-    pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
 
 
+    pcl::Poisson<pcl::PointNormal> poisson;
+    poisson.setDepth(9);
+    poisson.setDegree(2);
+    poisson.setSamplesPerNode(1);
+    poisson.setScale(1.25);
+    poisson.setIsoDivide(8);
+    poisson.setConfidence(0);
+    poisson.setManifold(0);
+    poisson.setOutputPolygons(0);
+    poisson.setSolverDivide(8);
 
-    // Set the maximum distance between connected points (maximum edge length)
-    gp3.setSearchRadius (15.00);
+    poisson.setInputCloud(cloud_with_normals);
 
-    // Set typical values for the parameters
-    gp3.setMu (2.5);
-    gp3.setMaximumNearestNeighbors (100);
-    gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
-    gp3.setMinimumAngle(M_PI/18); // 10 degrees
-    gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
-    gp3.setNormalConsistency(false);
+    poisson.reconstruct (triangles);
 
-    // Get result
-    gp3.setInputCloud (cloud_with_normals);
-    gp3.setSearchMethod (tree2);
-    gp3.reconstruct (triangles);
-
-    // Additional vertex information
-    std::vector<int> parts = gp3.getPartIDs();
-    std::vector<int> states = gp3.getPointStates();
-
-    pcl::io::savePLYFile("mesh.ply", triangles);
 }
-
 
 void FSModel::loadPointCloud(const std::string &file_name)
 {

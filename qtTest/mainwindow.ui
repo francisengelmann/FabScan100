@@ -42,9 +42,22 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="toggleViewButton">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="scanButton">
         <property name="text">
-         <string>Toggle Point Cloud / Surface Mesh</string>
+         <string>Scan</string>
         </property>
        </widget>
       </item>
@@ -62,9 +75,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="scanButton">
+       <widget class="QPushButton" name="toggleViewButton">
         <property name="text">
-         <string>Scan</string>
+         <string>Toggle Point Cloud / Surface Mesh</string>
         </property>
        </widget>
       </item>

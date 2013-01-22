@@ -203,7 +203,7 @@ void FSVision::putPointsFromFrameToCloud(
     //now iterating from top to bottom over bwLaserLine frame
     //no bear outside of these limits :) cutting of top and bottom of frame
     for(int y = UPPER_ANALYZING_FRAME_LIMIT;
-        y < bwImage.rows-LOWER_ANALYZING_FRAME_LIMIT;
+        y < bwImage.rows-(LOWER_ANALYZING_FRAME_LIMIT);
         y+=dpiVertical )
     {
         //ANALYZING_LASER_OFFSET is the offset where we stop looking for a reflected laser, cos we might catch the non reflected
@@ -261,7 +261,7 @@ void FSVision::putPointsFromFrameToCloud(
                 fsNewPoint.z = (float)sin(alphaNew)*hypotenuse;
                 fsNewPoint.x = (float)cos(alphaNew)*hypotenuse;
 
-                if(fsNewPoint.y>lowerLimit && hypotenuse < 7){ //eliminate points from the grounds, that are not part of the model
+                if(fsNewPoint.y>lowerLimit+0.5 && hypotenuse < 7){ //eliminate points from the grounds, that are not part of the model
                     //qDebug("adding point");
                     model->addPointToPointCloud(fsNewPoint);
                 }

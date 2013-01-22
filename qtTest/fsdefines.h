@@ -22,7 +22,7 @@
 //as there is no object anyway.  The lower limit is defined by the turning table lower bound
 //units are pixels, seen from the top, resp from the bottom
 
-#define UPPER_ANALYZING_FRAME_LIMIT 250
+#define UPPER_ANALYZING_FRAME_LIMIT 0
 #define LOWER_ANALYZING_FRAME_LIMIT 30
 
 //as the actual position in the frame differs a little from calculated laserline we stop a little befor as we might catch the real non reflected laser line which creates noise
@@ -57,7 +57,7 @@
 //position of the c270
 #define CAM_POS_X 0.0f //precise by construction
 //#define CAM_POS_Y 4.07f
-#define CAM_POS_Y 3.57f
+#define CAM_POS_Y 5.57f
 #define CAM_POS_Z 30.7f
 
 //position of the turntable

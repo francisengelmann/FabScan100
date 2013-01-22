@@ -6,6 +6,8 @@
 
 QT += core gui opengl
 
+#CONFIG += static
+
 TARGET = FabScan100
 TEMPLATE = app
 
@@ -65,7 +67,6 @@ RESOURCES += \
 macx {
     message("Buildng for Mac.")
     INCLUDEPATH += /usr/local/Cellar/opencv/2.4.2/include
-
     LIBS += -L/usr/local/Cellar/opencv/2.4.2 \
     -lopencv_core \
     -lopencv_highgui \
@@ -74,6 +75,17 @@ macx {
     -lopencv_calib3d
 
     INCLUDEPATH += /usr/local/include/pcl-1.7
+    LIBS += -L/usr/local/lib \
+    -lpcl_common \
+    -lpcl_io \
+    -lpcl_filters \
+    -lpcl_kdtree \
+    -lpcl_registration \
+    -lpcl_features \
+    -lpcl_segmentation \
+    -lpcl_surface \
+    -lpcl_search
+
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.1/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
     INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
@@ -107,17 +119,6 @@ macx {
     -lboost_unit_test_framework-mt \
     -lboost_wave-mt \
     -lboost_wserialization-mt \
-
-    LIBS += -L/usr/local/lib \
-    -lpcl_common \
-    -lpcl_io \
-    -lpcl_filters \
-    -lpcl_kdtree \
-    -lpcl_registration \
-    -lpcl_features \
-    -lpcl_segmentation \
-    -lpcl_surface \
-    -lpcl_search
 }
 
 linux-g++ {
@@ -127,26 +128,26 @@ linux-g++ {
     #PKGCONFIG += opencv
     #INCLUDEPATH += /usr/local/include/opencv2/
 
-    INCLUDEPATH += /usr/include/eigen3/
+    #INCLUDEPATH += /usr/include/eigen3/
 
-    LIBS += -L/usr/local/lib/ \
-   -lopencv_core \
-   -lopencv_highgui \
-   -lopencv_imgproc \
-   -lopencv_features2d \
-   -lopencv_calib3d
+    #LIBS += -L/usr/local/lib/ \
+   #-lopencv_core \
+   #-lopencv_highgui \
+   #-lopencv_imgproc \
+   #-lopencv_features2d \
+   #-lopencv_calib3d
 
-    INCLUDEPATH += /usr/include/pcl-1.6
-    LIBS += -L/usr/lib \
-    -lpcl_common \
-    -lpcl_io \
-    -lpcl_filters \
-    -lpcl_kdtree \
-    -lpcl_registration \
-    -lpcl_features \
-    -lpcl_segmentation \
-    -lpcl_surface \
-    -lpcl_search
+    #INCLUDEPATH += /usr/include/pcl-1.6
+    #LIBS += -L/usr/lib \
+    #-lpcl_common \
+    #-lpcl_io \
+    #-lpcl_filters \
+    #-lpcl_kdtree \
+    #-lpcl_registration \
+    #-lpcl_features \
+    #-lpcl_segmentation \
+    #-lpcl_surface \
+    #-lpcl_search
 }
 
 win32 {
