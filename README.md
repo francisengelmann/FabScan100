@@ -41,7 +41,8 @@ Terminal is located in Applications/Utilities/Terminal.app
   * make
   * sudo make install
 
-At this point we have installed all the dependencies needed for FabScan. We can now proceed with actually compiling FabScan:
+At this point we have installed all the dependencies needed for FabScan. We can now proceed to actually compiling FabScan:
+
 8. Install git which is a tool to access source repositories: brew install git
 9. Then download the code using git: git clone git@github.com:francisengelmann/FabScan100.git
 10. Open qtTest/qtTest.pro in "Qt Creator".
