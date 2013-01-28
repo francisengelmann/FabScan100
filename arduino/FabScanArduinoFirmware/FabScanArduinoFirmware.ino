@@ -8,7 +8,7 @@
 #define MS_PIN 19 //microstepping
 #define LIGHT_PIN 10 //still needed?
 
-//turntable
+//turntable, socket 3
 #define ENABLE_PIN_0  11
 #define DIR_PIN_0     13
 #define STEP_PIN_0    12
@@ -105,9 +105,9 @@ void setup()
  digitalWrite(SLEEP_PIN_0, HIGH);  //HIGH to turn
  digitalWrite(ENABLE_PIN_0, HIGH);  //LOW to turn
   
- digitalWrite(RESET_PIN_1, HIGH);  //HIGH to turn
- digitalWrite(SLEEP_PIN_1, HIGH);  //HIGH to turn
- digitalWrite(ENABLE_PIN_1, HIGH);  //LOW to turn
+ //digitalWrite(RESET_PIN_1, HIGH);  //HIGH to turn
+ //digitalWrite(SLEEP_PIN_1, HIGH);  //HIGH to turn
+ //digitalWrite(ENABLE_PIN_1, HIGH);  //LOW to turn
  
  digitalWrite(LIGHT_PIN, 1); //turn light on
 
