@@ -12,7 +12,7 @@ Progress
 
 FabScan100 is now functional! Runs on Mac and Ubuntu, still needs to be ported to Windows.
 
-Current Setup on Mac: Qt 4.8.1 with Qt-Creator 2.4.1
+Current Setup on Mac: Qt 5.0 with Qt-Creator 2.4.1
 Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1
 Current Setup on Windows: not tested, who wants to do this ?
 Qt 4.8 is needed for QGLFunctions.
@@ -20,7 +20,7 @@ Qt 4.8 is needed for QGLFunctions.
 Installation
 ===========
 
-Install "Qt Creator" and "Qt Libraries Qt 4.8" from http://qt-project.org/downloads.
+Install "Qt Creator" and "Qt Libraries Qt 5.0" from http://qt-project.org/downloads.
 Make sure you have OpenGL installed. Preinstalled on Ubuntu, Mac. What about Windows?
 
 Mac OS X 10.8.1 with XCode 4.5 installed
