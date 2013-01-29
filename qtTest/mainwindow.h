@@ -24,6 +24,8 @@ public:
     ~MainWindow();
     void showDialog(QString dialogText);
     void redraw();
+    FSControlPanel* controlPanel;
+
 
 private slots:
     void on_convertButton_clicked();
@@ -44,7 +46,6 @@ private:
     Ui::MainWindow *ui;
 
     FSDialog* dialog;
-    FSControlPanel* controlPanel;
 
     void setupMenu();
     void enumerateSerialPorts();

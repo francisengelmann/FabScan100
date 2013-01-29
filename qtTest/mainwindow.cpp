@@ -9,6 +9,7 @@
 #include <QtCore>
 //#include <QtConcurrentRun>
 #include <QtConcurrent/QtConcurrentRun>
+#include <QCamera>
 
 #include <boost/bind.hpp>
 
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dialog = new FSDialog(this);
     controlPanel = new FSControlPanel(this);
     FSController::getInstance()->mainwindow=this;
+    FSController::getInstance()->controlPanel=controlPanel;
 }
 
 MainWindow::~MainWindow()
@@ -117,7 +119,8 @@ void MainWindow::onSelectWebCam()
 {
     QAction* action=qobject_cast<QAction*>(sender());
     if(!action) return;
-    FSController::getInstance()->webcam->info.portName=action->iconText();
+    FSController::getInstance()->webcam->info.portName=action->iconText(); //eigentlich doppelt gemoppelt, das hier kann weg muss jedoch gekukt werden
+    FSController::getInstance()->webcam->setCamera(action->data().toByteArray());
     this->enumerateWebCams();
 }
 
@@ -171,26 +174,28 @@ void MainWindow::enumerateSerialPorts()
 
 void MainWindow::enumerateWebCams()
 {
-    QList<FSWebCamInfo> ports = FSWebCam::enumerate();
-    if(ports.size()==0){
-       QAction* a = new QAction("No camera found", this);
+    if(QCamera::availableDevices().size()==0){
+       QAction* a = new QAction("No camera found.", this);
        a->setEnabled(false);
        ui->menuCamera->clear();
        ui->menuCamera->addAction(a);
        return;
     }
 
+    QByteArray cameraDevice;
+    QCamera* camera;
     ui->menuCamera->clear();
-    foreach (FSWebCamInfo cam, ports) {
-        if(!cam.portName.isEmpty()){
-            QAction* ac = new QAction(cam.portName, this);
-            ac->setCheckable(true);
-            connect(ac,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
-            if(FSController::getInstance()->webcam->info.portName.compare(cam.portName)==0){
-                ac->setChecked(true);
-            }
-            ui->menuCamera->addAction(ac);
+    foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
+        QString description = camera->deviceDescription(deviceName);
+        QAction *videoDeviceAction = new QAction(description, this);
+        videoDeviceAction->setCheckable(true);
+        videoDeviceAction->setData(QVariant(deviceName));
+        connect(videoDeviceAction,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
+        if (FSController::getInstance()->webcam->info.portName.compare(description)==0) {
+            //cameraDevice = deviceName;
+            videoDeviceAction->setChecked(true);
         }
+        ui->menuCamera->addAction(videoDeviceAction);
     }
 }
 

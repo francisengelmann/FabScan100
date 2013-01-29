@@ -20,16 +20,15 @@ cv::Mat FSWebCam::getFrame()
     if(!capture.isOpened()) return frame;
     capture.read(frame);
     capture.release();
-
     return frame.clone();
 }
 
-QList<FSWebCamInfo> FSWebCam::enumerate()
+/*QList<FSWebCamInfo> FSWebCam::enumerate()
 {
     QList<FSWebCamInfo> list;
     return list;
     qDebug("Not yet implemented.");
-}
+}*/
 
 FSPoint FSWebCam::getPosition()
 {

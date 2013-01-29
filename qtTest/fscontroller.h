@@ -3,6 +3,7 @@
 
 #include "staticHeaders.h"
 #include "mainwindow.h"
+#include "fscontrolpanel.h"
 #include "geometryengine.h"
 #include "fsmodel.h"
 #include "fsserial.h"
@@ -26,6 +27,7 @@ class FSController
 
     public:
         MainWindow* mainwindow;
+        FSControlPanel* controlPanel;
         GeometryEngine* geometries;
         FSModel* model;
         FSSerial* serial;

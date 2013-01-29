@@ -23,6 +23,12 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 13px solid black; padding: 2px; border-style: outset;</string>
+      </property>
      </widget>
     </item>
     <item>

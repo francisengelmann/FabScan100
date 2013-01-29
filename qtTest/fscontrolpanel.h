@@ -15,7 +15,8 @@ class FSControlPanel : public QDialog
 public:
     explicit FSControlPanel(QWidget *parent = 0);
     ~FSControlPanel();
-    
+    Ui::FSControlPanel *ui;
+
 private slots:
     void on_fetchFrameButton_clicked();
     void on_hideFrameButton_clicked();
@@ -34,7 +35,6 @@ private slots:
     void on_pushButton_clicked();
 
 private:
-    Ui::FSControlPanel *ui;
 };
 
 #endif // FSCONTROLPANEL_H

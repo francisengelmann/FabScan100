@@ -27,7 +27,7 @@ MainWidget::MainWidget(QWidget *parent) :
     eye =     QVector3D(0.0, 5.0, 10.0);
     center =  QVector3D(0.0, 5.0, 0.0);
     up =      QVector3D(0.0, 1.0, 0.0);
-
+    this->setStyleSheet( "border: 2px solid black;  background-color: rgb(0, 170, 255); }" );
 }
 
 MainWidget::~MainWidget()

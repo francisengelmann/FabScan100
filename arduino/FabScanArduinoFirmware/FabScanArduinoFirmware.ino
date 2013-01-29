@@ -2,26 +2,26 @@
 //
 //  Created by Francis Engelmann on 7/1/11.
 //  Copyright 2011 Media Computing Group, RWTH Aachen University. All rights reserved.
+//  Last Modifcation: R. Bohne 29.01.2013: changed pin mapping to Watterott FabScan Arduino Shield
 
-#define LED_PIN 17
+#define LIGHT_PIN 17
 #define LASER_PIN 18
-#define MS_PIN 19 //microstepping
-#define LIGHT_PIN 10 //still needed?
+#define MS_PIN    19
 
-//turntable, socket 3
-#define ENABLE_PIN_0  11
-#define DIR_PIN_0     13
-#define STEP_PIN_0    12
-#define RESET_PIN_0   7
-#define SLEEP_PIN_0   8
+//Stepper 1 as labeled on Shield, Turntable
+#define ENABLE_PIN_0  2
+#define STEP_PIN_0    3
+#define DIR_PIN_0     4
 
-//other one (unused)
-#define ENABLE_PIN_1  2
-#define DIR_PIN_1     3
-#define STEP_PIN_1    4
-#define RESET_PIN_1   6
-#define SLEEP_PIN_1   9
+//Stepper 2, Laser Stepper
+#define ENABLE_PIN_1  5
+#define STEP_PIN_1    6
+#define DIR_PIN_1     7
 
+//Stepper 3, currently unused
+#define ENABLE_PIN_2  11
+#define STEP_PIN_2    12
+#define DIR_PIN_2     13
   
 #define TURN_LASER_OFF      200
 #define TURN_LASER_ON       201
@@ -56,8 +56,6 @@ int currStepper;
 
 void step()
 {
- digitalWrite(LED_PIN, 0);
- 
  if(currStepper == 0){
    digitalWrite(STEP_PIN_0, 0);
  }else if(currStepper == 1){
@@ -70,7 +68,6 @@ void step()
  }else if(currStepper == 1){
    digitalWrite(STEP_PIN_1, 1);
  }
- digitalWrite(LED_PIN, 1);
  delay(3);
 }
 
@@ -84,53 +81,48 @@ void step(int count)
 void setup() 
 { 
   // initialize the serial port
-  Serial.begin(9600);
- pinMode(LASER_PIN, OUTPUT);
- pinMode(LIGHT_PIN, OUTPUT);
- pinMode(LED_PIN, OUTPUT);
+   Serial.begin(9600);
+   pinMode(LASER_PIN, OUTPUT);
+   pinMode(LIGHT_PIN, OUTPUT);
  
- pinMode(ENABLE_PIN_1, OUTPUT);
- pinMode(RESET_PIN_1, OUTPUT);
- pinMode(SLEEP_PIN_1, OUTPUT);
- pinMode(DIR_PIN_1, OUTPUT);
- pinMode(STEP_PIN_1, OUTPUT);
+   pinMode(MS_PIN, OUTPUT);
+   digitalWrite(MS_PIN, HIGH);  //HIGH for 16microstepping, LOW for no microstepping
+
+  pinMode(ENABLE_PIN_0, OUTPUT);
+  pinMode(DIR_PIN_0, OUTPUT);
+  pinMode(STEP_PIN_0, OUTPUT);
+
+  pinMode(ENABLE_PIN_1, OUTPUT);
+  pinMode(DIR_PIN_1, OUTPUT);
+  pinMode(STEP_PIN_1, OUTPUT);
  
- pinMode(ENABLE_PIN_0, OUTPUT);
- pinMode(RESET_PIN_0, OUTPUT);
- pinMode(SLEEP_PIN_0, OUTPUT);
- pinMode(DIR_PIN_0, OUTPUT);
- pinMode(STEP_PIN_0, OUTPUT);
-  
- digitalWrite(RESET_PIN_0, HIGH);  //HIGH to turn
- digitalWrite(SLEEP_PIN_0, HIGH);  //HIGH to turn
+  pinMode(ENABLE_PIN_2, OUTPUT);
+  pinMode(DIR_PIN_2, OUTPUT);
+  pinMode(STEP_PIN_2, OUTPUT);
+ 
+ //enable turntable and laser steppers
  digitalWrite(ENABLE_PIN_0, HIGH);  //LOW to turn
-  
- //digitalWrite(RESET_PIN_1, HIGH);  //HIGH to turn
- //digitalWrite(SLEEP_PIN_1, HIGH);  //HIGH to turn
- //digitalWrite(ENABLE_PIN_1, HIGH);  //LOW to turn
+ digitalWrite(ENABLE_PIN_1, HIGH);  //LOW to turn
+ digitalWrite(ENABLE_PIN_2, LOW);  //LOW to turn off
  
- digitalWrite(LIGHT_PIN, 1); //turn light on
+ digitalWrite(LIGHT_PIN, 0); //turn light off
 
  digitalWrite(LASER_PIN, 1); //turn laser on
  Serial.write(FABSCAN_PONG); //send a pong back to the computer so we know setup is done and that we are actually dealing with a FabScan
  
- currStepper = 0;  //0==turntable is default stepper, change here if turntable and laser are incorrectly connected and not possible to easily change it
-
-  digitalWrite(MS_PIN, 0);
-  
+ currStepper = 0;  //turntable is default stepper
 } 
 
 void loop() 
 {
-  digitalWrite(LED_PIN, 0);
-  if(Serial.available() > 0){
-    
-    digitalWrite(LED_PIN, 1);
-    incomingByte = Serial.read();
-    //Serial.write("a");
 
+  if(Serial.available() > 0){
+
+    incomingByte = Serial.read();
+    
     switch(byteType){
       case ACTION_BYTE:
+      
           switch(incomingByte){    //this switch always handles the first byte
             //Laser
             case TURN_LASER_OFF:
@@ -203,5 +195,5 @@ void loop()
           byteType = ACTION_BYTE;
           break;
     }
-  }
+  } 
 } 

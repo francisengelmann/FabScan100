@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui opengl
+QT += core gui opengl multimedia multimediawidgets
 
 #CONFIG += static
 
@@ -27,10 +27,11 @@ SOURCES += main.cpp\
     fscontrolpanel.cpp \
     fslaser.cpp \
     fsturntable.cpp \
-    fsvision.cpp
+    fsvision.cpp \
+    fswebcam.cpp
 
 macx {
-    SOURCES += fswebcam_osx.cpp
+    #SOURCES += fswebcam_osx.cpp
 }
 linux-g++ {
     SOURCES += fswebcam_linux.cpp
