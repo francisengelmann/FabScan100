@@ -127,28 +127,28 @@ linux-g++ {
 
     #CONFIG += link_pkgconfig
     #PKGCONFIG += opencv
-    #INCLUDEPATH += /usr/local/include/opencv2/
+    INCLUDEPATH += /usr/local/include/opencv2/
 
-    #INCLUDEPATH += /usr/include/eigen3/
+    INCLUDEPATH += /usr/include/eigen3/
 
-    #LIBS += -L/usr/local/lib/ \
-   #-lopencv_core \
-   #-lopencv_highgui \
-   #-lopencv_imgproc \
-   #-lopencv_features2d \
-   #-lopencv_calib3d
+    LIBS += -L/usr/local/lib/ \
+    -lopencv_core \
+    -lopencv_highgui \
+    -lopencv_imgproc \
+    -lopencv_features2d \
+    -lopencv_calib3d
 
-    #INCLUDEPATH += /usr/include/pcl-1.6
-    #LIBS += -L/usr/lib \
-    #-lpcl_common \
-    #-lpcl_io \
-    #-lpcl_filters \
-    #-lpcl_kdtree \
-    #-lpcl_registration \
-    #-lpcl_features \
-    #-lpcl_segmentation \
-    #-lpcl_surface \
-    #-lpcl_search
+    INCLUDEPATH += /usr/include/pcl-1.6
+    LIBS += -L/usr/lib \
+    -lpcl_common \
+    -lpcl_io \
+    -lpcl_filters \
+    -lpcl_kdtree \
+    -lpcl_registration \
+    -lpcl_features \
+    -lpcl_segmentation \
+    -lpcl_surface \
+    -lpcl_search
 }
 
 win32 {
