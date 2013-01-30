@@ -1,4 +1,4 @@
-dFabScan100
+FabScan100
 ==========
 The FabScan100 software is planned to run on Mac and Linux (and maybe also Windows).
 This git repository stores all the files for the project, software as well as the hardware.
