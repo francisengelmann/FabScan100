@@ -48,6 +48,8 @@ class FSController
         void scanThread();
         bool detectLaserLine();
         void computeSurfaceMesh();
+
+        bool scanning; //wether we are scanning or not, used to interrupt scanning
 };
 
 #endif // FSCONTROLLER_H

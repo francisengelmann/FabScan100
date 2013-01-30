@@ -18,6 +18,7 @@ FSController::FSController()
     turntable = new FSTurntable();
     laser = new FSLaser();
     vision = new FSVision();
+    scanning = false;
 }
 
 FSController* FSController::getInstance()
@@ -65,7 +66,7 @@ void FSController::scan()
 
 void FSController::scanThread()
 {
-
+    scanning = true; //start scanning
     FSFloat stepDegrees = 16*turntable->degreesPerStep;
     laser->turnOn();
 
@@ -74,11 +75,17 @@ void FSController::scanThread()
 
     unsigned int threshold = 40;
 
-    for(FSFloat i=0; i<360; i+=stepDegrees){
+    for(FSFloat i=0; i<360 && scanning==true; i+=stepDegrees){
         laser->turnOff();
+        QThread::msleep(200);
         cv::Mat laserOff = webcam->getFrame();
+        cv::resize( laserOff,laserOff,cv::Size(1280,960) );
+
         laser->turnOn();
+        QThread::msleep(200);
         cv::Mat laserOn = webcam->getFrame();
+        cv::resize( laserOn,laserOn,cv::Size(1280,960) );
+
 
         /*cv::namedWindow("extracted laserLine");
         cv::imshow("extracted laserLine",laserOff);
@@ -87,25 +94,32 @@ void FSController::scanThread()
         cv::waitKey(0);
         cvDestroyWindow("extracted laserLine");*/
 
-
-        vision->putPointsFromFrameToCloud(laserOff,laserOn,5,0,threshold);
+        vision->putPointsFromFrameToCloud(laserOff, laserOn, 5, 0, threshold);
         geometries->setPointCloudTo(model->pointCloud);
         mainwindow->redraw();
         turntable->turnNumberOfDegrees(stepDegrees);
-        usleep(stepDegrees*100);
+        QThread::msleep(stepDegrees*300);
     }
+    scanning = false; //stop scanning
 }
-
 
 bool FSController::detectLaserLine()
 {
     unsigned int threshold = 40;
     laser->turnOff();
+    QThread::msleep(200);
     cv::Mat laserOffFrame = webcam->getFrame();
     laser->turnOn();
+    QThread::msleep(200);
     cv::Mat laserOnFrame = webcam->getFrame();
     cv::resize( laserOnFrame,laserOnFrame,cv::Size(1280,960) );
     cv::resize( laserOffFrame,laserOffFrame,cv::Size(1280,960) );
+
+    /*cv::imshow("extracted laserLine",laserOnFrame);
+    cv::waitKey(0);
+    cv::imshow("extracted laserLine",laserOffFrame);
+    cv::waitKey(0);
+    cvDestroyWindow("extracted laserLine");*/
 
     qDebug("images loaded, now detecting...");
     FSPoint p = vision->detectLaserLine( laserOffFrame, laserOnFrame, threshold );

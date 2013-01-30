@@ -202,7 +202,12 @@ void MainWindow::enumerateWebCams()
 void MainWindow::on_scanButton_clicked()
 {
     //QFuture<void> future = QtConcurrent::run(FSController::getInstance(), &FSController::scanThread);
-    FSController::getInstance()->scanThread();
+    bool s = FSController::getInstance()->scanning;
+    if (s==false){
+        FSController::getInstance()->scanThread();
+    }else{
+        FSController::getInstance()->scanning = false;
+    }
 }
 
 void MainWindow::redraw()

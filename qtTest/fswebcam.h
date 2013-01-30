@@ -41,7 +41,10 @@ public:
 private slots:
 
     void processCapturedImage(int requestId, const QImage& img);
-    void configureImageSettings();
+    void imageSaved(int id, const QString &fileName);
+
+private:
+    bool isCapturingImage;
 
 };
 

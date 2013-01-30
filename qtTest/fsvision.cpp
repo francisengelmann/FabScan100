@@ -184,10 +184,10 @@ void FSVision::putPointsFromFrameToCloud(
     //extract laser line from the two images
     cv::Mat laserLine = subLaser(laserOff,laserOn,threshold);
 
-    //cv::namedWindow("extracted laserLine");
-    //cv::imshow("extracted laserLine",laserLine);
-    //cv::waitKey(0);
-    //cvDestroyWindow("extracted laserLine");
+    /*cv::namedWindow("extracted laserLine");
+    cv::imshow("extracted laserLine",laserLine);
+    cv::waitKey(0);
+    cvDestroyWindow("extracted laserLine");*/
 
     //calculate position of laser in cv frame
     FSPoint fsLaserLinePosition = laser->getLaserPointPosition();
@@ -206,11 +206,13 @@ void FSVision::putPointsFromFrameToCloud(
         y < bwImage.rows-(LOWER_ANALYZING_FRAME_LIMIT);
         y+=dpiVertical )
     {
+        qDebug() << "checking point at line " << y << laserPos+ANALYZING_LASER_OFFSET;
         //ANALYZING_LASER_OFFSET is the offset where we stop looking for a reflected laser, cos we might catch the non reflected
         //now iteratinf from right to left over bwLaserLine frame
         for(int x = bwImage.cols-1;
             x >= laserPos+ANALYZING_LASER_OFFSET;
             x -= 1){
+            //qDebug() << "Pixel value: " << bwImage.at<uchar>(y,x);
             if(bwImage.at<uchar>(y,x)==255){
                 //qDebug() << "found point at x=" << x;
                 //if (row[x] > 200){

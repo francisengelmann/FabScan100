@@ -75,6 +75,8 @@ void FSControlPanel::on_autoResetButton_clicked()
     cv::imshow("Laser Frame",shot);
     cv::waitKey(0);
     cvDestroyWindow("Laser Frame");
+    this->raise();
+    this->focusWidget();
 }
 
 void FSControlPanel::on_pushButton_clicked()
