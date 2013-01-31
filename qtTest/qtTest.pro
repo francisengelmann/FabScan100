@@ -34,7 +34,7 @@ macx {
     #SOURCES += fswebcam_osx.cpp
 }
 linux-g++ {
-    SOURCES += fswebcam_linux.cpp
+    #SOURCES += fswebcam_linux.cpp
 }
 
 HEADERS  += mainwindow.h \
