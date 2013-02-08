@@ -6,7 +6,7 @@
 
 QT += core gui opengl multimedia multimediawidgets
 
-CONFIG += static noframework
+#CONFIG += static noframework
 
 TARGET = FabScan100
 TEMPLATE = app
@@ -87,7 +87,7 @@ macx {
     -lpcl_surface \
     -lpcl_search
 
-    INCLUDEPATH += /usr/local/Cellar/eigen/3.1.1/include/eigen3
+    INCLUDEPATH += /usr/local/Cellar/eigen/3.1.2/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
     INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
 
