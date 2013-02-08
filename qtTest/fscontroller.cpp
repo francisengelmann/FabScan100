@@ -19,6 +19,7 @@ FSController::FSController()
     laser = new FSLaser();
     vision = new FSVision();
     scanning = false;
+    threshold = 40;
 }
 
 FSController* FSController::getInstance()
@@ -73,8 +74,6 @@ void FSController::scanThread()
     turntable->setDirection(FS_DIRECTION_CCW);
     turntable->enable();
 
-    unsigned int threshold = 40;
-
     for(FSFloat i=0; i<360 && scanning==true; i+=stepDegrees){
         laser->turnOff();
         QThread::msleep(200);
@@ -101,6 +100,21 @@ void FSController::scanThread()
         QThread::msleep(stepDegrees*300);
     }
     scanning = false; //stop scanning
+}
+
+cv::Mat FSController::subLaser()
+{
+    laser->turnOff();
+    QThread::msleep(200);
+    cv::Mat laserOff = webcam->getFrame();
+    cv::resize( laserOff,laserOff,cv::Size(1280,960) );
+
+    laser->turnOn();
+    QThread::msleep(200);
+    cv::Mat laserOn = webcam->getFrame();
+    cv::resize( laserOn,laserOn,cv::Size(1280,960) );
+
+    return vision->subLaser(laserOff,laserOn,threshold);
 }
 
 bool FSController::detectLaserLine()

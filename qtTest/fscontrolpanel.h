@@ -34,6 +34,9 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_binaryImage_clicked();
+
+
 private:
 };
 

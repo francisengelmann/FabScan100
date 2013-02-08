@@ -48,6 +48,9 @@ class FSController
         void scanThread();
         bool detectLaserLine();
         void computeSurfaceMesh();
+        cv::Mat subLaser();
+
+        unsigned int threshold;
 
         bool scanning; //wether we are scanning or not, used to interrupt scanning
 };

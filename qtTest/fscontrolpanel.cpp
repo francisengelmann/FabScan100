@@ -83,3 +83,12 @@ void FSControlPanel::on_pushButton_clicked()
 {
     this->hide();
 }
+
+void FSControlPanel::on_binaryImage_clicked()
+{
+    cv::Mat shot = FSController::getInstance()->subLaser();
+    cv::resize(shot,shot,cv::Size(800,600));
+    cv::imshow("Laser Frame",shot);
+    cv::waitKey(0);
+    cvDestroyWindow("Laser Frame");
+}

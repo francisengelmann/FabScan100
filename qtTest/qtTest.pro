@@ -6,7 +6,7 @@
 
 QT += core gui opengl multimedia multimediawidgets
 
-#CONFIG += static
+CONFIG += static noframework
 
 TARGET = FabScan100
 TEMPLATE = app
@@ -114,7 +114,7 @@ macx {
     -lboost_serialization-mt \
     -lboost_signals-mt \
     -lboost_system-mt \
-    -lboost_test_exec_monitor-mt \
+    #-lboost_test_exec_monitor-mt \
     -lboost_thread-mt \
     -lboost_timer-mt \
     -lboost_unit_test_framework-mt \

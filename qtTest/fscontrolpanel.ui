@@ -47,7 +47,7 @@
      <x>10</x>
      <y>120</y>
      <width>121</width>
-     <height>81</height>
+     <height>110</height>
     </rect>
    </property>
    <property name="title">
@@ -92,12 +92,25 @@
      <string>Detect Laser</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="binaryImage">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>121</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Binary Image</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>210</y>
+     <y>230</y>
      <width>121</width>
      <height>81</height>
     </rect>
