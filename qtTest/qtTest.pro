@@ -6,7 +6,7 @@
 
 QT += core gui opengl multimedia multimediawidgets
 
-#CONFIG += static noframework
+CONFIG += static noframework
 
 TARGET = FabScan100
 TEMPLATE = app
@@ -75,10 +75,26 @@ macx {
     -lopencv_features2d \
     -lopencv_calib3d
 
+    #LIBS += -L/usr/local/lib/vtk-5.10 \
+    #-lvtkCommon \
+    #-lvtkWidgets \
+    #-lvtkIO \
+    #-lvtkImaging \
+    #-lvtkHybrid \
+    #-lvtkVolumeRendering \
+    #-lvtkRendering \
+    #-lvtkGraphics \
+    #-lvtkFiltering \
+    #-lvtksys
+
     INCLUDEPATH += /usr/local/include/pcl-1.7
     LIBS += -L/usr/local/lib \
     -lpcl_common \
     -lpcl_io \
+    -lpcl_io_ply \
+    -lpcl_sample_consensus \
+    -lpcl_octree \
+    -lpcl_ml \
     -lpcl_filters \
     -lpcl_kdtree \
     -lpcl_registration \
@@ -86,6 +102,8 @@ macx {
     -lpcl_segmentation \
     -lpcl_surface \
     -lpcl_search
+
+    #INCLUDEPATH += /usr/local/Cellar/vtk/5.10.0/include/vtk-5.10
 
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.2/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include

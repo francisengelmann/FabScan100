@@ -121,6 +121,7 @@ void FSModel::convertPointCloudToSurfaceMesh2()
 
 void FSModel::loadPointCloud(const std::string &file_name)
 {
+    qDebug("Opening pcl...");
     if (pcl::io::loadPCDFile<pcl::PointXYZRGB> (file_name, *pointCloud) == -1) //* load the file
     {
         PCL_ERROR ("Couldn't read pcd file  \n");
@@ -128,7 +129,7 @@ void FSModel::loadPointCloud(const std::string &file_name)
     }
     std::cout << "Loaded "
                 << pointCloud->width * pointCloud->height
-                << " data points from test_pcd.pcd with the following fields: "
+                << " data points from: "<< file_name
                 << std::endl;
       FSController::getInstance()->geometries->setPointCloudTo(pointCloud);
       std::cout << "Done from Model" << std::endl;
