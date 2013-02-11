@@ -49,9 +49,10 @@ At this point we have installed all the dependencies needed for FabScan. We can 
 9. Then download the code using git: git clone git://github.com/francisengelmann/FabScan100.git
 10. Open qtTest/qtTest.pro in "Qt Creator".
 11. If asked select "Qt 5.0.1" Kit, then click "Configure Project".
-12. In the left panel, click on "Projects", then "Manage Kits". Select from AutoDetected "Qt5.0.1", click clone, then in the "Compiler" popupmenu select "GCC x86 64bit".
-13. Run the project by clicking on the green arrow on the bottom left.
-14. Wait for it to compile, this can take a few minutes.
+12. In the left panel, click on "Projects", then "Manage Kits". Select from AutoDetected "Qt5.0.1", click clone, then in the "Compiler" popupmenu select "GCC x86 64bit". Then press OK to exit.
+13. Again in the "Projects" tab, select the newly created Kit from the "Add Kit" popupmenu.
+14. Run the project by clicking on the green arrow on the bottom left.
+15. Wait for it to compile, this can take a few minutes.
  
 Ubuntu 12.04 LTS:
 =======
