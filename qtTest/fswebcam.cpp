@@ -7,19 +7,17 @@
 
 FSWebCam::FSWebCam()
 {
-
     info.portName = "";
     info.friendlyName = "";
     info.sizeX = CAM_IMAGE_WIDTH;
     info.sizeY = CAM_IMAGE_HEIGHT;
-    //enumerate();
     isCapturingImage=false;
+    camera=0;
+    imageCapture=0;
 }
 
 FSWebCam::~FSWebCam()
 {
-    //platformSpecificDestructor();
-    camera->stop();
     delete imageCapture;
     delete camera;
 }
@@ -28,7 +26,6 @@ cv::Mat FSWebCam::getFrame()
 {
     frameTaken = false;
     isCapturingImage = true;
-    //frame.data=0;
     imageCapture->capture();
     //qDebug() << "preparing to take frame";
     //wait until camera has taken picture, then return
@@ -36,7 +33,6 @@ cv::Mat FSWebCam::getFrame()
         qApp->processEvents();
     }
     //qDebug() << "received frame";
-    //frame = cv::imread("/Users/francis/bild.png");
     return frame.clone();
 }
 
@@ -47,16 +43,20 @@ FSPoint FSWebCam::getPosition()
 
 void FSWebCam::setCamera(const QByteArray &cameraDevice)
 {
+    qDebug() << "setCamera...";
     delete camera;
     delete imageCapture;
-
+    qDebug() << "deleted old stuff Camera...";
     if (cameraDevice.isEmpty()){
+        qDebug() << cameraDevice << "cameraDevice empty";
         camera = new QCamera;
     }else{
+        qDebug() << cameraDevice << "cameraDevice not empty";
         camera = new QCamera(cameraDevice);
     }
-
+    qDebug() << camera;
     imageCapture = new QCameraImageCapture(camera);
+    qDebug() << imageCapture;
     camera->setViewfinder(FSController::getInstance()->controlPanel->ui->viewfinder );
     camera->setCaptureMode(QCamera::CaptureStillImage);
 
