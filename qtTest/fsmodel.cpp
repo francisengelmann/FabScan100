@@ -127,17 +127,25 @@ void FSModel::loadPointCloud(const std::string &file_name)
         PCL_ERROR ("Couldn't read pcd file  \n");
         return ;
     }
-    std::cout << "Loaded "
+    std::cout   << "Loaded "
                 << pointCloud->width * pointCloud->height
                 << " data points from: "<< file_name
                 << std::endl;
-      FSController::getInstance()->geometries->setPointCloudTo(pointCloud);
-      std::cout << "Done from Model" << std::endl;
+    FSController::getInstance()->geometries->setPointCloudTo(pointCloud);
+    std::cout << "Done from Model" << std::endl;
 }
 
-void FSModel::savePointCloud(const std::string &file_name)
+void FSModel::savePointCloudAsPCD(const std::string &file_name)
 {
+    if(pointCloud->size()==0) return;
     pcl::io::savePCDFileASCII (file_name, *pointCloud);
+    std::cerr << "Saved " << pointCloud->points.size() << " data points to " << file_name << std::endl;
+}
+
+void FSModel::savePointCloudAsPLY(const std::string &file_name)
+{
+    if(pointCloud->size()==0) return;
+    pcl::io::savePLYFileASCII (file_name, *pointCloud);
     std::cerr << "Saved " << pointCloud->points.size() << " data points to " << file_name << std::endl;
 }
 

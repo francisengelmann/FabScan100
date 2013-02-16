@@ -14,7 +14,8 @@ class FSModel
         void convertPointCloudToSurfaceMesh();
         void convertPointCloudToSurfaceMesh2();
         void loadPointCloud(const std::string &file_name);
-        void savePointCloud(const std::string &file_name);
+        void savePointCloudAsPLY(const std::string &file_name);
+        void savePointCloudAsPCD(const std::string &file_name);
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloud;
         pcl::PolygonMesh triangles;
         void addPointToPointCloud(FSPoint point);

@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>580</width>
     <height>360</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>600</width>
+    <width>580</width>
     <height>360</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>600</width>
+    <width>580</width>
     <height>360</height>
    </size>
   </property>
@@ -232,9 +232,9 @@
   <widget class="QCameraViewfinder" name="viewfinder" native="true">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>140</x>
      <y>20</y>
-     <width>441</width>
+     <width>421</width>
      <height>321</height>
     </rect>
    </property>
@@ -245,9 +245,9 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>140</x>
      <y>20</y>
-     <width>441</width>
+     <width>421</width>
      <height>321</height>
     </rect>
    </property>

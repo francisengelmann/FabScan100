@@ -23,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->enumerateSerialPorts();
     this->enumerateWebCams();
     hwTimer->start(5000, this);
-    ui->statusLabel->setText("Not connected to FabScan.");
     dialog = new FSDialog(this);
     controlPanel = new FSControlPanel(this);
     FSController::getInstance()->mainwindow=this;
@@ -112,7 +111,6 @@ void MainWindow::onSelectSerialPort()
     FSController::getInstance()->serial->serialPortPath->append(action->iconText());
     this->enumerateSerialPorts();
     FSController::getInstance()->serial->connectToSerialPort();
-    ui->statusLabel->setText(QString("Now connected to").append(action->iconText()));
 }
 
 void MainWindow::onSelectWebCam()
@@ -127,6 +125,7 @@ void MainWindow::onSelectWebCam()
 void MainWindow::openPointCloud()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Open File","","Files (*.pcd)");
+    if(fileName.isEmpty() ) return;
     FSController::getInstance()->model->loadPointCloud(fileName.toStdString());
     ui->widget->drawState = 0;
     ui->widget->updateGL();
@@ -134,8 +133,22 @@ void MainWindow::openPointCloud()
 
 void MainWindow::savePointCloud()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, "Save File","","Files (*.pcd)");
-    FSController::getInstance()->model->savePointCloud(fileName.toStdString());
+    QFileDialog d(this, "Save File","","PCD (*.pcd) ;; PLY (*.ply)");
+    d.setAcceptMode(QFileDialog::AcceptSave);
+    if(d.exec()){
+        QString fileName = d.selectedFiles()[0];
+        //fileName.append(d.selectedNameFilter());
+        if(fileName.isEmpty() ) return;
+        qDebug() << fileName;
+        if(fileName.endsWith(".pcd", Qt::CaseInsensitive) ){
+            qDebug() << "Save as pcd file.";
+            FSController::getInstance()->model->savePointCloudAsPCD(fileName.toStdString());
+        }else if(fileName.endsWith(".ply", Qt::CaseInsensitive) ){
+            qDebug() << "Save as ply file.";
+            FSController::getInstance()->model->savePointCloudAsPLY(fileName.toStdString());
+        }
+    }
+
     ui->widget->drawState = 0;
     ui->widget->updateGL();
 }
