@@ -12,8 +12,10 @@ Progress
 
 FabScan100 is now functional! Runs on Mac and Ubuntu, still needs to be ported to Windows.
 
-Current Setup on Mac: Qt 5.0 with Qt-Creator 2.4.1
-Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1
+Current Setup on Mac: Qt 5.0.1 with Qt-Creator 2.6.2
+
+Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1 
+
 Current Setup on Windows: not tested, who wants to do this ?
 Qt 4.8 is needed for QGLFunctions.
 
@@ -23,7 +25,7 @@ Installation
 Install "Qt Creator" and "Qt Libraries Qt 5.0" from http://qt-project.org/downloads.
 Make sure you have OpenGL installed. Preinstalled on Ubuntu, Mac. What about Windows?
 
-Mac OS X 10.8.1 with XCode 4.5 installed
+Mac OS X 10.8.2 with XCode 4.6 installed
 ========================================
 1. Install Homebrew: http://mxcl.github.com/homebrew/
 The next steps need to be executed in Terminal.
@@ -46,9 +48,11 @@ At this point we have installed all the dependencies needed for FabScan. We can 
 8. Install git which is a tool to access source repositories: brew install git
 9. Then download the code using git: git clone git://github.com/francisengelmann/FabScan100.git
 10. Open qtTest/qtTest.pro in "Qt Creator".
-11. If asked select "Qt 4.8.*" Kit, then click "Configure Project".
-12. Run the project by clicking on the green arrow on the bottom left.
-13. Wait for it to compile, this can take a few minutes.
+11. If asked select "Qt 5.0.1" Kit, then click "Configure Project".
+12. In the left panel, click on "Projects", then "Manage Kits". Select from AutoDetected "Qt5.0.1", click clone, then in the "Compiler" popupmenu select "GCC x86 64bit". Then press OK to exit.
+13. Again in the "Projects" tab, select the newly created Kit from the "Add Kit" popupmenu.
+14. Run the project by clicking on the green arrow on the bottom left.
+15. Wait for it to compile, this can take a few minutes.
  
 Ubuntu 12.04 LTS:
 =======
