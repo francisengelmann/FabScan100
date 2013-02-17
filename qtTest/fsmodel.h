@@ -13,11 +13,12 @@ class FSModel
         FSModel();
         void convertPointCloudToSurfaceMesh();
         void convertPointCloudToSurfaceMesh2();
-        void loadPointCloud(const std::string &file_name);
+        void loadPointCloudFromPLY(const std::string &file_name);
+        void loadPointCloudFromPCD(const std::string &file_name);
         void savePointCloudAsPLY(const std::string &file_name);
         void savePointCloudAsPCD(const std::string &file_name);
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloud;
-        pcl::PolygonMesh triangles;
+        pcl::PolygonMesh surfaceMesh;
         void addPointToPointCloud(FSPoint point);
         // make sure to add these macro
         // see http://eigen.tuxfamily.org/dox-devel/TopicStructHavingEigenMembers.html

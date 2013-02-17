@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     controlPanel = new FSControlPanel(this);
     FSController::getInstance()->mainwindow=this;
     FSController::getInstance()->controlPanel=controlPanel;
+    ui->widget->setStyleSheet("border: 1px solid black;");
 }
 
 MainWindow::~MainWindow()
@@ -124,9 +125,13 @@ void MainWindow::onSelectWebCam()
 
 void MainWindow::openPointCloud()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open File","","Files (*.pcd)");
+    QString fileName = QFileDialog::getOpenFileName(this, "Open File","","Files (*.pcd) ;; PLY (*.ply)");
     if(fileName.isEmpty() ) return;
-    FSController::getInstance()->model->loadPointCloud(fileName.toStdString());
+    if(fileName.endsWith(".pcd", Qt::CaseInsensitive) ){
+        FSController::getInstance()->model->loadPointCloudFromPCD(fileName.toStdString());
+    }else if(fileName.endsWith(".ply", Qt::CaseInsensitive) ){
+        FSController::getInstance()->model->loadPointCloudFromPLY(fileName.toStdString());
+    }
     ui->widget->drawState = 0;
     ui->widget->updateGL();
 }
@@ -156,7 +161,7 @@ void MainWindow::savePointCloud()
 void MainWindow::newPointCloud()
 {
     FSController::getInstance()->model->pointCloud->clear();
-    FSController::getInstance()->model->triangles.polygons.clear();
+    FSController::getInstance()->model->surfaceMesh.polygons.clear();
     ui->widget->updateGL();
 }
 
@@ -214,6 +219,7 @@ void MainWindow::enumerateWebCams()
 
 void MainWindow::on_scanButton_clicked()
 {
+
     //QFuture<void> future = QtConcurrent::run(FSController::getInstance(), &FSController::scanThread);
     bool s = FSController::getInstance()->scanning;
     if (s==false){

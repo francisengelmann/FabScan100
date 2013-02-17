@@ -58,6 +58,8 @@ void FSWebCam::setCamera(const QByteArray &cameraDevice)
     imageCapture = new QCameraImageCapture(camera);
     qDebug() << imageCapture;
     camera->setViewfinder(FSController::getInstance()->controlPanel->ui->viewfinder );
+    FSController::getInstance()->controlPanel->ui->cameraLabel->setStyleSheet("border-style: solid; border-color: black; border-width: 3px 1px 3px 1px;");
+    FSController::getInstance()->controlPanel->ui->cameraLabel->setText("");
     camera->setCaptureMode(QCamera::CaptureStillImage);
 
     //connect(imageCapture, SIGNAL(readyForCaptureChanged(bool)), this, SLOT(readyForCapture(bool)));

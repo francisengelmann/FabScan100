@@ -12,6 +12,7 @@ FSControlPanel::FSControlPanel(QWidget *parent) :
     ui(new Ui::FSControlPanel)
 {
     ui->setupUi(this);
+    this->installEventFilter(this);
     qDebug("controlpanel constr called");
 }
 
@@ -67,6 +68,10 @@ void FSControlPanel::on_stepRightButton_clicked()
 
 void FSControlPanel::on_autoResetButton_clicked()
 {
+    if(FSController::getInstance()->webcam->info.portName.isEmpty()){
+        FSController::getInstance()->mainwindow->showDialog("No webcam selected!");
+        return;
+    }
     FSController::getInstance()->detectLaserLine();
     cv::Mat shot = FSController::getInstance()->webcam->getFrame();
     cv::resize( shot,shot,cv::Size(1280,960) );
@@ -77,6 +82,7 @@ void FSControlPanel::on_autoResetButton_clicked()
     cvDestroyWindow("Laser Frame");
     this->raise();
     this->focusWidget();
+    this->setVisible(true);
 }
 
 void FSControlPanel::on_pushButton_clicked()
@@ -86,9 +92,16 @@ void FSControlPanel::on_pushButton_clicked()
 
 void FSControlPanel::on_binaryImage_clicked()
 {
+    if(FSController::getInstance()->webcam->info.portName.isEmpty()){
+        FSController::getInstance()->mainwindow->showDialog("No webcam selected!");
+        return;
+    }
     cv::Mat shot = FSController::getInstance()->subLaser();
     cv::resize(shot,shot,cv::Size(800,600));
     cv::imshow("Laser Frame",shot);
     cv::waitKey(0);
     cvDestroyWindow("Laser Frame");
+    this->raise();
+    this->focusWidget();
+    this->setVisible(true);
 }

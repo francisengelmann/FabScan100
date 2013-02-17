@@ -27,7 +27,7 @@
        <bool>false</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">border: 13px solid black; padding: 2px; border-style: outset;</string>
+       <string notr="true">border: 1px solid black;</string>
       </property>
      </widget>
     </item>

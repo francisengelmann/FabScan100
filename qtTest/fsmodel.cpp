@@ -64,13 +64,13 @@ void FSModel::convertPointCloudToSurfaceMesh()
     // Get result
     gp3.setInputCloud (cloud_with_normals);
     gp3.setSearchMethod (tree2);
-    gp3.reconstruct (triangles);
+    gp3.reconstruct (surfaceMesh);
 
     // Additional vertex information
     std::vector<int> parts = gp3.getPartIDs();
     std::vector<int> states = gp3.getPointStates();
 
-    pcl::io::savePLYFile("mesh.ply", triangles);
+    pcl::io::savePLYFile("mesh.ply", surfaceMesh);
 }
 
 void FSModel::convertPointCloudToSurfaceMesh2()
@@ -115,16 +115,30 @@ void FSModel::convertPointCloudToSurfaceMesh2()
 
     poisson.setInputCloud(cloud_with_normals);
 
-    poisson.reconstruct (triangles);
+    poisson.reconstruct (surfaceMesh);
 
 }
 
-void FSModel::loadPointCloud(const std::string &file_name)
+void FSModel::loadPointCloudFromPCD(const std::string &file_name)
 {
-    qDebug("Opening pcl...");
     if (pcl::io::loadPCDFile<pcl::PointXYZRGB> (file_name, *pointCloud) == -1) //* load the file
     {
         PCL_ERROR ("Couldn't read pcd file  \n");
+        return ;
+    }
+    std::cout   << "Loaded "
+                << pointCloud->width * pointCloud->height
+                << " data points from: "<< file_name
+                << std::endl;
+    FSController::getInstance()->geometries->setPointCloudTo(pointCloud);
+    std::cout << "Done from Model" << std::endl;
+}
+
+void FSModel::loadPointCloudFromPLY(const std::string &file_name)
+{
+    if (pcl::io::loadPLYFile<pcl::PointXYZRGB> (file_name, *pointCloud) == -1) //* load the file
+    {
+        PCL_ERROR ("Couldn't read ply file  \n");
         return ;
     }
     std::cout   << "Loaded "

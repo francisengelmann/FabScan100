@@ -225,7 +225,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>º</string>
+     <string>                         Select a camera from the menu!</string>
     </property>
    </widget>
   </widget>
@@ -241,8 +241,12 @@
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <zorder>label_2</zorder>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="cameraLabel">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -251,11 +255,17 @@
      <height>321</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: black; color: white;</string>
+   </property>
    <property name="frameShape">
     <enum>QFrame::Box</enum>
    </property>
    <property name="text">
-    <string/>
+    <string>                         Select a camera from the menu!</string>
    </property>
   </widget>
  </widget>

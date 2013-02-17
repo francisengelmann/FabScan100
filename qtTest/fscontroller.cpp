@@ -62,11 +62,19 @@ void FSController::hideFrame()
 
 void FSController::scan()
 {
+    if(webcam->info.portName.isEmpty()){
+        mainwindow->showDialog("No webcam selected!");
+        return;
+    }
     QFuture<void> future = QtConcurrent::run(this, &FSController::scanThread);
 }
 
 void FSController::scanThread()
 {
+    if(webcam->info.portName.isEmpty()){
+        mainwindow->showDialog("No webcam selected!");
+        return;
+    }
     scanning = true; //start scanning
     FSFloat stepDegrees = 16*turntable->degreesPerStep;
     laser->turnOn();
@@ -84,7 +92,6 @@ void FSController::scanThread()
         QThread::msleep(200);
         cv::Mat laserOn = webcam->getFrame();
         cv::resize( laserOn,laserOn,cv::Size(1280,960) );
-
 
         /*cv::namedWindow("extracted laserLine");
         cv::imshow("extracted laserLine",laserOff);
@@ -148,5 +155,5 @@ void FSController::computeSurfaceMesh()
         return;
     }
     model->convertPointCloudToSurfaceMesh();
-    geometries->setSurfaceMeshTo(model->triangles,model->pointCloud);
+    geometries->setSurfaceMeshTo(model->surfaceMesh,model->pointCloud);
 }
