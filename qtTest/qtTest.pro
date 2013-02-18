@@ -145,7 +145,7 @@ linux-g++ {
 
     #CONFIG += link_pkgconfig
     #PKGCONFIG += opencv
-    INCLUDEPATH += /usr/local/include/opencv2/
+    #INCLUDEPATH += /usr/local/include/opencv2/
 
     INCLUDEPATH += /usr/include/eigen3/
 

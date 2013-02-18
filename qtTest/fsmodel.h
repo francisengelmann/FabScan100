@@ -18,7 +18,9 @@ class FSModel
         void savePointCloudAsPLY(const std::string &file_name);
         void savePointCloudAsPCD(const std::string &file_name);
         pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloud;
+        pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloudPoisson;
         pcl::PolygonMesh surfaceMesh;
+        pcl::PolygonMesh surfaceMeshPoisson;
         void addPointToPointCloud(FSPoint point);
         // make sure to add these macro
         // see http://eigen.tuxfamily.org/dox-devel/TopicStructHavingEigenMembers.html
