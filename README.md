@@ -67,7 +67,7 @@ Ubuntu 12.10:
 
   * cd ~
   * wget http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.4.4/OpenCV-2.4.4-beta.tar.bz2
-  * tar -xvf OpenCV-2.4.4.tar.bz2
+  * tar -xvf OpenCV-2.4.4-beta.tar.bz2
   * cd OpenCV-2.4.4
 
   * mkdir build
