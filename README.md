@@ -14,9 +14,10 @@ FabScan100 is now functional! Runs on Mac and Ubuntu, still needs to be ported t
 
 Current Setup on Mac: Qt 5.0.1 with Qt-Creator 2.6.2
 
-Current Setup on Ubuntu: Qt 4.8.0 with Qt-Creator 2.4.1 
+Current Setup on Ubuntu: Qt 5.0.1 with Qt-Creator 2.6.2 
 
 Current Setup on Windows: not tested, who wants to do this ?
+
 Qt 4.8 is needed for QGLFunctions.
 
 Installation
@@ -54,18 +55,26 @@ At this point we have installed all the dependencies needed for FabScan. We can 
 14. Run the project by clicking on the green arrow on the bottom left.
 15. Wait for it to compile, this can take a few minutes.
  
-Ubuntu 12.04 LTS:
+Ubuntu 12.10:
 =======
 1. Install Qt
-  * Qt-Creator from Ubuntu Software Center
-  * install the qt-4.8 libraries from qt-project.org
+  * Install Qt-5.0.1 libraries http://qt-project.org/downloads
 
-2. Install OpenCV following this guide: http://www.samontab.com/web/2012/06/installing-opencv-2-4-1-ubuntu-12-04-lts/
+2. Install OpenCV (inspired from http://www.samontab.com/web/2012/06/installing-opencv-2-4-1-ubuntu-12-04-lts/)
+  * sudo apt-get update
+  * sudo apt-get upgrade
+  * sudo apt-get install libeigen3-dev build-essential libgtk2.0-dev libjpeg-dev libtiff4-dev libjasper-dev libopenexr-dev cmake python-dev python-numpy python-tk libtbb-dev yasm libfaac-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev libx264-dev sphinx-common texlive-latex-extra libv4l-dev libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev
 
-  Important: OpenCV 2.4.2 is the most recent at the time of writing, so just replace 2.4.1 with 2.4.2 everywhere it occurs.
+  * cd ~
+  * wget http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.4.4/OpenCV-2.4.4-beta.tar.bz2
+  * tar -xvf OpenCV-2.4.4-beta.tar.bz2
+  * cd OpenCV-2.4.4
+
+  * mkdir build
+  * cd build
+  * cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=ON -D WITH_OPENGL=ON ..
   
 3. Install PCL
-  * sudo apt-get install libeigen3-dev
   * sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
   * sudo apt-get update
   * sudo apt-get install libpcl-all
