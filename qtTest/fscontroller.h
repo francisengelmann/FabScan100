@@ -25,6 +25,7 @@ class FSController
         static FSController* singleton;
         FSController();
 
+
     public:
         MainWindow* mainwindow;
         FSControlPanel* controlPanel;
@@ -46,13 +47,21 @@ class FSController
 
         void scan();
         void scanThread();
+        void scanThread2();
         bool detectLaserLine();
         void computeSurfaceMesh();
         cv::Mat subLaser();
+        cv::Mat diffImage();
 
         unsigned int threshold;
 
         bool scanning; //wether we are scanning or not, used to interrupt scanning
+        bool meshComputed; //wether the surface meshhas already been computed from the point cloud or not
+        double laserSwipeMin;
+        double laserSwipeMax;
+        double laserStepSize;
+        double turntableStepSize;
+        double yDpi;
 };
 
 #endif // FSCONTROLLER_H

@@ -256,10 +256,10 @@ void GeometryEngine::drawSurfaceMesh(QGLShaderProgram *program)
 
 void GeometryEngine::initGroundPlane() {
     VertexData vertices[] = {
-        {QVector3D(-5.0, 0.0,  5.0), QVector3D(255.0, 150.0, 0.0)}, // v0
-        {QVector3D( 5.0, 0.0,  5.0), QVector3D(255.0, 150.0, 0.0)}, // v1
-        {QVector3D( 5.0, 0.0, -5.0), QVector3D(255.0, 150.0, 0.0)}, // v2
-        {QVector3D(-5.0, 0.0, -5.0), QVector3D(255.0, 150.0, 0.0)}, // v3
+        {QVector3D(-7.0, 0.0,  7.0), QVector3D(255.0, 150.0, 0.0)}, // v0
+        {QVector3D( 7.0, 0.0,  7.0), QVector3D(255.0, 150.0, 0.0)}, // v1
+        {QVector3D( 7.0, 0.0, -7.0), QVector3D(255.0, 150.0, 0.0)}, // v2
+        {QVector3D(-7.0, 0.0, -7.0), QVector3D(255.0, 150.0, 0.0)}, // v3
     };
 
     GLuint indices[] = {

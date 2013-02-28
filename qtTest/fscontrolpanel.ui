@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>580</width>
-    <height>360</height>
+    <width>751</width>
+    <height>485</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -18,8 +18,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>580</width>
-    <height>360</height>
+    <width>1580</width>
+    <height>1360</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -28,26 +28,13 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>320</y>
-     <width>121</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Close</string>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>120</y>
      <width>121</width>
-     <height>110</height>
+     <height>190</height>
     </rect>
    </property>
    <property name="title">
@@ -92,17 +79,76 @@
      <string>Detect Laser</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="binaryImage">
+   <widget class="QCheckBox" name="laserEnable">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>20</x>
+      <y>130</y>
+      <width>70</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enabled</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="laserStepLeftButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
       <y>80</y>
-      <width>121</width>
+      <width>51</width>
       <height>32</height>
      </rect>
     </property>
     <property name="text">
-     <string>Binary Image</string>
+     <string>&lt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="laserStepRightButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>80</y>
+      <width>50</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="laserAngle">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>101</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Angle:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="laserSwipeMaxEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>40</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="laserSwipeMinEdit">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>160</y>
+      <width>40</width>
+      <height>21</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -110,9 +156,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>230</y>
+     <y>320</y>
      <width>121</width>
-     <height>81</height>
+     <height>140</height>
     </rect>
    </property>
    <property name="title">
@@ -131,7 +177,7 @@
      <string>Fetch Frame</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="hideFrameButton">
+   <widget class="QPushButton" name="binaryImage">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -141,7 +187,33 @@
      </rect>
     </property>
     <property name="text">
-     <string>Hide Frame</string>
+     <string>Binary Image</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="diffImage">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>121</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Diff Image</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>110</y>
+      <width>121</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Laser Image</string>
     </property>
    </widget>
   </widget>
@@ -234,8 +306,8 @@
     <rect>
      <x>140</x>
      <y>20</y>
-     <width>421</width>
-     <height>321</height>
+     <width>601</width>
+     <height>451</height>
     </rect>
    </property>
    <property name="autoFillBackground">
@@ -244,15 +316,14 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <zorder>label_2</zorder>
   </widget>
   <widget class="QLabel" name="cameraLabel">
    <property name="geometry">
     <rect>
      <x>140</x>
      <y>20</y>
-     <width>421</width>
-     <height>321</height>
+     <width>600</width>
+     <height>450</height>
     </rect>
    </property>
    <property name="autoFillBackground">
@@ -265,7 +336,7 @@
     <enum>QFrame::Box</enum>
    </property>
    <property name="text">
-    <string>                         Select a camera from the menu!</string>
+    <string>                                                Select a camera from the menu!</string>
    </property>
   </widget>
  </widget>

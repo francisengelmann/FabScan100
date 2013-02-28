@@ -36,8 +36,7 @@ void FSSerial::onReadyRead()
     int a = serialPort->bytesAvailable();
     bytes.resize(a);
     serialPort->read(bytes.data(), bytes.size());
-    qDebug() << "bytes read:" << bytes.size();
-    qDebug() << "bytes:" << bytes;
+    //qDebug() << "#"<<bytes.size() <<"bytes=" << bytes.data();
 }
 
 void FSSerial::onDsrChanged(bool)
@@ -47,6 +46,7 @@ void FSSerial::onDsrChanged(bool)
 
 void FSSerial::writeChar(char c)
 {
+    //qDebug() << "writing to serial port: " << (int)((unsigned char)c);
     if( serialPortPath->isEmpty() ) return;
     if( !serialPort->isOpen() ) return;
     if( serialPort->isWritable() ){

@@ -1,7 +1,7 @@
 #ifndef FSGEOMETRIES_H
 #define FSGEOMETRIES_H
 
-typedef float FSFloat; //in cm
+typedef double FSFloat; //in cm
 typedef unsigned char FSUChar; //in cm
 typedef unsigned char FSBool;
 

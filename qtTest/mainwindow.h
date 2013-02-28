@@ -11,6 +11,12 @@ class QBasicTimer;
 class QGLShaderProgram;
 QT_END_NAMESPACE
 
+typedef enum _FSState {
+    POINT_CLOUD,
+    SURFACE_MESH,
+    SCANNING
+} FSState;
+
 namespace Ui {
 class MainWindow;
 }
@@ -25,10 +31,10 @@ public:
     void showDialog(QString dialogText);
     void redraw();
     FSControlPanel* controlPanel;
+    void doneScanning();
 
 
 private slots:
-    void on_convertButton_clicked();
     void on_toggleViewButton_clicked();
     void on_scanButton_clicked();
 
@@ -41,15 +47,18 @@ private slots:
     void newPointCloud();
     void showControlPanel();
 
+    void on_resolutionComboBox_currentIndexChanged(const QString &arg1);
+
 private:
     QBasicTimer *hwTimer; //updates connected hw:arduino,webcam,...
     Ui::MainWindow *ui;
-
+    FSState state;
     FSDialog* dialog;
 
     void setupMenu();
     void enumerateSerialPorts();
     void enumerateWebCams();
+    void applyState(FSState s);
 };
 
 #endif // MAINWINDOW_H

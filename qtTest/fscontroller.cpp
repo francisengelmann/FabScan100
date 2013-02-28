@@ -20,6 +20,10 @@ FSController::FSController()
     vision = new FSVision();
     scanning = false;
     threshold = 40;
+    //all in degrees;
+    laserSwipeMin = 30; //18
+    laserSwipeMax = 45; //50
+    //old = true;
 }
 
 FSController* FSController::getInstance()
@@ -47,6 +51,8 @@ void FSController::fetchFrame()
 
     cv::Mat frame;
     frame = FSController::getInstance()->webcam->getFrame();
+    //cv::imshow("Extracted Frame",frame);
+    //cv::waitKey(0);
     cv::resize(frame,frame,cv::Size(1280,960));
     cv::Mat result = vision->drawHelperLinesToFrame(frame);
     cv::resize(result,result,cv::Size(800,600));
@@ -75,8 +81,11 @@ void FSController::scanThread()
         mainwindow->showDialog("No webcam selected!");
         return;
     }
+    this->detectLaserLine();
+    this->laser->disable();
+
     scanning = true; //start scanning
-    FSFloat stepDegrees = 16*turntable->degreesPerStep;
+    FSFloat stepDegrees = turntableStepSize;
     laser->turnOn();
 
     turntable->setDirection(FS_DIRECTION_CCW);
@@ -100,12 +109,63 @@ void FSController::scanThread()
         cv::waitKey(0);
         cvDestroyWindow("extracted laserLine");*/
 
-        vision->putPointsFromFrameToCloud(laserOff, laserOn, 5, 0, threshold);
+        vision->putPointsFromFrameToCloud(laserOff, laserOn, yDpi, 0);
         geometries->setPointCloudTo(model->pointCloud);
         mainwindow->redraw();
         turntable->turnNumberOfDegrees(stepDegrees);
-        QThread::msleep(stepDegrees*300);
+        QThread::msleep(  300+stepDegrees*100);
     }
+    if(scanning) mainwindow->doneScanning();
+    scanning = false; //stop scanning
+}
+
+void FSController::scanThread2()
+{
+    if(webcam->info.portName.isEmpty()){
+        mainwindow->showDialog("No webcam selected!");
+        return;
+    }
+    scanning = true; //start scanning
+
+    qDebug() << "done with turn to angle";
+    //laser->turnNumberOfDegrees( laser->getRotation().y - LASER_SWIPE_MIN );
+    turntable->setDirection(FS_DIRECTION_CW);
+    for(FSFloat j=0; j<360 && scanning==true; j+=turntableStepSize){
+        turntable->disable();
+        laser->turnOn();
+        laser->enable();
+        laser->turnToAngle(laserSwipeMin);
+        QThread::msleep(2500);
+        laser->setDirection(FS_DIRECTION_CCW);
+        for(FSFloat i=laserSwipeMin; i<laserSwipeMax && scanning==true; i+=laserStepSize){
+            qDebug() << i;
+            laser->turnOff();
+            QThread::msleep(200);
+            cv::Mat laserOff = webcam->getFrame();
+            cv::resize( laserOff,laserOff,cv::Size(1280,960) );
+
+            laser->turnOn();
+            QThread::msleep(200);
+            cv::Mat laserOn = webcam->getFrame();
+            cv::resize( laserOn,laserOn,cv::Size(1280,960) );
+
+            vision->putPointsFromFrameToCloud(laserOff, laserOn, 5, 0);
+            geometries->setPointCloudTo(model->pointCloud);
+            mainwindow->redraw();
+            laser->turnNumberOfDegrees(laserStepSize);
+            QThread::msleep(laserStepSize*100);
+        }
+        laser->disable();
+        turntable->enable();
+        turntable->turnNumberOfDegrees(turntableStepSize);
+        std::string name;
+        name.append(boost::lexical_cast<std::string>(j));
+        name.append(".ply");
+        //model->savePointCloudAsPLY(name);
+        //model->pointCloud->clear();
+        QThread::msleep(turntableStepSize*100);
+    }
+    if(scanning) mainwindow->doneScanning();
     scanning = false; //stop scanning
 }
 
@@ -122,6 +182,21 @@ cv::Mat FSController::subLaser()
     cv::resize( laserOn,laserOn,cv::Size(1280,960) );
 
     return vision->subLaser(laserOff,laserOn,threshold);
+}
+
+cv::Mat FSController::diffImage()
+{
+    laser->turnOff();
+    QThread::msleep(200);
+    cv::Mat laserOff = webcam->getFrame();
+    cv::resize( laserOff,laserOff,cv::Size(1280,960) );
+
+    laser->turnOn();
+    QThread::msleep(200);
+    cv::Mat laserOn = webcam->getFrame();
+    cv::resize( laserOn,laserOn,cv::Size(1280,960) );
+
+    return vision->diffImage(laserOff,laserOn);
 }
 
 bool FSController::detectLaserLine()
@@ -154,6 +229,6 @@ void FSController::computeSurfaceMesh()
     if(FSController::getInstance()->model->pointCloud->empty()){
         return;
     }
-    model->convertPointCloudToSurfaceMesh2();
+    model->convertPointCloudToSurfaceMesh();
     geometries->setSurfaceMeshTo(model->surfaceMeshPoisson,model->pointCloudPoisson);
 }

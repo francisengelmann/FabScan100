@@ -20,6 +20,7 @@ public:
     void toggleDirection();                     //change the direction
     void setRotation(FSPoint r);                //set the current rotation of the turntable
     FSPoint getRotation(void);                  //get the current rotation of the turntable
+    void selectStepper();
     void enable(void);                          //enable the turntable (enable the stepper engine)
     void disable(void);                         //disable the turntable (disable the stepper engine)
 };

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>619</width>
+    <width>622</width>
     <height>513</height>
    </rect>
   </property>
@@ -34,9 +34,21 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="convertButton">
+       <widget class="QPushButton" name="toggleViewButton">
+        <property name="minimumSize">
+         <size>
+          <width>175</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>175</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
-         <string>Compute Surface Mesh...</string>
+         <string>Compute Surface Mesh</string>
         </property>
        </widget>
       </item>
@@ -55,8 +67,14 @@
       </item>
       <item>
        <widget class="QPushButton" name="scanButton">
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
+        </property>
         <property name="text">
-         <string>Scan</string>
+         <string>Start Scan</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -74,10 +92,30 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="toggleViewButton">
-        <property name="text">
-         <string>Toggle Point Cloud / Surface Mesh</string>
+       <widget class="QComboBox" name="resolutionComboBox">
+        <property name="currentText">
+         <string>Normal</string>
         </property>
+        <item>
+         <property name="text">
+          <string>Best</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Good</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Normal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Poor</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
@@ -89,7 +127,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>619</width>
+     <width>622</width>
      <height>22</height>
     </rect>
    </property>

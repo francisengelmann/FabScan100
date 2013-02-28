@@ -76,6 +76,7 @@ void FSModel::convertPointCloudToSurfaceMesh()
     std::vector<int> states = gp3.getPointStates();
 
     //pcl::io::savePLYFile("mesh.ply", surfaceMesh);
+    FSController::getInstance()->meshComputed=true;
 }
 
 void FSModel::convertPointCloudToSurfaceMesh2()
@@ -100,7 +101,8 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     compute3DCentroid (*cloud_smoothed, centroid);
     ne.setViewPoint (centroid[0], centroid[1], centroid[2]);
 
-    PointCloud<Normal>::Ptr cloud_normals (new PointCloud<Normal> ()); ne.compute (*cloud_normals);
+    PointCloud<Normal>::Ptr cloud_normals (new PointCloud<Normal> ());
+    ne.compute (*cloud_normals);
     for (size_t i = 0; i < cloud_normals->size (); ++i) {
         cloud_normals->points[i].normal_x *= -1;
         cloud_normals->points[i].normal_y *= -1;
@@ -112,7 +114,8 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     poisson.setDepth (9);
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.reconstruct(surfaceMeshPoisson);
-    pcl::io::savePLYFile("meshPoisson.ply", surfaceMeshPoisson);
+    //pcl::io::savePLYFile("meshPoisson.ply", surfaceMeshPoisson);
+    FSController::getInstance()->meshComputed=true;
 }
 
 void FSModel::loadPointCloudFromPCD(const std::string &file_name)

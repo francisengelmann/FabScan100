@@ -8,18 +8,20 @@ public:
     static FSPoint convertCvPointToFSPoint(CvPoint cvPoint);
     static CvPoint convertFSPointToCvPoint(FSPoint fsPoint);
 
-    cv::Mat subLaser(cv::Mat &laserOff, cv::Mat &laserOn, FSFloat threshold);
-    cv::Mat drawHelperLinesToFrame(cv::Mat &frame);
-    cv::Mat drawLaserLineToFrame(cv::Mat &frame);
+    static cv::Mat subLaser(cv::Mat &laserOff, cv::Mat &laserOn, FSFloat threshold);
+    static cv::Mat subLaser2(cv::Mat &laserOff, cv::Mat &laserOn);
+    static cv::Mat drawHelperLinesToFrame(cv::Mat &frame);
+    static cv::Mat drawLaserLineToFrame(cv::Mat &frame);
+    static cv::Mat diffImage(cv::Mat &laserOff, cv::Mat &laserOn);
 
-    void putPointsFromFrameToCloud(
+    static void putPointsFromFrameToCloud(
             cv::Mat &laserOff,
             cv::Mat &laserOn,
             int dpiVertical,
-            FSFloat lowerLimit,
-            FSFloat threshold);
+            FSFloat lowerLimit);
 
-    FSPoint detectLaserLine(cv::Mat &laserOff, cv::Mat &laserOn, unsigned int threshold);
+    static FSPoint detectLaserLine(cv::Mat &laserOff, cv::Mat &laserOn, unsigned int threshold);
+    static cv::Mat histogram(cv::Mat &img);
 };
 
 #endif // FSVISION_H

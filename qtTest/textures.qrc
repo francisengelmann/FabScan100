@@ -3,5 +3,6 @@
         <file>cube.png</file>
         <file>laser_off.jpg</file>
         <file>laser_on.jpg</file>
+        <file>done.wav</file>
     </qresource>
 </RCC>

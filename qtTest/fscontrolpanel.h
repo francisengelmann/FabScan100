@@ -16,6 +16,7 @@ public:
     explicit FSControlPanel(QWidget *parent = 0);
     ~FSControlPanel();
     Ui::FSControlPanel *ui;
+    void setLaserAngleText(double angle);
 
 private slots:
     void on_fetchFrameButton_clicked();
@@ -36,6 +37,19 @@ private slots:
 
     void on_binaryImage_clicked();
 
+    void on_laserEnable_stateChanged(int arg1);
+
+    void on_laserStepLeftButton_clicked();
+
+    void on_laserStepRightButton_clicked();
+
+    void on_diffImage_clicked();
+
+    void on_laserSwipeMaxEdit_returnPressed();
+
+    void on_laserSwipeMinEdit_returnPressed();
+
+    void on_pushButton_2_clicked();
 
 private:
 };

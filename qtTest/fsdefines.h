@@ -14,6 +14,8 @@
 #define MC_FABSCAN_PING        210
 #define MC_FABSCAN_PONG        211
 #define MC_SELECT_STEPPER      212
+#define MC_LASER_STEPPER       11
+#define MC_TURNTABLE_STEPPER   10
 
 #define REALLY_BIG_NUMBER     99999
 #define REALLY_SMALL_NUMBER  -99999
@@ -26,7 +28,7 @@
 #define LOWER_ANALYZING_FRAME_LIMIT 30
 
 //as the actual position in the frame differs a little from calculated laserline we stop a little befor as we might catch the real non reflected laser line which creates noise
-#define ANALYZING_LASER_OFFSET 100
+#define ANALYZING_LASER_OFFSET 90
 
 //defining the origin in the cvFrame
 //the position of intersection of back plane with ground plane in cvFrame in procent
@@ -52,13 +54,16 @@
 //position of the laser
 #define LASER_POS_X 14.0f //precise by construction
 #define LASER_POS_Y 6.4f  //not needed/used for calculations
-#define LASER_POS_Z 28.5f //precise by construction
+#define LASER_POS_Z 28.8f //precise by construction
+
+#define LASER_SWIPE_MIN 18.0f
+#define LASER_SWIPE_MAX 52.0f
 
 //position of the c270
 #define CAM_POS_X 0.0f //precise by construction
 //#define CAM_POS_Y 4.07f
 #define CAM_POS_Y 5.57f
-#define CAM_POS_Z 30.7f
+#define CAM_POS_Z 30.9f
 
 //position of the turntable
 #define TURNTABLE_POS_X 0.0f //not used by calculations

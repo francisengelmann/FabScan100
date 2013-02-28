@@ -36,7 +36,8 @@
 #define FABSCAN_PING        210
 #define FABSCAN_PONG        211
 #define SELECT_STEPPER      212
-
+#define LASER_STEPPER       11
+#define TURNTABLE_STEPPER   10
 //the protocol: we send one byte to define the action what to do.
 //If the action is unary (like turnung off the light) we only need one byte so we are fine.
 //If we want to tell the stepper to turn, a second byte is used to specify the number of steps.
@@ -56,16 +57,16 @@ int currStepper;
 
 void step()
 {
- if(currStepper == 0){
+ if(currStepper == TURNTABLE_STEPPER){
    digitalWrite(STEP_PIN_0, 0);
- }else if(currStepper == 1){
+ }else if(currStepper == LASER_STEPPER){
    digitalWrite(STEP_PIN_1, 0);
  }
 
  delay(3);
- if(currStepper == 0){
+ if(currStepper == TURNTABLE_STEPPER){
    digitalWrite(STEP_PIN_0, 1);
- }else if(currStepper == 1){
+ }else if(currStepper == LASER_STEPPER){
    digitalWrite(STEP_PIN_1, 1);
  }
  delay(3);
@@ -110,7 +111,7 @@ void setup()
  digitalWrite(LASER_PIN, 1); //turn laser on
  Serial.write(FABSCAN_PONG); //send a pong back to the computer so we know setup is done and that we are actually dealing with a FabScan
  
- currStepper = 0;  //turntable is default stepper
+ currStepper = TURNTABLE_STEPPER;  //turntable is default stepper
 } 
 
 void loop() 
@@ -139,30 +140,30 @@ void loop()
               byteType = TURN_TABLE_STEPS;
               break;
             case SET_DIRECTION_CW:
-              if(currStepper == 0){
+              if(currStepper == TURNTABLE_STEPPER){
                 digitalWrite(DIR_PIN_0, 1);
-              }else if(currStepper == 1){
+              }else if(currStepper == LASER_STEPPER){
                 digitalWrite(DIR_PIN_1, 1);
               }
               break;
             case SET_DIRECTION_CCW:
-              if(currStepper == 0){
+              if(currStepper == TURNTABLE_STEPPER){
                 digitalWrite(DIR_PIN_0, 0);
-              }else if(currStepper == 1){
+              }else if(currStepper == LASER_STEPPER){
                 digitalWrite(DIR_PIN_1, 0);
               }
               break;
             case TURN_STEPPER_ON:
-              if(currStepper == 0){
+              if(currStepper == TURNTABLE_STEPPER){
                 digitalWrite(ENABLE_PIN_0, 0);
-              }else if(currStepper == 1){
+              }else if(currStepper == LASER_STEPPER){
                 digitalWrite(ENABLE_PIN_1, 0);
               }
               break;
             case TURN_STEPPER_OFF:
-              if(currStepper == 0){
+              if(currStepper == TURNTABLE_STEPPER){
                 digitalWrite(ENABLE_PIN_0, 1);
-              }else if(currStepper == 1){
+              }else if(currStepper == LASER_STEPPER){
                 digitalWrite(ENABLE_PIN_1, 1);
               }
               break;
@@ -191,6 +192,7 @@ void loop()
           byteType = ACTION_BYTE;
           break;
         case STEPPER_ID:
+          Serial.write(incomingByte);
           currStepper = incomingByte;
           byteType = ACTION_BYTE;
           break;

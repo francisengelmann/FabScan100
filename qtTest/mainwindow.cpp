@@ -10,6 +10,7 @@
 //#include <QtConcurrentRun>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QCamera>
+#include <QSound>
 
 #include <boost/bind.hpp>
 
@@ -28,11 +29,15 @@ MainWindow::MainWindow(QWidget *parent) :
     FSController::getInstance()->mainwindow=this;
     FSController::getInstance()->controlPanel=controlPanel;
     ui->widget->setStyleSheet("border: 1px solid black;");
+    applyState(POINT_CLOUD);
+    FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
+    FSController::getInstance()->yDpi = 1;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    FSController::getInstance()->scanning=false;
 }
 
 void MainWindow::setupMenu()
@@ -71,18 +76,21 @@ void MainWindow::showDialog(QString dialogText)
 // Action Methods
 //===========================================
 
-void MainWindow::on_convertButton_clicked()
-{
-    FSController::getInstance()->computeSurfaceMesh();
-    ui->widget->drawState = 1; //display surface mesh
-    ui->widget->updateGL();
-}
-
 void MainWindow::on_toggleViewButton_clicked()
 {
     char currentDrawState = ui->widget->drawState;
     ui->widget->drawState = 1-currentDrawState;
     ui->widget->updateGL();
+    if(ui->widget->drawState==0){
+        state=POINT_CLOUD;
+    }else{
+        state=SURFACE_MESH;
+        if(!FSController::getInstance()->meshComputed){
+            FSController::getInstance()->computeSurfaceMesh();
+        }
+
+    }
+    applyState(state);
 }
 
 void MainWindow::showControlPanel()
@@ -134,6 +142,7 @@ void MainWindow::openPointCloud()
     }
     ui->widget->drawState = 0;
     ui->widget->updateGL();
+    applyState(POINT_CLOUD);
 }
 
 void MainWindow::savePointCloud()
@@ -163,6 +172,7 @@ void MainWindow::newPointCloud()
     FSController::getInstance()->model->pointCloud->clear();
     FSController::getInstance()->model->surfaceMesh.polygons.clear();
     ui->widget->updateGL();
+    applyState(POINT_CLOUD);
 }
 
 void MainWindow::enumerateSerialPorts()
@@ -209,6 +219,12 @@ void MainWindow::enumerateWebCams()
         videoDeviceAction->setCheckable(true);
         videoDeviceAction->setData(QVariant(deviceName));
         connect(videoDeviceAction,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
+
+        /*if(description.contains("Logitech")){
+            FSController::getInstance()->webcam->info.portName=description; //eigentlich doppelt gemoppelt, das hier kann weg muss jedoch gekukt werden
+            FSController::getInstance()->webcam->setCamera(videoDeviceAction->data().toByteArray());
+        }*/
+
         if (FSController::getInstance()->webcam->info.portName.compare(description)==0) {
             //cameraDevice = deviceName;
             videoDeviceAction->setChecked(true);
@@ -219,18 +235,75 @@ void MainWindow::enumerateWebCams()
 
 void MainWindow::on_scanButton_clicked()
 {
-
+    //doneScanning();
     //QFuture<void> future = QtConcurrent::run(FSController::getInstance(), &FSController::scanThread);
     bool s = FSController::getInstance()->scanning;
     if (s==false){
+        applyState(SCANNING);
         FSController::getInstance()->scanThread();
     }else{
+        applyState(POINT_CLOUD);
+        this->ui->scanButton->setText("Start Scan");
         FSController::getInstance()->scanning = false;
     }
+
+}
+
+void MainWindow::doneScanning()
+{
+    QSound::play("done.wav");
+    this->ui->scanButton->setText("Start Scan");
+    FSController::getInstance()->laser->disable();
+    FSController::getInstance()->turntable->disable();
+    applyState(POINT_CLOUD);
 }
 
 void MainWindow::redraw()
 {
     ui->widget->drawState = 0;
     ui->widget->updateGL();
+}
+
+void MainWindow::applyState(FSState s)
+{
+    state = s;
+    switch(state){
+    case SCANNING:
+        this->ui->widget->drawState=0;
+        this->ui->scanButton->setText("Stop Scan");
+        break;
+    case POINT_CLOUD:
+        this->ui->scanButton->setText("Start Scan");
+        if(FSController::getInstance()->meshComputed){
+            this->ui->toggleViewButton->setText("Show SurfaceMesh");
+        }else{
+            this->ui->toggleViewButton->setText("Compute SurfaceMesh");
+        }
+        break;
+    case SURFACE_MESH:
+        this->ui->scanButton->setText("Start Scan");
+        this->ui->toggleViewButton->setText("Show PointCloud");
+        break;
+    }
+}
+
+void MainWindow::on_resolutionComboBox_currentIndexChanged(const QString &arg1)
+{
+    if(arg1.compare("Best")==0){
+        //laserStepSize = 2*laser->degreesPerStep;
+        FSController::getInstance()->turntableStepSize = FSController::getInstance()->turntable->degreesPerStep;
+        FSController::getInstance()->yDpi = 1;
+    }
+    if(arg1.compare("Good")==0){
+        FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
+        FSController::getInstance()->yDpi = 1;
+    }
+    if(arg1.compare("Normal")==0){
+        FSController::getInstance()->turntableStepSize = 2*16*FSController::getInstance()->turntable->degreesPerStep;
+        FSController::getInstance()->yDpi = 5;
+    }
+    if(arg1.compare("Poor")==0){
+        FSController::getInstance()->turntableStepSize = 10*16*FSController::getInstance()->turntable->degreesPerStep;
+        FSController::getInstance()->yDpi = 10;
+    }
 }

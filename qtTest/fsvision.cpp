@@ -5,7 +5,6 @@
 #include "fscontroller.h"
 
 #include <assert.h>
-
 #include <QDebug>
 
 class FSLaser;
@@ -27,14 +26,13 @@ FSPoint FSVision::convertCvPointToFSPoint(CvPoint cvPoint)
   origin.y = cvImageSize.height*ORIGIN_Y;
 
   FSPoint fsPoint;
-
   //translate
   cvPoint.x -= origin.x;
   cvPoint.y -= origin.y;
   //scale
   fsPoint.x = cvPoint.x*fsImageSize.width/cvImageSize.width;
   fsPoint.y = -cvPoint.y*fsImageSize.height/cvImageSize.height;
-  fsPoint.z=0.0f;
+  fsPoint.z = 0.0f;
 
   return fsPoint;
 }
@@ -59,6 +57,21 @@ CvPoint FSVision::convertFSPointToCvPoint(FSPoint fsPoint)
   return cvPoint;
 }
 
+cv::Mat FSVision::diffImage(cv::Mat &laserOff, cv::Mat &laserOn)
+{
+    unsigned int cols = laserOff.cols;
+    unsigned int rows = laserOff.rows;
+    cv::Mat bwLaserOff( cols,rows,CV_8U,cv::Scalar(100) );
+    cv::Mat bwLaserOn( cols,rows,CV_8U,cv::Scalar(100) );
+    cv::Mat diffImage( cols,rows,CV_8U,cv::Scalar(100) );
+    cv::Mat result( cols,rows,CV_8UC3,cv::Scalar(100) );
+    cv::cvtColor(laserOff, bwLaserOff, CV_RGB2GRAY); //convert to grayscale
+    cv::cvtColor(laserOn, bwLaserOn, CV_RGB2GRAY); //convert to grayscale
+    cv::subtract(bwLaserOn,bwLaserOff,diffImage); //subtract both grayscales
+    cv::cvtColor(diffImage, result, CV_GRAY2RGB); //convert back ro rgb
+    return result;
+}
+
 cv::Mat FSVision::subLaser(cv::Mat &laserOff, cv::Mat &laserOn, FSFloat threshold)
 {
     unsigned int cols = laserOff.cols;
@@ -70,49 +83,149 @@ cv::Mat FSVision::subLaser(cv::Mat &laserOff, cv::Mat &laserOn, FSFloat threshol
     cv::Mat result( cols,rows,CV_8UC3,cv::Scalar(100) );
 
     cv::cvtColor(laserOff, bwLaserOff, CV_RGB2GRAY); //convert to grayscale
-    //qDebug("works here 1");
-
     cv::cvtColor(laserOn, bwLaserOn, CV_RGB2GRAY); //convert to grayscale
-    //qDebug("works here 2");
     cv::subtract(bwLaserOn,bwLaserOff,diffImage); //subtract both grayscales
     cv::GaussianBlur(diffImage,diffImage,cv::Size(5,5),3); //gaussian filter
-    //cv::adaptiveThreshold(diffImage,treshImage,255,CV_ADAPTIVE_THRESH_MEAN_C,CV_THRESH_BINARY,501,0);
-
-    //cv::AdaptiveThreshold(subImage,subImage,255,CV_ADAPTIVE_THRESH_MEAN_C,CV_THRESH_BINARY,501,0);
     cv::threshold(diffImage,treshImage,threshold,255,cv::THRESH_BINARY); //apply threshold
-
-    /*cv::namedWindow("extracted laserLine");
-    cv::imshow("extracted laserLine",diffImage);
-    cv::waitKey(0);
-    cv::imshow("extracted laserLine",treshImage);
-    cv::waitKey(0);
-    cvDestroyWindow("extracted laserLine");*/
-
-    //cv::morphologyEx(treshImage,treshImage,cv::MORPH_GRADIENT,cv::Mat());
     cv::Mat element5(3,3,CV_8U,cv::Scalar(1));
     cv::morphologyEx(treshImage,treshImage,cv::MORPH_OPEN,element5);
-    //cv::erode(treshImage,treshImage,cv::Mat());
-    //cv::morphologyEx(treshImage,treshImage,cv::MORPH_CLOSE,element5);
-    //cv::waitKey(0);
-    //cv::imshow("Laser Frame",treshImage);
-    //cv::waitKey(0);
-    //cvDestroyWindow("Laser Frame");
-
-    /*********************************************
-     *    A LOT OF INTERESTING STUFF TO TRY!     *
-     *********************************************
-
-    cvAbsDiff(bwNoLaser,bwWithLaser,subImage);
-    //cvThreshold(subImage, subImage, TRESHOLD_FOR_BW, 255, CV_THRESH_BINARY);
-
-    //secend last param is the size of the block that is used to determine treshhold
-    cvAdaptiveThreshold(subImage,subImage,255,CV_ADAPTIVE_THRESH_MEAN_C,CV_THRESH_BINARY,501,0);
-    cvSmooth( subImage, subImage, CV_GAUSSIAN, 11, 11 );
-    cvSmooth( subImage, subImage, CV_GAUSSIAN, 11, 11 );
-    cvThreshold(subImage, subImage, 200, 255, CV_THRESH_BINARY);
-    */
 
     cv::cvtColor(treshImage, result, CV_GRAY2RGB); //convert back ro rgb
+    /*cv::namedWindow("laserLine");
+    cv::imshow("laserLine", result);
+    cv::waitKey(0);
+    cv::destroyWindow("laserLine");*/
+    return result;
+}
+
+cv::Mat FSVision::histogram(cv::Mat &img)
+{
+    /// Separate the image in 3 places ( B, G and R )
+
+      /// Establish the number of bins
+      int histSize = 256;
+
+      /// Set the ranges ( for B,G,R) )
+      float range[] = { 0, 256 } ;
+      const float* histRange = { range };
+
+      bool uniform = true;
+      bool accumulate = false;
+
+      cv::Mat hist;
+
+      /// Compute the histograms:
+      //cv::calcHist()
+      cv::calcHist(&img, 1, 0, cv::Mat(), hist, 1, &histSize, &histRange, uniform, accumulate );
+
+      // Draw the histograms for B, G and R
+      int hist_w = 512;
+      int hist_h = 400;
+      int bin_w = cvRound( (double) hist_w/histSize );
+
+      cv::Mat histImage( hist_h, hist_w, CV_8UC3, cv::Scalar(0,0,0) );
+
+      /// Normalize the result to [ 0, histImage.rows ]
+      cv::normalize(hist, hist, 0, histImage.rows, cv::NORM_MINMAX, -1, cv::Mat() );
+
+      /// Draw for each channel
+      for( int i = 1; i < histSize; i++ )
+      {
+          cv::line( histImage, cv::Point( bin_w*(i-1), hist_h - cvRound(hist.at<float>(i-1)) ) ,
+                           cv::Point( bin_w*(i), hist_h - cvRound(hist.at<float>(i)) ),
+                           cv::Scalar( 255, 0, 0), 2, 8, 0  );
+      }
+    return histImage;
+}
+
+cv::Mat FSVision::subLaser2(cv::Mat &laserOff, cv::Mat &laserOn)
+{
+    unsigned int cols = laserOff.cols;
+    unsigned int rows = laserOff.rows;
+    cv::Mat bwLaserOff( rows,cols,CV_8U,cv::Scalar(100) );
+    cv::Mat bwLaserOn( rows,cols,CV_8U,cv::Scalar(100) );
+    cv::Mat tresh2Image( rows,cols,CV_8U,cv::Scalar(100) );
+    cv::Mat diffImage( rows,cols,CV_8U,cv::Scalar(100) );
+    cv::Mat gaussImage( rows,cols,CV_8U,cv::Scalar(100) );
+    cv::Mat laserImage( rows,cols,CV_8U,cv::Scalar(100) );
+    cv::Mat result( rows,cols,CV_8UC3,cv::Scalar(100) );
+
+    cv::cvtColor(laserOff, bwLaserOff, CV_RGB2GRAY);//convert to grayscale
+    cv::cvtColor(laserOn, bwLaserOn, CV_RGB2GRAY); //convert to grayscale
+    cv::subtract(bwLaserOn,bwLaserOff,diffImage); //subtract both grayscales
+    tresh2Image = diffImage.clone();
+
+    /*cv::namedWindow("laserLine");
+    cv::imshow("laserLine", diffImage);
+    cv::waitKey(0);*/
+
+    // Apply the specified morphology operation
+    //cv::imshow("laserLine", FSVision::histogram(diffImage));
+    //cv::waitKey(0);
+    /*int morph_elem = 0;
+    int morph_size = 1;
+    cv::Mat element = cv::getStructuringElement(
+                morph_elem,
+                cv::Size( 2*morph_size + 1, 2*morph_size+1 ),
+                cv::Point( morph_size, morph_size ) );
+    cv::morphologyEx(diffImage, diffImage, cv::MORPH_OPEN, element);*/
+    //cv::imshow("laserLine", diffImage);
+    //cv::waitKey(0);
+    cv::GaussianBlur(diffImage,gaussImage,cv::Size(15,15),12,12);
+    diffImage = diffImage-gaussImage;
+    //cv::imshow("laserLine", diffImage);
+    //cv::waitKey(0);
+    FSFloat threshold = 10;
+    cv::threshold(diffImage,diffImage,threshold,255,cv::THRESH_TOZERO); //apply threshold
+    //cv::imshow("laserLine", FSVision::histogram(diffImage));
+    //cv::waitKey(0);
+    //cv::equalizeHist(diffImage,diffImage);
+    //cv::imshow("laserLine", FSVision::histogram(diffImage));
+    //cv::waitKey(0);
+    cv::erode(diffImage,diffImage,cv::Mat(3,3,CV_8U,cv::Scalar(1)) );
+    //cv::imshow("laserLine", diffImage);
+    //cv::waitKey(0);
+
+    //cv::Mat element5(3,3,CV_8U,cv::Scalar(1));
+    //cv::morphologyEx(diffImage,diffImage,cv::MORPH_OPEN,element5);
+    //cv::imshow("laserLine", diffImage);
+    //cv::waitKey(0);
+    cv::Canny(diffImage,diffImage,20,50);
+    //cv::imshow("laserLine", diffImage);
+    //cv::waitKey(0);
+    //cv::imshow("laserLine", treshImage+diffImage);
+    //cv::waitKey(0);
+    //DestroyWindow("laserLine");
+
+    int edges[cols]; //contains the cols index of the detected edges per row
+    for(unsigned int y = 0; y <rows; y++){
+        //reset the detected edges
+        for(unsigned int j=0; j<cols; j++){ edges[j]=-1; }
+        int j=0;
+        for(unsigned int x = 0; x<cols; x++){
+            if(diffImage.at<uchar>(y,x)>250){
+                edges[j]=x;
+                j++;
+            }
+        }
+        //iterate over detected edges, take middle of two edges
+        for(unsigned int j=0; j<cols-1; j+=2){
+            if(edges[j]>=0 && edges[j+1]>=0 && edges[j+1]-edges[j]<40){
+                int middle = (int)(edges[j]+edges[j+1])/2;
+                //qDebug() << cols << rows << y << middle;
+                laserImage.at<uchar>(y,middle) = 255;
+            }
+        }
+    }
+    /*cv::namedWindow("laserLine");
+    cv::imshow("laserLine", diffImage);
+    cv::waitKey(0);
+    cv::imshow("laserLine", laserImage);
+    cv::waitKey(0);
+    cv::imshow("laserLine", laser+treshImage);
+    cv::waitKey(0);
+    cv::destroyAllWindows();*/
+    cv::cvtColor(laserImage, result, CV_GRAY2RGB); //convert back ro rgb
     return result;
 }
 
@@ -150,6 +263,7 @@ cv::Mat FSVision::drawHelperLinesToFrame(cv::Mat &frame)
              cv::Point(frame.cols,UPPER_ANALYZING_FRAME_LIMIT),
              CV_RGB( 255,255,0 ),
              1);
+    frame = drawLaserLineToFrame(frame);
     return frame;
 }
 
@@ -171,8 +285,7 @@ void FSVision::putPointsFromFrameToCloud(
         cv::Mat &laserOff,
         cv::Mat &laserOn,
         int dpiVertical,    //step between vertical points
-        FSFloat lowerLimit, //remove points below this limit
-        FSFloat threshold)  //threshold for binary images
+        FSFloat lowerLimit) //remove points below this limit
 {
     //qDebug() << "putPointsFromFrameToCloud";
     //the following lines are just to make to code more readable
@@ -182,12 +295,8 @@ void FSVision::putPointsFromFrameToCloud(
     FSWebCam* webcam = FSController::getInstance()->webcam;
 
     //extract laser line from the two images
-    cv::Mat laserLine = subLaser(laserOff,laserOn,threshold);
-
-    /*cv::namedWindow("extracted laserLine");
-    cv::imshow("extracted laserLine",laserLine);
-    cv::waitKey(0);
-    cvDestroyWindow("extracted laserLine");*/
+    //cv::Mat laserLine = subLaser(laserOff,laserOn,threshold);
+    cv::Mat laserLine = subLaser2(laserOff,laserOn);
 
     //calculate position of laser in cv frame
     FSPoint fsLaserLinePosition = laser->getLaserPointPosition();
@@ -206,7 +315,7 @@ void FSVision::putPointsFromFrameToCloud(
         y < bwImage.rows-(LOWER_ANALYZING_FRAME_LIMIT);
         y+=dpiVertical )
     {
-        qDebug() << "checking point at line " << y << laserPos+ANALYZING_LASER_OFFSET;
+        //qDebug() << "checking point at line " << y << laserPos+ANALYZING_LASER_OFFSET;
         //ANALYZING_LASER_OFFSET is the offset where we stop looking for a reflected laser, cos we might catch the non reflected
         //now iteratinf from right to left over bwLaserLine frame
         for(int x = bwImage.cols-1;

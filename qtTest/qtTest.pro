@@ -1,4 +1,4 @@
-#-------------------------------------------------
+ #-------------------------------------------------
 #
 # Project created by QtCreator 2012-09-17T22:38:59
 #
@@ -107,37 +107,37 @@ macx {
 
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.2/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
-    INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
+        INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
 
-    LIBS += -L/usr/local/Cellar/boost/1.51.0 \
-    -lboost_chrono-mt \
-    -lboost_context-mt \
-    -lboost_date_time-mt \
-    -lboost_exception-mt \
-    -lboost_filesystem-mt \
-    -lboost_graph-mt \
-    -lboost_iostreams-mt \
-    -lboost_locale-mt \
-    -lboost_math_c99-mt \
-    -lboost_math_c99f-mt \
-    -lboost_math_c99l-mt \
-    -lboost_math_tr1-mt \
-    -lboost_math_tr1f-mt \
-    -lboost_math_tr1l-mt \
-    -lboost_prg_exec_monitor-mt \
-    -lboost_program_options-mt \
-    -lboost_python-mt \
-    -lboost_random-mt \
-    -lboost_regex-mt \
-    -lboost_serialization-mt \
-    -lboost_signals-mt \
-    -lboost_system-mt \
-    #-lboost_test_exec_monitor-mt \
-    -lboost_thread-mt \
-    -lboost_timer-mt \
-    -lboost_unit_test_framework-mt \
-    -lboost_wave-mt \
-    -lboost_wserialization-mt \
+        LIBS += -L/usr/local/Cellar/boost/1.51.0 \
+        -lboost_chrono-mt \
+        -lboost_context-mt \
+        -lboost_date_time-mt \
+        -lboost_exception-mt \
+        -lboost_filesystem-mt \
+        -lboost_graph-mt \
+        -lboost_iostreams-mt \
+        -lboost_locale-mt \
+        -lboost_math_c99-mt \
+        -lboost_math_c99f-mt \
+        -lboost_math_c99l-mt \
+        -lboost_math_tr1-mt \
+        -lboost_math_tr1f-mt \
+        -lboost_math_tr1l-mt \
+        -lboost_prg_exec_monitor-mt \
+        -lboost_program_options-mt \
+        -lboost_python-mt \
+        -lboost_random-mt \
+        -lboost_regex-mt \
+        -lboost_serialization-mt \
+        -lboost_signals-mt \
+        -lboost_system-mt \
+        #-lboost_test_exec_monitor-mt \
+        -lboost_thread-mt \
+        -lboost_timer-mt \
+        -lboost_unit_test_framework-mt \
+        -lboost_wave-mt \
+        -lboost_wserialization-mt \
 }
 
 linux-g++ {
