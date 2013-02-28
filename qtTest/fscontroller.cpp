@@ -4,6 +4,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <QFuture>
 #include <QtConcurrent/QtConcurrentRun>
+#include <boost/lexical_cast.hpp>
 
 FSController* FSController::singleton=0;
 

@@ -156,6 +156,8 @@ linux-g++ {
     -lopencv_features2d \
     -lopencv_calib3d
 
+    INCLUDEPATH += /usr/include/
+
     INCLUDEPATH += /usr/include/pcl-1.6
     LIBS += -L/usr/lib \
     -lpcl_common \

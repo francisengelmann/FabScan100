@@ -81,19 +81,19 @@ void FSModel::convertPointCloudToSurfaceMesh()
 
 void FSModel::convertPointCloudToSurfaceMesh2()
 {
-    MovingLeastSquares<PointXYZRGB, PointXYZ> mls;
+    /*pcl::MovingLeastSquares<PointXYZRGB, PointXYZ> mls;
     mls.setInputCloud (pointCloud);
     mls.setSearchRadius (0.01);
     mls.setPolynomialFit (true);
     mls.setPolynomialOrder (2);
-    mls.setUpsamplingMethod (MovingLeastSquares<PointXYZRGB, PointXYZ>::SAMPLE_LOCAL_PLANE);
+    mls.setUpsamplingMethod (pcl::MovingLeastSquares<PointXYZRGB, PointXYZ>::SAMPLE_LOCAL_PLANE);
     mls.setUpsamplingRadius (0.005);
     mls.setUpsamplingStepSize (0.003);
 
-    PointCloud<PointXYZ>::Ptr cloud_smoothed (new PointCloud<PointXYZ> ());
+    pcl::PointCloud<PointXYZ>::Ptr cloud_smoothed (new pcl::PointCloud<PointXYZ> ());
     mls.process (*cloud_smoothed);
 
-    NormalEstimationOMP<PointXYZ, Normal> ne;
+    pcl::NormalEstimationOMP<pcl::PointXYZ, Normal> ne;
     ne.setNumberOfThreads (8);
     ne.setInputCloud (cloud_smoothed);
     ne.setRadiusSearch (1);
@@ -115,7 +115,7 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.reconstruct(surfaceMeshPoisson);
     //pcl::io::savePLYFile("meshPoisson.ply", surfaceMeshPoisson);
-    FSController::getInstance()->meshComputed=true;
+    FSController::getInstance()->meshComputed=true;*/
 }
 
 void FSModel::loadPointCloudFromPCD(const std::string &file_name)
