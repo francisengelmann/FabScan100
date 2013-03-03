@@ -24,6 +24,7 @@ FSController::FSController()
     //all in degrees;
     laserSwipeMin = 30; //18
     laserSwipeMax = 45; //50
+    meshComputed = false;
     //old = true;
 }
 

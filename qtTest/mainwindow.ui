@@ -92,9 +92,16 @@
        </spacer>
       </item>
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Resolution:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QComboBox" name="resolutionComboBox">
         <property name="currentText">
-         <string>Normal</string>
+         <string>Best</string>
         </property>
         <item>
          <property name="text">

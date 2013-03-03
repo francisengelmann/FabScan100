@@ -143,6 +143,7 @@ void MainWindow::openPointCloud()
     ui->widget->drawState = 0;
     ui->widget->updateGL();
     applyState(POINT_CLOUD);
+    FSController::getInstance()->meshComputed=false;
 }
 
 void MainWindow::savePointCloud()
@@ -173,6 +174,7 @@ void MainWindow::newPointCloud()
     FSController::getInstance()->model->surfaceMesh.polygons.clear();
     ui->widget->updateGL();
     applyState(POINT_CLOUD);
+    FSController::getInstance()->meshComputed=false;
 }
 
 void MainWindow::enumerateSerialPorts()
