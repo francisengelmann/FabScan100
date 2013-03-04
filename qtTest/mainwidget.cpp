@@ -43,6 +43,7 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
     // Saving mouse press position
     //mousePressPosition = QVector2D(e->posF());
     mousePressPosition = QVector2D(e->localPos());
+    FSController::getInstance()->mainwindow->setCursor(Qt::ClosedHandCursor);
 }
 
 void MainWidget::wheelEvent(QWheelEvent *e){
@@ -78,6 +79,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
 {
     angleX=angleXtmp;
     angleY=angleYtmp;
+    FSController::getInstance()->mainwindow->setCursor(Qt::OpenHandCursor);
 }
 //! [0]
 

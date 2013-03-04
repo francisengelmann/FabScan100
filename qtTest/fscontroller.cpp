@@ -231,6 +231,10 @@ void FSController::computeSurfaceMesh()
     if(FSController::getInstance()->model->pointCloud->empty()){
         return;
     }
-    model->convertPointCloudToSurfaceMesh();
+    //model->convertPointCloudToSurfaceMesh();
+    //geometries->setSurfaceMeshTo(model->surfaceMesh,model->pointCloud);
+    model->convertPointCloudToSurfaceMesh2();
     geometries->setSurfaceMeshTo(model->surfaceMeshPoisson,model->pointCloudPoisson);
+
+    mainwindow->redraw();
 }

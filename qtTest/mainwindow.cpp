@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     FSController::getInstance()->controlPanel=controlPanel;
     ui->widget->setStyleSheet("border: 1px solid black;");
     applyState(POINT_CLOUD);
+    //resolution: Good
     FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
     FSController::getInstance()->yDpi = 1;
 }
@@ -78,6 +79,7 @@ void MainWindow::showDialog(QString dialogText)
 
 void MainWindow::on_toggleViewButton_clicked()
 {
+    FSController::getInstance()->mainwindow->setCursor(Qt::BusyCursor);
     char currentDrawState = ui->widget->drawState;
     ui->widget->drawState = 1-currentDrawState;
     ui->widget->updateGL();
@@ -86,11 +88,13 @@ void MainWindow::on_toggleViewButton_clicked()
     }else{
         state=SURFACE_MESH;
         if(!FSController::getInstance()->meshComputed){
+            qDebug() << "computing mesh";
             FSController::getInstance()->computeSurfaceMesh();
         }
 
     }
     applyState(state);
+    FSController::getInstance()->mainwindow->setCursor(Qt::ArrowCursor);
 }
 
 void MainWindow::showControlPanel()
@@ -262,7 +266,7 @@ void MainWindow::doneScanning()
 
 void MainWindow::redraw()
 {
-    ui->widget->drawState = 0;
+    //ui->widget->drawState = 0;
     ui->widget->updateGL();
 }
 
@@ -297,7 +301,7 @@ void MainWindow::on_resolutionComboBox_currentIndexChanged(const QString &arg1)
         FSController::getInstance()->yDpi = 1;
     }
     if(arg1.compare("Good")==0){
-        FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
+        FSController::getInstance()->turntableStepSize = 8*FSController::getInstance()->turntable->degreesPerStep;
         FSController::getInstance()->yDpi = 1;
     }
     if(arg1.compare("Normal")==0){

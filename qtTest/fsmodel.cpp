@@ -38,8 +38,8 @@ void FSModel::convertPointCloudToSurfaceMesh()
     tree->setInputCloud (cloud);
     n.setInputCloud (cloud);
     n.setSearchMethod (tree);
-    //n.setRadiusSearch(15.0);
-    n.setKSearch (20);
+    n.setRadiusSearch(15.0);
+    //n.setKSearch (30);
     n.compute (*normals);
     //* normals should not contain the point normals + surface curvatures
 
@@ -91,31 +91,44 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     mls.setUpsamplingStepSize (0.003);
 
     pcl::PointCloud<PointXYZ>::Ptr cloud_smoothed (new pcl::PointCloud<PointXYZ> ());
-    mls.process (*cloud_smoothed);
+    mls.process (*cloud_smoothed);*/
 
-    pcl::NormalEstimationOMP<pcl::PointXYZ, Normal> ne;
-    ne.setNumberOfThreads (8);
-    ne.setInputCloud (cloud_smoothed);
-    ne.setRadiusSearch (1);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+    cloud->points.resize(pointCloud->size());
+    for (size_t i = 0; i < pointCloud->points.size(); i++) {
+        cloud->points[i].x = pointCloud->points[i].x;
+        cloud->points[i].y = pointCloud->points[i].y;
+        cloud->points[i].z = pointCloud->points[i].z;
+    }
+
+    pcl::NormalEstimation<pcl::PointXYZ, Normal> ne;
+    //ne.setNumberOfThreads(8);
+    ne.setInputCloud (cloud);
+    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
+    ne.setSearchMethod (tree);
+    ne.setRadiusSearch (0.01);
     Eigen::Vector4f centroid;
-    compute3DCentroid (*cloud_smoothed, centroid);
+    compute3DCentroid (*cloud, centroid);
     ne.setViewPoint (centroid[0], centroid[1], centroid[2]);
-
+    qDebug() << "Centroid:"<<centroid[0] <<centroid[1]<<centroid[2];
     PointCloud<Normal>::Ptr cloud_normals (new PointCloud<Normal> ());
     ne.compute (*cloud_normals);
+    //invert all normals, primarly they all point to the centroid
     for (size_t i = 0; i < cloud_normals->size (); ++i) {
         cloud_normals->points[i].normal_x *= -1;
         cloud_normals->points[i].normal_y *= -1;
         cloud_normals->points[i].normal_z *= -1;
     }
-    PointCloud<PointNormal>::Ptr cloud_smoothed_normals (new PointCloud<PointNormal> ()); concatenateFields (*cloud_smoothed, *cloud_normals, *cloud_smoothed_normals);
+    PointCloud<PointNormal>::Ptr cloud_smoothed_normals (new PointCloud<PointNormal> ());
+    concatenateFields (*cloud, *cloud_normals, *cloud_smoothed_normals);
+    //concatenateFields (*cloud_smoothed, *cloud_normals, *cloud_smoothed_normals);*/
 
     Poisson<PointNormal> poisson;
-    poisson.setDepth (9);
+    poisson.setDepth (6);
     poisson.setInputCloud(cloud_smoothed_normals);
     poisson.reconstruct(surfaceMeshPoisson);
     //pcl::io::savePLYFile("meshPoisson.ply", surfaceMeshPoisson);
-    FSController::getInstance()->meshComputed=true;*/
+    FSController::getInstance()->meshComputed=true;
 }
 
 void FSModel::loadPointCloudFromPCD(const std::string &file_name)
