@@ -79,26 +79,32 @@ void FSController::scan()
 
 void FSController::scanThread()
 {
+    //check if camera is connected
     if(webcam->info.portName.isEmpty()){
         mainwindow->showDialog("No webcam selected!");
         return;
     }
+    //detec laser line
     this->detectLaserLine();
+    //turn of stepper (if available)
     this->laser->disable();
 
-    scanning = true; //start scanning
+    scanning = true; //start scanning, if false, scan stops
     FSFloat stepDegrees = turntableStepSize;
-    laser->turnOn();
 
+    laser->turnOn();
     turntable->setDirection(FS_DIRECTION_CCW);
     turntable->enable();
 
+    //iterate over a complete turn of the turntable
     for(FSFloat i=0; i<360 && scanning==true; i+=stepDegrees){
+        //take picture without laser
         laser->turnOff();
         QThread::msleep(200);
         cv::Mat laserOff = webcam->getFrame();
         cv::resize( laserOff,laserOff,cv::Size(1280,960) );
 
+        //take picture with laser
         laser->turnOn();
         QThread::msleep(200);
         cv::Mat laserOn = webcam->getFrame();
@@ -111,9 +117,12 @@ void FSController::scanThread()
         cv::waitKey(0);
         cvDestroyWindow("extracted laserLine");*/
 
+        //here magic happens
         vision->putPointsFromFrameToCloud(laserOff, laserOn, yDpi, 0);
+        //update gui
         geometries->setPointCloudTo(model->pointCloud);
         mainwindow->redraw();
+        //turn turntable a step
         turntable->turnNumberOfDegrees(stepDegrees);
         QThread::msleep(  300+stepDegrees*100);
     }

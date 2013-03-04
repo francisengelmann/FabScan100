@@ -144,11 +144,11 @@ cv::Mat FSVision::subLaser2(cv::Mat &laserOff, cv::Mat &laserOn)
     unsigned int rows = laserOff.rows;
     cv::Mat bwLaserOff( rows,cols,CV_8U,cv::Scalar(100) );
     cv::Mat bwLaserOn( rows,cols,CV_8U,cv::Scalar(100) );
-    cv::Mat tresh2Image( rows,cols,CV_8U,cv::Scalar(100) );
+    cv::Mat tresh2Image( rows,cols,CV_8U,cv::Scalar(0) );
     cv::Mat diffImage( rows,cols,CV_8U,cv::Scalar(100) );
-    cv::Mat gaussImage( rows,cols,CV_8U,cv::Scalar(100) );
-    cv::Mat laserImage( rows,cols,CV_8U,cv::Scalar(100) );
-    cv::Mat result( rows,cols,CV_8UC3,cv::Scalar(100) );
+    cv::Mat gaussImage( rows,cols,CV_8U,cv::Scalar(0) );
+    cv::Mat laserImage( rows,cols,CV_8U,cv::Scalar(0) );
+    cv::Mat result( rows,cols,CV_8UC3,cv::Scalar(0) );
 
     cv::cvtColor(laserOff, bwLaserOff, CV_RGB2GRAY);//convert to grayscale
     cv::cvtColor(laserOn, bwLaserOn, CV_RGB2GRAY); //convert to grayscale
@@ -195,7 +195,7 @@ cv::Mat FSVision::subLaser2(cv::Mat &laserOff, cv::Mat &laserOn)
     //cv::waitKey(0);
     //cv::imshow("laserLine", treshImage+diffImage);
     //cv::waitKey(0);
-    //DestroyWindow("laserLine");
+    //cv::destroyWindow("laserLine");
 
     int edges[cols]; //contains the cols index of the detected edges per row
     for(unsigned int y = 0; y <rows; y++){
@@ -299,16 +299,21 @@ void FSVision::putPointsFromFrameToCloud(
     cv::Mat laserLine = subLaser2(laserOff,laserOn);
 
     //calculate position of laser in cv frame
+    //position of the laser line on the back plane in frame/image coordinates
     FSPoint fsLaserLinePosition = laser->getLaserPointPosition();
+    //position of the laser line on the back plane in world coordinates
     CvPoint cvLaserLinePosition = convertFSPointToCvPoint(fsLaserLinePosition);
-    FSFloat laserPos = cvLaserLinePosition.x;
 
+    FSFloat laserPos = cvLaserLinePosition.x; //const over all y
+
+    //laserLine is result of subLaser2, is in RGB
     unsigned int cols = laserLine.cols;
     unsigned int rows = laserLine.rows;
+    //create new image in black&white
     cv::Mat bwImage( cols,rows,CV_8U,cv::Scalar(100) );
     //qDebug("still works here");
+    //convert from rgb to b&w
     cv::cvtColor(laserLine, bwImage, CV_RGB2GRAY); //convert to grayscale
-    //qDebug("and here");
     //now iterating from top to bottom over bwLaserLine frame
     //no bear outside of these limits :) cutting of top and bottom of frame
     for(int y = UPPER_ANALYZING_FRAME_LIMIT;
@@ -322,18 +327,20 @@ void FSVision::putPointsFromFrameToCloud(
             x >= laserPos+ANALYZING_LASER_OFFSET;
             x -= 1){
             //qDebug() << "Pixel value: " << bwImage.at<uchar>(y,x);
-            if(bwImage.at<uchar>(y,x)==255){
+            if(bwImage.at<uchar>(y,x)==255){ //check if white=laser-reflection
                 //qDebug() << "found point at x=" << x;
                 //if (row[x] > 200){
                 //we have a white point in the grayscale image, so one edge laser line found
                 //no we should continue to look for the other edge and then take the middle of those two points
                 //to take the width of the laser line into account
 
-                CvPoint cvNewPoint; //position of the reflected laser line on the image plane
+                //position of the reflected laser line on the image coord
+                CvPoint cvNewPoint;
                 cvNewPoint.x = x;
                 cvNewPoint.y = y;
 
-                FSPoint fsNewPoint = FSVision::convertCvPointToFSPoint(cvNewPoint); //convert to world coordinates
+                //convert to world coordinates withouth depth
+                FSPoint fsNewPoint = FSVision::convertCvPointToFSPoint(cvNewPoint);
                 FSLine l1 = computeLineFromPoints(webcam->getPosition(), fsNewPoint);
                 FSLine l2 = computeLineFromPoints(laser->getPosition(), laser->getLaserPointPosition());
 
@@ -341,9 +348,6 @@ void FSVision::putPointsFromFrameToCloud(
                 fsNewPoint.x = i.x;
                 fsNewPoint.z = i.z;
 
-                //old stuff probably wrong
-                //FSFloat angle = (laser->getRotation()).y;
-                //fsNewPoint.z = (fsNewPoint.x - fsLaserLinePosition.x)/tan(angle*M_PI/180.0f);
                 //At this point we know the depth=z. Now we need to consider the scaling depending on the depth.
                 //First we move our point to a camera centered cartesion system.
                 fsNewPoint.y -= (webcam->getPosition()).y;
@@ -351,6 +355,7 @@ void FSVision::putPointsFromFrameToCloud(
                 //Redo the translation to the box centered cartesion system.
                 fsNewPoint.y += (webcam->getPosition()).y;
 
+                //get color from picture without laser
                 FSUChar r = laserOff.at<cv::Vec3b>(y,x)[2];
                 FSUChar g = laserOff.at<cv::Vec3b>(y,x)[1];
                 FSUChar b = laserOff.at<cv::Vec3b>(y,x)[0];
@@ -386,15 +391,20 @@ FSPoint FSVision::detectLaserLine( cv::Mat &laserOff, cv::Mat &laserOn, unsigned
 {
     unsigned int cols = laserOff.cols;
     unsigned int rows = laserOff.rows;
-    cv::Mat laserLine = subLaser(laserOff, laserOn, threshold);
+    cv::Mat laserLine = subLaser2(laserOff, laserOn);
     std::vector<cv::Vec4i> lines;
     double deltaRho = 1;
     double deltaTheta = M_PI/2;
-    int minVote = 80;
-    double minLength = 200;
-    double maxGap = 20;
-    cv::Mat laserLineBW( cols, rows, CV_8U, cv::Scalar(100) );
+    int minVote = 20;
+    double minLength = 50;
+    double maxGap = 10;
+    cv::Mat laserLineBW( cols, rows, CV_8U, cv::Scalar(0) );
     cv::cvtColor(laserLine, laserLineBW, CV_RGB2GRAY); //convert to grayscale
+
+    /*cv::namedWindow("Detected Lines with HoughP");
+    cv::imshow("Detected Lines with HoughP",laserLineBW);
+    cv::waitKey(0);*/
+    //cvDestroyWindow("Detected Lines with HoughP");
 
     cv::HoughLinesP( laserLineBW,
                      lines,
@@ -405,6 +415,7 @@ FSPoint FSVision::detectLaserLine( cv::Mat &laserOff, cv::Mat &laserOn, unsigned
                      maxGap );
 
     //should at least detect the laser line
+    qDebug() << "detected"<<lines.size()<<"lines";
     if(lines.size()==0){
         qDebug("Did not detect any laser line, did you select a SerialPort form the menu?");
         FSPoint p = FSMakePoint(0.0,0.0,0.0);
@@ -412,16 +423,17 @@ FSPoint FSVision::detectLaserLine( cv::Mat &laserOff, cv::Mat &laserOn, unsigned
     }
     //assert(lines.size()>0);
     //for(int i=0;i<lines.size();i++){
-    //for(int i=0;i<1;i++){
-        int i = 0;
-        cv::Point p1;
+    cv::Point p1;
+    cv::Point p2;
+    for(int i=0;i<lines.size();i++){
+        qDebug() << "drawing line "<<lines[i][0]<<lines[i][1]<<lines[i][2]<<lines[i][3];
+        //int i = 0;
         p1.x = lines[i][0];
         p1.y = lines[i][1];
-        cv::Point p2;
         p2.x = lines[i][2];
         p2.y = lines[i][3];
         cv::line(laserLine, p1, p2, CV_RGB( 255,0,0 ),1);   //draw laser line
-     //}
+     }
 
 
 
