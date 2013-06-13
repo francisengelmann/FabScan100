@@ -1,6 +1,8 @@
 #ifndef FSVISION_H
 #define FSVISION_H
 
+#include "staticHeaders.h"
+
 class FSVision
 {
 public:

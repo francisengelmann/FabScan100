@@ -8,6 +8,7 @@
 
 #include <QCamera>
 #include <QCameraImageCapture>
+#include "staticHeaders.h"
 
 struct FSWebCamInfo
 {

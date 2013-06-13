@@ -1,4 +1,4 @@
- #-------------------------------------------------
+#-------------------------------------------------
 #
 # Project created by QtCreator 2012-09-17T22:38:59
 #
@@ -29,13 +29,6 @@ SOURCES += main.cpp\
     fsturntable.cpp \
     fsvision.cpp \
     fswebcam.cpp
-
-macx {
-    #SOURCES += fswebcam_osx.cpp
-}
-linux-g++ {
-    #SOURCES += fswebcam_linux.cpp
-}
 
 HEADERS  += mainwindow.h \
     geometryengine.h \

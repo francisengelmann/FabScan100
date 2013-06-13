@@ -1,6 +1,8 @@
 #include "geometryengine.h"
 #include "fscontroller.h"
 
+using namespace std;
+
 struct VertexData
 {
     QVector3D position;
@@ -183,14 +185,19 @@ void GeometryEngine::initSurfaceMesh()
 //! [1]
 }
 
-void GeometryEngine::setSurfaceMeshTo(pcl::PolygonMesh surfacemesh, pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloud)
+void GeometryEngine::setSurfaceMeshTo(pcl::PolygonMesh &surfacemesh, pcl::PointCloud<pcl::PointXYZRGB>::Ptr &pointCloud)
 {
-    pcl::PointCloud<pcl::PointXYZRGB> cloud;
+    std::cout << "1" << std::endl;
+    pcl::PointCloud<pcl::PointXYZ> cloud;
+    cout << "2" << endl;
     pcl::fromROSMsg(surfacemesh.cloud, cloud);
 
+    //cout << "GeometryEngine:" << cloud.points.size() << endl;
+
     VertexData vertices[cloud.points.size()];
-    //VertexData vertices[9999]; //TODO: solve this in a nicer way
+    //VertexData vertices[999999]; //TODO: solve this in a nicer way
     GLuint indices[surfacemesh.polygons.size()*3];
+
 
     for (unsigned int i = 0; i < cloud.points.size(); ++i){
         VertexData vd;
@@ -200,17 +207,16 @@ void GeometryEngine::setSurfaceMeshTo(pcl::PolygonMesh surfacemesh, pcl::PointCl
                     cloud.points[i].z);
 
         //take color from original point cloud
-        uint32_t rgb = FSController::getInstance()->model->pointCloud->points[i].rgb;
+        //uint32_t rgb = FSController::getInstance()->model->pointCloud->points[i].rgb;
 
         //uint32_t rgb = cloud.points[i].rgb;
-        vd.color = QVector3D(
+        /*vd.color = QVector3D(
                         (rgb>>16)&0x0000ff,
                         (rgb>>8)&0x0000ff,
-                        (rgb>>0)&0x0000ff
-                    );
+                        (rgb>>0)&0x0000ff);*/
+        vd.color = QVector3D(5.0,50.0,50.0);
         vertices[i] = vd;
     }
-
     numberOfIndices = 0;
     for (unsigned int i=0; i<surfacemesh.polygons.size();i++){
         for(unsigned int j=0; j<surfacemesh.polygons[i].vertices.size(); j++){
@@ -251,7 +257,7 @@ void GeometryEngine::drawSurfaceMesh(QGLShaderProgram *program)
     glVertexAttribPointer(vertexColor, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (const void *)offset);
 
     // Draw cube geometry using indices from VBO 1
-    glDrawElements(GL_TRIANGLES, numberOfIndices, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_POINTS, numberOfIndices, GL_UNSIGNED_INT, 0);
 }
 
 void GeometryEngine::initGroundPlane() {

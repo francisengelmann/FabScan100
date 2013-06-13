@@ -19,13 +19,13 @@ bool FSSerial::connectToSerialPort()
         connect(serialPort, SIGNAL(readyRead()), this, SLOT(onReadyRead()) );
         connect(serialPort, SIGNAL(dsrChanged(bool)), this, SLOT(onDsrChanged(bool)) );
         if (!(serialPort->lineStatus() & LS_DSR)){
-            qDebug() << "warning: device is not turned on";
+            //qDebug() << "warning: device is not turned on";
             return false;
         }
-        qDebug() << "listening for data on" << serialPort->portName();
+        //qDebug() << "listening for data on" << serialPort->portName();
         return true;
     }else{
-        qDebug() << "device failed to open:" << serialPort->errorString();
+        //qDebug() << "device failed to open:" << serialPort->errorString();
         return true;
     }
 }
@@ -41,7 +41,7 @@ void FSSerial::onReadyRead()
 
 void FSSerial::onDsrChanged(bool)
 {
-    qDebug("onDsrChanged");
+    //qDebug("onDsrChanged");
 }
 
 void FSSerial::writeChar(char c)
@@ -54,7 +54,7 @@ void FSSerial::writeChar(char c)
         //usleep(100000);
         serialPort->write(&c);
     }else{
-        qDebug("is not writable");
+       // qDebug("is not writable");
     }
 }
 
@@ -67,6 +67,6 @@ void FSSerial::writeChars(char* c)
         //usleep(100000);
         serialPort->write(c);
     }else{
-        qDebug("is not writable");
+        //qDebug("is not writable");
     }
 }

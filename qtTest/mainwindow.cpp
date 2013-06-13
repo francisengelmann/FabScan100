@@ -79,21 +79,34 @@ void MainWindow::showDialog(QString dialogText)
 
 void MainWindow::on_toggleViewButton_clicked()
 {
-    FSController::getInstance()->mainwindow->setCursor(Qt::BusyCursor);
+    /*FSController::getInstance()->mainwindow->setCursor(Qt::BusyCursor);
     char currentDrawState = ui->widget->drawState;
     ui->widget->drawState = 1-currentDrawState;
     ui->widget->updateGL();
     if(ui->widget->drawState==0){
         state=POINT_CLOUD;
     }else{
-        state=SURFACE_MESH;
-        if(!FSController::getInstance()->meshComputed){
-            qDebug() << "computing mesh";
-            FSController::getInstance()->computeSurfaceMesh();
-        }
+        state=SURFACE_MESH;*/
+        QFileDialog d(this, "Save File","","STL (*.stl)");
+        d.setAcceptMode(QFileDialog::AcceptSave);
+        if(d.exec()){
 
-    }
-    applyState(state);
+            QString fileName = d.selectedFiles()[0];
+            if(fileName.isEmpty() ) return;
+            qDebug() << fileName;
+
+            if(!FSController::getInstance()->meshComputed){
+                qDebug() << "computing mesh...";
+                FSController::getInstance()->computeSurfaceMesh();
+                FSController::getInstance()->meshComputed = true;
+            }
+            cout << "done computing surface mesh, now stl export..." << endl;
+            FSController::getInstance()->model->saveToSTLFile(fileName.toStdString());
+            this->showDialog("STL export done!");
+
+        }
+    /*}
+    applyState(state);*/
     FSController::getInstance()->mainwindow->setCursor(Qt::ArrowCursor);
 }
 

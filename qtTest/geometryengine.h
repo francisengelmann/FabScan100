@@ -18,12 +18,11 @@ public:
     void drawPointCloud(QGLShaderProgram *program);
 
     void initSurfaceMesh();
-    void setSurfaceMeshTo(pcl::PolygonMesh surfacemesh, pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloud);
+    void setSurfaceMeshTo(pcl::PolygonMesh &surfacemesh, pcl::PointCloud<pcl::PointXYZRGB>::Ptr &pointCloud);
     void drawSurfaceMesh(QGLShaderProgram *program);
 
     void initGroundPlane();
     void drawGroundPlane(QGLShaderProgram *program);
-
 
 private:
     void initCubeGeometry();

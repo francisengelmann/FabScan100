@@ -6,6 +6,8 @@
 #include <QtConcurrent/QtConcurrentRun>
 #include <boost/lexical_cast.hpp>
 
+using namespace std;
+
 FSController* FSController::singleton=0;
 
 FSController::FSController()
@@ -243,7 +245,10 @@ void FSController::computeSurfaceMesh()
     //model->convertPointCloudToSurfaceMesh();
     //geometries->setSurfaceMeshTo(model->surfaceMesh,model->pointCloud);
     model->convertPointCloudToSurfaceMesh2();
-    geometries->setSurfaceMeshTo(model->surfaceMeshPoisson,model->pointCloudPoisson);
+    model->convertPolygons2Triangles();
+    //cout << "FSController:computesurfaceMesh: convert done, now setting" << endl;
 
-    mainwindow->redraw();
+    //geometries->setSurfaceMeshTo(model->surfaceMesh,model->pointCloud);
+
+    //mainwindow->redraw();
 }
