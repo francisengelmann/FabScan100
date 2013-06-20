@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //resolution: Good
     FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
     FSController::getInstance()->yDpi = 1;
+    this->ui->toggleViewButton->setText("Export STL...");
+
 }
 
 MainWindow::~MainWindow()

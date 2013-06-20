@@ -165,26 +165,33 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     //pcl::PolygonMesh surfaceMesh;
     //pcl::PolygonMesh surfaceMeshPoisson;
 
-    const char* resPath = "./";
+    const char* resPath = "./FabScan100.app/Contents/MacOS/";
     int sysRet;
     std::string ptsFilePath;
+    ptsFilePath.append(resPath);
     ptsFilePath.append("pc.pts");
     this->savePointCloudAsPTS(ptsFilePath);
     char* command;
+
+    //asprintf(&command,"cd %s; cd FabScan100.app/Contents/MacOS", resPath);
+    //sysRet = system(command);
+    //cerr << command << " system: " << sysRet << endl;
+
     asprintf(&command,"cd %s; ./powercrust -i %s -R 1.5 -B -m 10000", resPath, "pc.pts");
     sysRet = system(command);
-    cout << command << " system: " << sysRet << endl;
+    cerr << command << " system: " << sysRet << endl;
+
     if(sysRet==0){
         FSController::getInstance()->meshComputed=true;
     }
     asprintf(&command,"cd %s; ./orient -i pc.off -o final.off",resPath);
     sysRet = system(command);
-    cout << command << " system: " << sysRet << endl;
+    cerr << command << " system: " << sysRet << endl;
 
     char* offFilePath;
     asprintf(&offFilePath,"%sfinal.off",resPath);
-    cout << "loading surface from off..." << endl;
-    this->openFromOFFFile("final.off");
+    cerr << "loading surface from off..." << endl;
+    this->openFromOFFFile(offFilePath);
 
     /*this->loadSurfaceMeshFromOFF(offFilePath);
     cout << "loaded surface from off!" << endl;
@@ -333,6 +340,7 @@ void FSModel::addPointToPointCloud(FSPoint point)
 unsigned int FSModel::openFromOFFFile(const char* offFilePath){
   cout << "Open from off file: " << offFilePath << endl;
   ifstream offFile; //the file object (read only)
+
   offFile.open(offFilePath,ios::in); //open file for input
 
   /* read first line and checks wether it is correct or not according to .off format */
