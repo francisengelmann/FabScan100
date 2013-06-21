@@ -35,9 +35,7 @@ public:
 
 
 private slots:
-    void on_toggleViewButton_clicked();
     void on_scanButton_clicked();
-
     void timerEvent(QTimerEvent *e);
 
     void onSelectSerialPort();
