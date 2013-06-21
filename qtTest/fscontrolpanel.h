@@ -35,8 +35,6 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_binaryImage_clicked();
-
     void on_laserEnable_stateChanged(int arg1);
 
     void on_laserStepLeftButton_clicked();

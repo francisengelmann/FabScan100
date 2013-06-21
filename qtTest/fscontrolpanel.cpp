@@ -92,22 +92,6 @@ void FSControlPanel::on_pushButton_clicked()
     //this->hide();
 }
 
-void FSControlPanel::on_binaryImage_clicked()
-{
-    if(FSController::getInstance()->webcam->info.portName.isEmpty()){
-        FSController::getInstance()->mainwindow->showDialog("No webcam selected!");
-        return;
-    }
-    cv::Mat shot = FSController::getInstance()->subLaser();
-    cv::resize(shot,shot,cv::Size(800,600));
-    cv::imshow("Laser Frame",shot);
-    cv::waitKey(0);
-    cvDestroyWindow("Laser Frame");
-    this->raise();
-    this->focusWidget();
-    this->setVisible(true);
-}
-
 void FSControlPanel::on_laserEnable_stateChanged(int state)
 {
     if(state==2){

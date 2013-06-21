@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setupMenu();
     this->enumerateSerialPorts();
     this->enumerateWebCams();
-    hwTimer->start(5000, this);
+    hwTimer->start(5000, this); //timer that checks periodically for attached hardware (camera, arduino)
     dialog = new FSDialog(this);
     controlPanel = new FSControlPanel(this);
     FSController::getInstance()->mainwindow=this;
@@ -33,8 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //resolution: Good
     FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
     FSController::getInstance()->yDpi = 1;
-    this->ui->toggleViewButton->setText("Export STL...");
-
 }
 
 MainWindow::~MainWindow()
@@ -60,13 +58,18 @@ void MainWindow::setupMenu()
     connect(savePointCloudAction,SIGNAL(triggered()),this, SLOT(savePointCloud()));
     ui->menuFile->addAction(savePointCloudAction);
 
+    QAction* exportSTLAction = new QAction("Export .stl...", this);
+    connect(exportSTLAction,SIGNAL(triggered()),this, SLOT(exportSTL()));
+    ui->menuFile->addAction(exportSTLAction);
+
     QAction* showControlPanelAction = new QAction("Control Panel...", this);
     showControlPanelAction->setShortcuts(QKeySequence::Preferences);
     connect(showControlPanelAction,SIGNAL(triggered()),this, SLOT(showControlPanel()));
     ui->menuFile->addAction(showControlPanelAction);
 }
 
-void MainWindow::showDialog(QString dialogText)
+void MainWindow::
+showDialog(QString dialogText)
 {
     dialog->setStandardButtons(QDialogButtonBox::Ok);
     dialog->setText(dialogText);
@@ -109,7 +112,29 @@ void MainWindow::on_toggleViewButton_clicked()
         }
     /*}
     applyState(state);*/
-    FSController::getInstance()->mainwindow->setCursor(Qt::ArrowCursor);
+    //FSController::getInstance()->mainwindow->setCursor(Qt::ArrowCursor);
+}
+
+void MainWindow::exportSTL()
+{
+    QFileDialog d(this, "Save File","","STL (*.stl)");
+    d.setAcceptMode(QFileDialog::AcceptSave);
+    if(d.exec()){
+
+        QString fileName = d.selectedFiles()[0];
+        if(fileName.isEmpty() ) return;
+        qDebug() << fileName;
+
+        if(!FSController::getInstance()->meshComputed){
+            qDebug() << "Computing mesh...";
+            FSController::getInstance()->computeSurfaceMesh();
+            FSController::getInstance()->meshComputed = true;
+        }
+        cout << "Done computing surface mesh, now stl export..." << endl;
+        FSController::getInstance()->model->saveToSTLFile(fileName.toStdString());
+        this->showDialog("STL export done!");
+
+    }
 }
 
 void MainWindow::showControlPanel()
@@ -295,15 +320,15 @@ void MainWindow::applyState(FSState s)
         break;
     case POINT_CLOUD:
         this->ui->scanButton->setText("Start Scan");
-        if(FSController::getInstance()->meshComputed){
+        //the following lines are uncommented since we do not support showing the mesh anymore but just compute and save it
+        /*if(FSController::getInstance()->meshComputed){
             this->ui->toggleViewButton->setText("Show SurfaceMesh");
         }else{
             this->ui->toggleViewButton->setText("Compute SurfaceMesh");
-        }
+        }*/
         break;
     case SURFACE_MESH:
         this->ui->scanButton->setText("Start Scan");
-        this->ui->toggleViewButton->setText("Show PointCloud");
         break;
     }
 }

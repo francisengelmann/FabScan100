@@ -80,26 +80,17 @@
        <number>18</number>
       </property>
       <item>
-       <widget class="QPushButton" name="toggleViewButton">
-        <property name="minimumSize">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>120</width>
-          <height>0</height>
+          <width>40</width>
+          <height>20</height>
          </size>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>175</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text">
-         <string>Export .STL ...</string>
-        </property>
-       </widget>
+       </spacer>
       </item>
       <item>
        <spacer name="horizontalSpacer_2">
@@ -143,7 +134,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Resolution: </string>
+         <string>Quality: </string>
         </property>
        </widget>
       </item>

@@ -50,10 +50,7 @@ class FSController
         void scanThread2();
         bool detectLaserLine();
         void computeSurfaceMesh();
-        cv::Mat subLaser();
         cv::Mat diffImage();
-
-        unsigned int threshold;
 
         bool scanning; //wether we are scanning or not, used to interrupt scanning
         bool meshComputed; //wether the surface meshhas already been computed from the point cloud or not
@@ -62,6 +59,8 @@ class FSController
         double laserStepSize;
         double turntableStepSize;
         double yDpi;
+private slots:
+        void on_pushButton_2_clicked();
 };
 
 #endif // FSCONTROLLER_H

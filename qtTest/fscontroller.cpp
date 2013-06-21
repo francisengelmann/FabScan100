@@ -22,12 +22,10 @@ FSController::FSController()
     laser = new FSLaser();
     vision = new FSVision();
     scanning = false;
-    threshold = 40;
-    //all in degrees;
+    //all in degrees; (only when stepper is attached to laser)
     laserSwipeMin = 30; //18
     laserSwipeMax = 45; //50
     meshComputed = false;
-    //old = true;
 }
 
 FSController* FSController::getInstance()
@@ -59,7 +57,7 @@ void FSController::fetchFrame()
     //cv::waitKey(0);
     cv::resize(frame,frame,cv::Size(1280,960));
     cv::Mat result = vision->drawHelperLinesToFrame(frame);
-    cv::resize(result,result,cv::Size(800,600));
+    cv::resize(result,result,cv::Size(800,600)); //this is the resolution of the preview
     cv::imshow("Extracted Frame",result);
     cv::waitKey(0);
     cvDestroyWindow("Extracted Frame");
@@ -182,21 +180,6 @@ void FSController::scanThread2()
     scanning = false; //stop scanning
 }
 
-cv::Mat FSController::subLaser()
-{
-    laser->turnOff();
-    QThread::msleep(200);
-    cv::Mat laserOff = webcam->getFrame();
-    cv::resize( laserOff,laserOff,cv::Size(1280,960) );
-
-    laser->turnOn();
-    QThread::msleep(200);
-    cv::Mat laserOn = webcam->getFrame();
-    cv::resize( laserOn,laserOn,cv::Size(1280,960) );
-
-    return vision->subLaser(laserOff,laserOn,threshold);
-}
-
 cv::Mat FSController::diffImage()
 {
     laser->turnOff();
@@ -251,4 +234,9 @@ void FSController::computeSurfaceMesh()
     //geometries->setSurfaceMeshTo(model->surfaceMesh,model->pointCloud);
 
     //mainwindow->redraw();
+}
+
+void FSController::on_pushButton_2_clicked()
+{
+
 }
