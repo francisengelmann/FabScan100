@@ -5,6 +5,7 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrentRun>
 #include <boost/lexical_cast.hpp>
+#include <boost/filesystem.hpp>
 
 using namespace std;
 
@@ -209,9 +210,6 @@ bool FSController::detectLaserLine()
 
 void FSController::computeSurfaceMesh()
 {
-    if(FSController::getInstance()->model->pointCloud->empty()){
-        return;
-    }
     //model->convertPointCloudToSurfaceMesh();
     //geometries->setSurfaceMeshTo(model->surfaceMesh,model->pointCloud);
     model->convertPointCloudToSurfaceMesh2();

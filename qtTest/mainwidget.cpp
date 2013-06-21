@@ -37,7 +37,6 @@ MainWidget::~MainWidget()
     deleteTexture(texture);
 }
 
-//! [0]
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
     // Saving mouse press position
@@ -81,9 +80,7 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
     angleY=angleYtmp;
     FSController::getInstance()->mainwindow->setCursor(Qt::OpenHandCursor);
 }
-//! [0]
 
-//! [1]
 void MainWidget::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
@@ -102,7 +99,6 @@ void MainWidget::timerEvent(QTimerEvent *e)
         this->updateGL();
     }
 }
-//! [1]
 
 void MainWidget::initializeGL()
 {
@@ -118,13 +114,12 @@ void MainWidget::initializeGL()
     qDebug() << "Initializing textures...";
     initTextures();
 
-//! [2]
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
 
     // Enable back face culling
     //glEnable(GL_CULL_FACE);
-//! [2]
+
 
     qDebug() << "Initializing geometries...";
     FSController::getInstance()->geometries->init();
@@ -133,7 +128,6 @@ void MainWidget::initializeGL()
     timer->start(12, this);
 }
 
-//! [3]
 void MainWidget::initShaders()
 {
     // Overriding system locale until shaders are compiled
@@ -158,9 +152,7 @@ void MainWidget::initShaders()
     // Restore system locale
     setlocale(LC_ALL, "");
 }
-//! [3]
 
-//! [4]
 void MainWidget::initTextures()
 {
     // Loading cube.png to texture unit 0
@@ -179,9 +171,7 @@ void MainWidget::initTextures()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
-//! [4]
 
-//! [5]
 void MainWidget::resizeGL(int w, int h)
 {
     // Set OpenGL viewport to cover whole widget
@@ -199,14 +189,11 @@ void MainWidget::resizeGL(int w, int h)
     // Set perspective projection
     projection.perspective(fov, aspect, zNear, zFar);
 }
-//! [5]
 
 void MainWidget::paintGL()
 {
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//! [6]
 
     QMatrix4x4 view;
     view.setToIdentity();
@@ -228,14 +215,12 @@ void MainWidget::paintGL()
 
     // Set modelview-projection matrix
     program->setUniformValue("mvp_matrix", projection * view * model);
-//! [6]
 
     // Using texture unit 0 which contains cube.png
     program->setUniformValue("texture", 0);
 
     // Draw cube geometry
     //geometries->drawCubeGeometry(program);
-
 
     if(drawState == 0){//POINT_CLOUD
         FSController::getInstance()->geometries->drawPointCloud(program);

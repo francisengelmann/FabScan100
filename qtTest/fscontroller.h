@@ -59,6 +59,10 @@ class FSController
         double laserStepSize;
         double turntableStepSize;
         double yDpi;
+
+public slots:
+        void readConfiguration();
+
 };
 
 #endif // FSCONTROLLER_H

@@ -45,6 +45,7 @@ private slots:
     void newPointCloud();
     void showControlPanel();
     void exportSTL();
+    void readConfiguration();
 
     void on_resolutionComboBox_currentIndexChanged(const QString &arg1);
 

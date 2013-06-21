@@ -9,6 +9,7 @@
 #include <pcl/surface/mls.h>
 #include <pcl/surface/poisson.h>
 #include <pcl/io/vtk_io.h>
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace pcl;
@@ -164,18 +165,30 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     //pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointCloudPoisson;
     //pcl::PolygonMesh surfaceMesh;
     //pcl::PolygonMesh surfaceMeshPoisson;
+    cout << endl << "conerting point cloud to surface mesh" << endl;
+    boost::filesystem::path p;
+    p = boost::filesystem::current_path();
 
-    const char* resPath = "./FabScan100.app/Contents/MacOS/";
+    //this is platform specific code, needs to be changed for other platforms then mac!
+    p/="powercrust";
+    const char* resPath;
+    if(boost::filesystem::exists(p)){
+        //powercrust is in same directory as fabscan executable
+        cout << "file found!" << endl;
+        resPath = "./";
+    }else{
+        //not in the same directory,
+        //here we assume we are on mac and this need to go inside the .app bundle
+        cout << "file not found" << endl;
+        resPath = "./FabScan100.app/Contents/MacOS/";
+    }
+
     int sysRet;
     std::string ptsFilePath;
     ptsFilePath.append(resPath);
     ptsFilePath.append("pc.pts");
     this->savePointCloudAsPTS(ptsFilePath);
     char* command;
-
-    //asprintf(&command,"cd %s; cd FabScan100.app/Contents/MacOS", resPath);
-    //sysRet = system(command);
-    //cerr << command << " system: " << sysRet << endl;
 
     asprintf(&command,"cd %s; ./powercrust -i %s -R 1.5 -B -m 10000", resPath, "pc.pts");
     sysRet = system(command);

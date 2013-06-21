@@ -62,6 +62,10 @@ void MainWindow::setupMenu()
     connect(exportSTLAction,SIGNAL(triggered()),this, SLOT(exportSTL()));
     ui->menuFile->addAction(exportSTLAction);
 
+    QAction* readConfiguartion = new QAction("Read configuration", this);
+    connect(readConfiguartion,SIGNAL(triggered()),this, SLOT(readConfiguration()));
+    ui->menuFile->addAction(readConfiguartion);
+
     QAction* showControlPanelAction = new QAction("Control Panel...", this);
     showControlPanelAction->setShortcuts(QKeySequence::Preferences);
     connect(showControlPanelAction,SIGNAL(triggered()),this, SLOT(showControlPanel()));
@@ -84,6 +88,10 @@ showDialog(QString dialogText)
 
 void MainWindow::exportSTL()
 {
+    if(FSController::getInstance()->model->pointCloud->empty()){
+        this->showDialog("PointCloud is empty! Perform a scan, or open a pointcloud.");
+        return;
+    }
     QFileDialog d(this, "Save File","","STL (*.stl)");
     d.setAcceptMode(QFileDialog::AcceptSave);
     if(d.exec()){
@@ -94,6 +102,7 @@ void MainWindow::exportSTL()
 
         if(!FSController::getInstance()->meshComputed){
             qDebug() << "Computing mesh...";
+            this->showDialog("Will now compute surface mesh, this may take a while...");
             FSController::getInstance()->computeSurfaceMesh();
             FSController::getInstance()->meshComputed = true;
         }
@@ -186,6 +195,15 @@ void MainWindow::newPointCloud()
     ui->widget->updateGL();
     applyState(POINT_CLOUD);
     FSController::getInstance()->meshComputed=false;
+}
+
+void MainWindow::readConfiguration()
+{
+    cout << "read configutation" << endl;
+    boost::filesystem::path p;
+    p = boost::filesystem::current_path();
+    cout << p.string() << endl;
+    this->showDialog(QString::fromStdString( p.string()));
 }
 
 void MainWindow::enumerateSerialPorts()
