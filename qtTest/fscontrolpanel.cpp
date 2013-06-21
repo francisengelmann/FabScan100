@@ -28,11 +28,6 @@ void FSControlPanel::on_fetchFrameButton_clicked()
     FSController::getInstance()->fetchFrame();
 }
 
-void FSControlPanel::on_hideFrameButton_clicked()
-{
-    FSController::getInstance()->hideFrame();
-}
-
 void FSControlPanel::on_laserOnButton_clicked()
 {
     FSController::getInstance()->laser->turnOn();
@@ -85,11 +80,6 @@ void FSControlPanel::on_autoResetButton_clicked()
     this->raise();
     this->focusWidget();
     this->setVisible(true);
-}
-
-void FSControlPanel::on_pushButton_clicked()
-{
-    //this->hide();
 }
 
 void FSControlPanel::on_laserEnable_stateChanged(int state)

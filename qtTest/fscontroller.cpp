@@ -84,9 +84,9 @@ void FSController::scanThread()
         mainwindow->showDialog("No webcam selected!");
         return;
     }
-    //detec laser line
+    //detect laser line
     this->detectLaserLine();
-    //turn of stepper (if available)
+    //turn off stepper (if available)
     this->laser->disable();
 
     scanning = true; //start scanning, if false, scan stops
@@ -110,14 +110,7 @@ void FSController::scanThread()
         cv::Mat laserOn = webcam->getFrame();
         cv::resize( laserOn,laserOn,cv::Size(1280,960) );
 
-        /*cv::namedWindow("extracted laserLine");
-        cv::imshow("extracted laserLine",laserOff);
-        cv::waitKey(0);
-        cv::imshow("extracted laserLine",laserOn);
-        cv::waitKey(0);
-        cvDestroyWindow("extracted laserLine");*/
-
-        //here magic happens
+        //here the magic happens
         vision->putPointsFromFrameToCloud(laserOff, laserOn, yDpi, 0);
         //update gui
         geometries->setPointCloudTo(model->pointCloud);
@@ -207,12 +200,6 @@ bool FSController::detectLaserLine()
     cv::resize( laserOnFrame,laserOnFrame,cv::Size(1280,960) );
     cv::resize( laserOffFrame,laserOffFrame,cv::Size(1280,960) );
 
-    /*cv::imshow("extracted laserLine",laserOnFrame);
-    cv::waitKey(0);
-    cv::imshow("extracted laserLine",laserOffFrame);
-    cv::waitKey(0);
-    cvDestroyWindow("extracted laserLine");*/
-
     qDebug("images loaded, now detecting...");
     FSPoint p = vision->detectLaserLine( laserOffFrame, laserOnFrame, threshold );
     if(p.x == 0.0){return false;}
@@ -234,9 +221,4 @@ void FSController::computeSurfaceMesh()
     //geometries->setSurfaceMeshTo(model->surfaceMesh,model->pointCloud);
 
     //mainwindow->redraw();
-}
-
-void FSController::on_pushButton_2_clicked()
-{
-
 }

@@ -20,9 +20,9 @@ public:
 
 private slots:
     void on_fetchFrameButton_clicked();
-    void on_hideFrameButton_clicked();
 
     void on_laserOnButton_clicked();
+
     void on_laserOffButton_clicked();
 
     void on_checkBox_stateChanged(int arg1);
@@ -32,8 +32,6 @@ private slots:
     void on_stepRightButton_clicked();
 
     void on_autoResetButton_clicked();
-
-    void on_pushButton_clicked();
 
     void on_laserEnable_stateChanged(int arg1);
 
@@ -48,8 +46,6 @@ private slots:
     void on_laserSwipeMinEdit_returnPressed();
 
     void on_pushButton_2_clicked();
-
-private:
 };
 
 #endif // FSCONTROLPANEL_H
