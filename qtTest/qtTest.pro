@@ -100,7 +100,7 @@ macx {
 
     INCLUDEPATH += /usr/local/Cellar/eigen/3.1.2/include/eigen3
     INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
-        INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
+    INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
 
         LIBS += -L/usr/local/Cellar/boost/1.51.0 \
         -lboost_chrono-mt \
@@ -140,7 +140,14 @@ linux-g++ {
     #PKGCONFIG += opencv
     #INCLUDEPATH += /usr/local/include/opencv2/
 
+    DEFINES += LINUX
+
     INCLUDEPATH += /usr/include/eigen3/
+    INCLUDEPATH += /usr/include/boost/
+
+    LIBS += -L/usr/lib/ \
+     -lboost_system \
+     -lboost_filesystem \
 
     LIBS += -L/usr/local/lib/ \
     -lopencv_core \

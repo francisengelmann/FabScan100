@@ -93,7 +93,7 @@
        </spacer>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
+       <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -134,7 +134,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Quality: </string>
+         <string>Resolution </string>
         </property>
        </widget>
       </item>

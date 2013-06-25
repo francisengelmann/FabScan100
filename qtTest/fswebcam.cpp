@@ -26,7 +26,13 @@ cv::Mat FSWebCam::getFrame()
 {
     frameTaken = false;
     isCapturingImage = true;
+
+    #ifdef LINUX
+    imageCapture->capture();
+    #else
     imageCapture->capture("./");
+    #endif
+
     //qDebug() << "preparing to take frame";
     //wait until camera has taken picture, then return
     while(!frameTaken){
@@ -55,8 +61,13 @@ void FSWebCam::setCamera(const QByteArray &cameraDevice)
         qDebug() << imageCapture->supportedResolutions();
         qDebug() << imageSettings.resolution();
     //QImageEncoderSettings imageSettings;
+
+    #ifdef LINUX
+    #else
     imageSettings.setCodec("image/jpeg");
     imageSettings.setResolution(1280, 960);
+    #endif
+
     imageCapture->setEncodingSettings(imageSettings);
 
     camera->setViewfinder(FSController::getInstance()->controlPanel->ui->viewfinder );
@@ -108,7 +119,11 @@ void FSWebCam::imageSaved(int id, const QString &fileName)
                 img2.width(),
                 CV_8UC3,
                 (uchar*)img2.bits(), img2.bytesPerLine());
+    #ifdef LINUX
+    frame = mat.clone();
+    #else
     frame = mat;
+    #endif
     cv::cvtColor(mat,frame, CV_RGB2BGR);
     frameTaken = true;
     isCapturingImage = false;

@@ -326,6 +326,11 @@
     <string>                                                Select a camera from the menu!</string>
    </property>
   </widget>
+  <zorder>cameraLabel</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>groupBox_2</zorder>
+  <zorder>groupBox_3</zorder>
+  <zorder>viewfinder</zorder>
  </widget>
  <customwidgets>
   <customwidget>

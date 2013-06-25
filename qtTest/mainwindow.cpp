@@ -14,6 +14,10 @@
 
 #include <boost/bind.hpp>
 
+#ifdef LINUX
+#include <boost/filesystem.hpp>
+#endif
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     hwTimer(new QBasicTimer),
@@ -58,7 +62,7 @@ void MainWindow::setupMenu()
     connect(savePointCloudAction,SIGNAL(triggered()),this, SLOT(savePointCloud()));
     ui->menuFile->addAction(savePointCloudAction);
 
-    QAction* exportSTLAction = new QAction("Export .stl...", this);
+    QAction* exportSTLAction = new QAction("Export .STL...", this);
     connect(exportSTLAction,SIGNAL(triggered()),this, SLOT(exportSTL()));
     ui->menuFile->addAction(exportSTLAction);
 
