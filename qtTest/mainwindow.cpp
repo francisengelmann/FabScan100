@@ -58,7 +58,7 @@ void MainWindow::setupMenu()
     connect(savePointCloudAction,SIGNAL(triggered()),this, SLOT(savePointCloud()));
     ui->menuFile->addAction(savePointCloudAction);
 
-    QAction* exportSTLAction = new QAction("Export .stl...", this);
+    QAction* exportSTLAction = new QAction("Export .STL...", this);
     connect(exportSTLAction,SIGNAL(triggered()),this, SLOT(exportSTL()));
     ui->menuFile->addAction(exportSTLAction);
 
@@ -199,11 +199,11 @@ void MainWindow::newPointCloud()
 
 void MainWindow::readConfiguration()
 {
-    cout << "read configutation" << endl;
-    boost::filesystem::path p;
-    p = boost::filesystem::current_path();
-    cout << p.string() << endl;
-    this->showDialog(QString::fromStdString( p.string()));
+    if(FSController::config->readConfiguration()){
+        this->showDialog("Successfully read configuration file!");
+    }else{
+        this->showDialog("Configuration file not found or corrupt!");
+    }
 }
 
 void MainWindow::enumerateSerialPorts()
