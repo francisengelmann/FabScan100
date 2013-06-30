@@ -9,8 +9,8 @@ FSWebCam::FSWebCam()
 {
     info.portName = "";
     info.friendlyName = "";
-    info.sizeX = CAM_IMAGE_WIDTH;
-    info.sizeY = CAM_IMAGE_HEIGHT;
+    info.sizeX = FSController::config->CAM_IMAGE_WIDTH;
+    info.sizeY = FSController::config->CAM_IMAGE_HEIGHT;
     isCapturingImage=false;
     camera=0;
     imageCapture=0;
@@ -32,7 +32,6 @@ cv::Mat FSWebCam::getFrame()
     #else
     imageCapture->capture("./");
     #endif
-
     //qDebug() << "preparing to take frame";
     //wait until camera has taken picture, then return
     while(!frameTaken){
@@ -44,7 +43,9 @@ cv::Mat FSWebCam::getFrame()
 
 FSPoint FSWebCam::getPosition()
 {
-    return FSMakePoint(CAM_POS_X, CAM_POS_Y, CAM_POS_Z);
+    return FSMakePoint(FSController::config->CAM_POS_X,
+                       FSController::config->CAM_POS_Y,
+                       FSController::config->CAM_POS_Z);
 }
 
 void FSWebCam::setCamera(const QByteArray &cameraDevice)

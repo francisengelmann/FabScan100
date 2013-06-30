@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     fslaser.cpp \
     fsturntable.cpp \
     fsvision.cpp \
-    fswebcam.cpp
+    fswebcam.cpp \
+    fsconfiguration.cpp
 
 HEADERS  += mainwindow.h \
     geometryengine.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     fsgeometries.h \
     fslaser.h \
     fsvision.h \
-    fsturntable.h
+    fsturntable.h \
+    fsconfiguration.h
 
 FORMS    += mainwindow.ui \
     fsdialog.ui \
@@ -139,6 +141,11 @@ linux-g++ {
     #CONFIG += link_pkgconfig
     #PKGCONFIG += opencv
     #INCLUDEPATH += /usr/local/include/opencv2/
+    INCLUDEPATH += /usr/include/boost/
+
+    LIBS += -L/usr/lib/ \
+     -lboost_system \
+     -lboost_filesystem \
 
     DEFINES += LINUX
 

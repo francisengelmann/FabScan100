@@ -15,7 +15,6 @@ FSControlPanel::FSControlPanel(QWidget *parent) :
 {
     ui->setupUi(this);
     this->installEventFilter(this);
-    qDebug("controlpanel constr called");
 }
 
 FSControlPanel::~FSControlPanel()
@@ -126,7 +125,6 @@ void FSControlPanel::on_laserSwipeMaxEdit_returnPressed()
 
 void FSControlPanel::setLaserAngleText(double angle)
 {
-    //QString a = QString::number(angle);
     QString a = QString("Angle: %1º").arg(angle);
     this->ui->laserAngle->setText(a);
 }

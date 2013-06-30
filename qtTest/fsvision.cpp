@@ -17,13 +17,14 @@ FSVision::FSVision()
 
 FSPoint FSVision::convertCvPointToFSPoint(CvPoint cvPoint)
 {
-  CvSize cvImageSize = cvSize(CAM_IMAGE_WIDTH, CAM_IMAGE_HEIGHT);
-  FSSize fsImageSize = FSMakeSize(FRAME_WIDTH, FRAME_WIDTH*(CAM_IMAGE_HEIGHT/CAM_IMAGE_WIDTH), 0.0f);
+  CvSize cvImageSize = cvSize(FSController::config->CAM_IMAGE_WIDTH, FSController::config->CAM_IMAGE_HEIGHT);
+  FSSize fsImageSize = FSMakeSize(FSController::config->FRAME_WIDTH,
+                                  FSController::config->FRAME_WIDTH*(FSController::config->CAM_IMAGE_HEIGHT/FSController::config->CAM_IMAGE_WIDTH), 0.0f);
 
   //here we define the origin of the cvImage, we place it in the middle of the frame and in the corner of the two perpendiculair planes
   CvPoint origin;
   origin.x = cvImageSize.width/2.0f;
-  origin.y = cvImageSize.height*ORIGIN_Y;
+  origin.y = cvImageSize.height*FSController::config->ORIGIN_Y;
 
   FSPoint fsPoint;
   //translate
@@ -39,11 +40,16 @@ FSPoint FSVision::convertCvPointToFSPoint(CvPoint cvPoint)
 
 CvPoint FSVision::convertFSPointToCvPoint(FSPoint fsPoint)
 {
-  CvSize cvImageSize = cvSize(CAM_IMAGE_WIDTH, CAM_IMAGE_HEIGHT);
-  FSSize fsImageSize = FSMakeSize(FRAME_WIDTH, FRAME_WIDTH*(CAM_IMAGE_HEIGHT/CAM_IMAGE_WIDTH), 0.0f);
+  CvSize cvImageSize = cvSize(
+              FSController::config->CAM_IMAGE_WIDTH,
+              FSController::config->CAM_IMAGE_HEIGHT);
+  FSSize fsImageSize = FSMakeSize(
+              FSController::config->FRAME_WIDTH,
+              FSController::config->FRAME_WIDTH*(
+                  FSController::config->CAM_IMAGE_HEIGHT/FSController::config->CAM_IMAGE_WIDTH), 0.0f);
   CvPoint origin;
   origin.x = cvImageSize.width/2.0f;
-  origin.y = cvImageSize.height*ORIGIN_Y;
+  origin.y = cvImageSize.height*FSController::config->ORIGIN_Y;
 
   CvPoint cvPoint;
 
@@ -233,8 +239,8 @@ cv::Mat FSVision::drawHelperLinesToFrame(cv::Mat &frame)
 {
     //artifical horizont
     cv::line(frame,
-             cv::Point(0,frame.rows*ORIGIN_Y),
-             cv::Point(frame.cols,frame.rows*ORIGIN_Y),
+             cv::Point(0,frame.rows*FSController::config->ORIGIN_Y),
+             cv::Point(frame.cols,frame.rows*FSController::config->ORIGIN_Y),
              CV_RGB( 0,0,255 ),
              2);
 
@@ -252,15 +258,15 @@ cv::Mat FSVision::drawHelperLinesToFrame(cv::Mat &frame)
 
     //line showing the upper limit where analyzing starts
     cv::line(frame,
-             cv::Point(0,frame.rows-LOWER_ANALYZING_FRAME_LIMIT),
-             cv::Point(frame.cols,frame.rows-LOWER_ANALYZING_FRAME_LIMIT),
+             cv::Point(0,frame.rows-FSController::config->LOWER_ANALYZING_FRAME_LIMIT),
+             cv::Point(frame.cols,frame.rows-FSController::config->LOWER_ANALYZING_FRAME_LIMIT),
              CV_RGB( 255,255,0 ),
              1);
 
     //line showing the lower limit where analyzing stops
     cv::line(frame,
-             cv::Point(0,UPPER_ANALYZING_FRAME_LIMIT),
-             cv::Point(frame.cols,UPPER_ANALYZING_FRAME_LIMIT),
+             cv::Point(0,FSController::config->UPPER_ANALYZING_FRAME_LIMIT),
+             cv::Point(frame.cols,FSController::config->UPPER_ANALYZING_FRAME_LIMIT),
              CV_RGB( 255,255,0 ),
              1);
     frame = drawLaserLineToFrame(frame);
@@ -316,15 +322,15 @@ void FSVision::putPointsFromFrameToCloud(
     cv::cvtColor(laserLine, bwImage, CV_RGB2GRAY); //convert to grayscale
     //now iterating from top to bottom over bwLaserLine frame
     //no bear outside of these limits :) cutting of top and bottom of frame
-    for(int y = UPPER_ANALYZING_FRAME_LIMIT;
-        y < bwImage.rows-(LOWER_ANALYZING_FRAME_LIMIT);
+    for(int y = FSController::config->UPPER_ANALYZING_FRAME_LIMIT;
+        y < bwImage.rows-(FSController::config->LOWER_ANALYZING_FRAME_LIMIT);
         y+=dpiVertical )
     {
         //qDebug() << "checking point at line " << y << laserPos+ANALYZING_LASER_OFFSET;
         //ANALYZING_LASER_OFFSET is the offset where we stop looking for a reflected laser, cos we might catch the non reflected
         //now iteratinf from right to left over bwLaserLine frame
         for(int x = bwImage.cols-1;
-            x >= laserPos+ANALYZING_LASER_OFFSET;
+            x >= laserPos+FSController::config->ANALYZING_LASER_OFFSET;
             x -= 1){
             //qDebug() << "Pixel value: " << bwImage.at<uchar>(y,x);
             if(bwImage.at<uchar>(y,x)==255){ //check if white=laser-reflection
@@ -363,7 +369,7 @@ void FSVision::putPointsFromFrameToCloud(
 
                 //turning new point according to current angle of turntable
                 //translate coordinate system to the middle of the turntable
-                fsNewPoint.z -= TURNTABLE_POS_Z; //7cm radius of turntbale plus 5mm offset from back plane
+                fsNewPoint.z -= FSController::config->TURNTABLE_POS_Z; //7cm radius of turntbale plus 5mm offset from back plane
                 FSPoint alphaDelta = turntable->getRotation();
                 FSFloat alphaOld = (float)atan(fsNewPoint.z/fsNewPoint.x);
                 FSFloat alphaNew = alphaOld+alphaDelta.y*(M_PI/180.0f);

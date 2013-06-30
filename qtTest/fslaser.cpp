@@ -9,7 +9,10 @@ FSLaser::FSLaser()
     degreesPerStep = 360.0f/200.0f/16.0f; //the size of a microstep
     direction = FS_DIRECTION_CW;
     rotation = FSMakePoint(0.0f, 0.0f, 0.0f);
-    position = FSMakePoint(LASER_POS_X, LASER_POS_Y, LASER_POS_Z);
+    position = FSMakePoint(
+                FSController::config->LASER_POS_X,
+                FSController::config->LASER_POS_Y,
+                FSController::config->LASER_POS_Z);
     //FSController::getInstance()->controlPanel->setLaserSwipeMaxEditText(rotation.y);
 }
 

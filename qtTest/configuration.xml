@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<opencv_storage>
+    <Configuration>
+        
+        <!-- LASER POSITION -->
+        <!-- Should be precise by construction -->
+        <LASER_POS_X>14.0</LASER_POS_X>
+        <!-- Not used by calculations -->
+        <LASER_POS_Y>6.4</LASER_POS_Y>
+        <!-- Should be precise by construction -->
+        <LASER_POS_Z>28.8</LASER_POS_Z>
+        
+        <!-- CAMERA POSITION -->
+        <CAM_POS_Y>5.57</CAM_POS_Y>
+        <CAM_POS_Z>30.9</CAM_POS_Z>
+        
+        <!-- TURNTABLE POSITION -->
+        <!-- Not used by calculations -->
+        <TURNTABLE_POS_X>0.0</TURNTABLE_POS_X>
+        <!-- Not used by calculations -->
+        <TURNTABLE_POS_Y>0.0</TURNTABLE_POS_Y>
+        <!-- Precise by construction -->
+        <TURNTABLE_POS_Z>7.5</TURNTABLE_POS_Z>
+
+        <!-- ADDITIONAL CONFIGS -->
+
+        <!-- To speed up computations we analyze the laser frame only after a certin offset from top -->
+        <UPPER_ANALYZING_FRAME_LIMIT>0</UPPER_ANALYZING_FRAME_LIMIT>
+        <!-- To speed up computations we analyze the laser frame only upt oa certin offset from bottom -->
+        <LOWER_ANALYZING_FRAME_LIMIT>30</LOWER_ANALYZING_FRAME_LIMIT>
+        <!-- To avoid noise, we stop analyzing the frame from right to left after a certain ofset of the estimated laser position -->
+        <ANALYZING_LASER_OFFSET>90</ANALYZING_LASER_OFFSET>
+        <!-- In % from top, postion of blue line (when pressing fetch frame)-->
+        <!-- This should be the intersection of the back plane and the bottom plane -->
+        <ORIGIN_Y>0.75</ORIGIN_Y>
+        <!-- In cm the width of what the camera sees, ie place a measure tool at the back-plane and see how many cm the camera sees.-->
+        <!-- This is a cheap way of calibration -->
+        <FRAME_WIDTH>26.6</FRAME_WIDTH>
+        
+        <!-- The resolution of the images coming from the camera -->
+        <CAM_IMAGE_WIDTH>1280.0</CAM_IMAGE_WIDTH>
+        <!--<CAM_IMAGE_HEIGHT>960.0</CAM_IMAGE_HEIGHT>-->
+        <CAM_IMAGE_HEIGHT>960.0</CAM_IMAGE_HEIGHT>
+        
+        <!-- Currenty not implemented -->
+        <!-- When there is a stepper attached to the laser, we can swipe the laser over the object, here we define the minimum and maximum angle where the laser starts and ends -->
+        <!-- The minimal angle -->
+        <LASER_SWIPE_MIN>18.0</LASER_SWIPE_MIN>
+        <!-- The maximum angle -->
+        <LASER_SWIPE_MAX>52.0</LASER_SWIPE_MAX>
+        
+    </Configuration>
+</opencv_storage>
