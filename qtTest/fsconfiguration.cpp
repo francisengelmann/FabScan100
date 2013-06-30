@@ -57,31 +57,26 @@ void FSConfiguration::setDefaultValues()
 
 void FSConfiguration::read(const FileNode& node)                          //Read serialization for this class
 {
-    UPPER_ANALYZING_FRAME_LIMIT = 0;
-    LOWER_ANALYZING_FRAME_LIMIT = 30;
-    ANALYZING_LASER_OFFSET = 90;
-    ORIGIN_Y = 0.75;
-    FRAME_WIDTH = 26.6f; //in cm. the width of what the camera sees, ie place a measure tool at the back-plane and see how many cm the camera sees.
-    CAM_IMAGE_WIDTH = 1280.0f;
-    CAM_IMAGE_HEIGHT = 960.0f; //here I am not sure, i think it is 960, (old=853.0f)
-    LASER_POS_X = 14.0f; //precise by construction
-    LASER_POS_Y = 6.4f;  //not needed/used for calculations
-    LASER_POS_Z = 28.8f; //precise by construction
-    LASER_SWIPE_MIN = 18.0f;
-    LASER_SWIPE_MAX = 52.0f;
-    CAM_POS_Y = 5.57f;
-    CAM_POS_Z = 30.9f;
-    TURNTABLE_POS_X = 0.0f; //not used by calculations
-    TURNTABLE_POS_Y = 0.0f; //not used by calculations
-    TURNTABLE_POS_Z = 7.5f; //precise by construction
-
     node["UPPER_ANALYZING_FRAME_LIMIT"] >> UPPER_ANALYZING_FRAME_LIMIT;
-    //node[""] >> ;
+    node["LOWER_ANALYZING_FRAME_LIMIT"] >> LOWER_ANALYZING_FRAME_LIMIT;
+    node["ANALYZING_LASER_OFFSET"] >> ANALYZING_LASER_OFFSET;
+    node["ORIGIN_Y"] >> ORIGIN_Y;
+    node["FRAME_WIDTH"] >> FRAME_WIDTH;
+    node["CAM_IMAGE_WIDTH"] >> CAM_IMAGE_WIDTH;
+    node["CAM_IMAGE_HEIGHT"] >> CAM_IMAGE_HEIGHT;
+    node["LASER_POS_X"] >> LASER_POS_X;
+    node["LASER_POS_Y"] >> LASER_POS_Y;
+    node["LASER_POS_Z"] >> LASER_POS_Z;
+    node["LASER_SWIPE_MIN"] >> LASER_SWIPE_MIN;
+    node["LASER_SWIPE_MAX"] >> LASER_SWIPE_MAX;
+    node["CAM_POS_Y"] >> CAM_POS_Y;
+    node["CAM_POS_Z"] >> CAM_POS_Z;
+    node["TURNTABLE_POS_X"] >> TURNTABLE_POS_X;
+    node["TURNTABLE_POS_Y"] >> TURNTABLE_POS_Y;
+    node["TURNTABLE_POS_Z"] >> TURNTABLE_POS_Z;
 
     interprate();
 }
-
-
 
 bool FSConfiguration::readConfiguration()
 {
@@ -105,7 +100,7 @@ bool FSConfiguration::readConfiguration()
         cout << "Could not read configuration from file " << resPath << endl;
         return false;
     }
-    fs["Settings"] >> *this;
+    fs["Configuration"] >> *this;
     fs.release();
 
     if(!this->goodInput){
@@ -118,5 +113,6 @@ bool FSConfiguration::readConfiguration()
 
 void FSConfiguration::interprate()
 {
+    cout << CAM_IMAGE_WIDTH << " " << CAM_IMAGE_HEIGHT << endl;
     this->goodInput = true;
 }

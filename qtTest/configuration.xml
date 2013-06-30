@@ -39,7 +39,8 @@
         
         <!-- The resolution of the images coming from the camera -->
         <CAM_IMAGE_WIDTH>1280.0</CAM_IMAGE_WIDTH>
-        <CAM_IMAGE_HEIGHT>960.0</CAM_IMAGE_HEIGHT>
+        <!--<CAM_IMAGE_HEIGHT>960.0</CAM_IMAGE_HEIGHT>-->
+        <CAM_IMAGE_HEIGHT>2960.0</CAM_IMAGE_HEIGHT>
         
         <!-- Currenty not implemented -->
         <!-- When there is a stepper attached to the laser, we can swipe the laser over the object, here we define the minimum and maximum angle where the laser starts and ends -->

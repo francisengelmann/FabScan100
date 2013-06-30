@@ -62,7 +62,7 @@ void MainWindow::setupMenu()
     connect(exportSTLAction,SIGNAL(triggered()),this, SLOT(exportSTL()));
     ui->menuFile->addAction(exportSTLAction);
 
-    QAction* readConfiguartion = new QAction("Read configuration", this);
+    QAction* readConfiguartion = new QAction("Read Configuration", this);
     connect(readConfiguartion,SIGNAL(triggered()),this, SLOT(readConfiguration()));
     ui->menuFile->addAction(readConfiguartion);
 
