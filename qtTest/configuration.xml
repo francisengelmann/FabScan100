@@ -21,14 +21,17 @@
         <TURNTABLE_POS_Y>0.0</TURNTABLE_POS_Y>
         <!-- Precise by construction -->
         <TURNTABLE_POS_Z>7.5</TURNTABLE_POS_Z>
-        
+
+        <!-- ADDITIONAL CONFIGS -->
+
         <!-- To speed up computations we analyze the laser frame only after a certin offset from top -->
         <UPPER_ANALYZING_FRAME_LIMIT>0</UPPER_ANALYZING_FRAME_LIMIT>
         <!-- To speed up computations we analyze the laser frame only upt oa certin offset from bottom -->
         <LOWER_ANALYZING_FRAME_LIMIT>30</LOWER_ANALYZING_FRAME_LIMIT>
         <!-- To avoid noise, we stop analyzing the frame from right to left after a certain ofset of the estimated laser position -->
         <ANALYZING_LASER_OFFSET>90</ANALYZING_LASER_OFFSET>
-        <!--  -->
+        <!-- In % from top, postion of blue line (when pressing fetch frame)-->
+        <!-- This should be the intersection of the back plane and the bottom plane -->
         <ORIGIN_Y>0.75</ORIGIN_Y>
         <!-- In cm the width of what the camera sees, ie place a measure tool at the back-plane and see how many cm the camera sees.-->
         <!-- This is a cheap way of calibration -->
