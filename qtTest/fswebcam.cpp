@@ -43,6 +43,10 @@ cv::Mat FSWebCam::getFrame()
 
 FSPoint FSWebCam::getPosition()
 {
+    //cout << __PRETTY_FUNCTION__
+    //        << FSController::config->CAM_POS_X << "::"
+    //        << FSController::config->CAM_POS_Y << "::"
+     //       << FSController::config->CAM_POS_Z << endl;
     return FSMakePoint(FSController::config->CAM_POS_X,
                        FSController::config->CAM_POS_Y,
                        FSController::config->CAM_POS_Z);

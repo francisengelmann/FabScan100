@@ -19,7 +19,7 @@ FSPoint FSVision::convertCvPointToFSPoint(CvPoint cvPoint)
 {
   CvSize cvImageSize = cvSize(FSController::config->CAM_IMAGE_WIDTH, FSController::config->CAM_IMAGE_HEIGHT);
   FSSize fsImageSize = FSMakeSize(FSController::config->FRAME_WIDTH,
-                                  FSController::config->FRAME_WIDTH*(FSController::config->CAM_IMAGE_HEIGHT/FSController::config->CAM_IMAGE_WIDTH), 0.0f);
+                                  (double)FSController::config->FRAME_WIDTH*(double)(FSController::config->CAM_IMAGE_HEIGHT/(double)FSController::config->CAM_IMAGE_WIDTH), 0.0f);
 
   //here we define the origin of the cvImage, we place it in the middle of the frame and in the corner of the two perpendiculair planes
   CvPoint origin;
@@ -344,9 +344,11 @@ void FSVision::putPointsFromFrameToCloud(
                 CvPoint cvNewPoint;
                 cvNewPoint.x = x;
                 cvNewPoint.y = y;
+                //cout << x << ":" << y << endl;
 
                 //convert to world coordinates withouth depth
                 FSPoint fsNewPoint = FSVision::convertCvPointToFSPoint(cvNewPoint);
+                //cout << fsNewPoint.x << ":" << fsNewPoint.y << ":" << fsNewPoint.z << endl;
                 FSLine l1 = computeLineFromPoints(webcam->getPosition(), fsNewPoint);
                 FSLine l2 = computeLineFromPoints(laser->getPosition(), laser->getLaserPointPosition());
 
@@ -354,12 +356,14 @@ void FSVision::putPointsFromFrameToCloud(
                 fsNewPoint.x = i.x;
                 fsNewPoint.z = i.z;
 
+
                 //At this point we know the depth=z. Now we need to consider the scaling depending on the depth.
                 //First we move our point to a camera centered cartesion system.
                 fsNewPoint.y -= (webcam->getPosition()).y;
                 fsNewPoint.y *= ((webcam->getPosition()).z - fsNewPoint.z)/(webcam->getPosition()).z;
                 //Redo the translation to the box centered cartesion system.
                 fsNewPoint.y += (webcam->getPosition()).y;
+                //cout << __PRETTY_FUNCTION__ << fsNewPoint.y << endl;
 
                 //get color from picture without laser
                 FSUChar r = laserOff.at<cv::Vec3b>(y,x)[2];
