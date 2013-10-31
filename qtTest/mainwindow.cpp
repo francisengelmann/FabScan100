@@ -330,7 +330,7 @@ void MainWindow::on_resolutionComboBox_currentIndexChanged(const QString &arg1)
         FSController::getInstance()->yDpi = 1;
     }
     if(arg1.compare("Good")==0){
-        FSController::getInstance()->turntableStepSize = 8*FSController::getInstance()->turntable->degreesPerStep;
+        FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
         FSController::getInstance()->yDpi = 1;
     }
     if(arg1.compare("Normal")==0){
