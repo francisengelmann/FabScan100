@@ -2,9 +2,11 @@
 #define STATICHEADERS_H
 
 // set the minimum (?) windows version - important for qextserialenumerator_win.cpp/dbt.h
+#ifdef WINDOWS
 #include <WinSDKVer.h>
 #define _WIN32_WINNT    _WIN32_WINNT_WINXP
 #include <SDKDDKVer.h>
+#endif
 
 #include <Eigen/Core>
 #include <opencv2/core/core.hpp>
