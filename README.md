@@ -89,7 +89,7 @@ Ubuntu 12.10:
 
 Windows:
 ========
-Seee https://github.com/reini1989/FabScan100/blob/master/README_Windows.md
+See README_Windows.md
  
 Other platforms
 ===============
