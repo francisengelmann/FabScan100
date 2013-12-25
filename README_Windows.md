@@ -63,3 +63,5 @@ TODO
 - Copy the dlls by a postbuild process
 - Make the paths in qtTest.pro relative or based on a environment variable or something
 - Test if the project still compiles under linux/macosx (but should due to only small changes and the use of preprocessor constants for os-specific code fragments)
+- Ensure the the debug libs/dlls are used on a debug build and the release libs/dlls are used on a release build
+- Find out why debugging does not work, even if the debugger is recognized within QtCreator
