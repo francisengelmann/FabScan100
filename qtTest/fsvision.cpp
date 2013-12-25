@@ -203,7 +203,7 @@ cv::Mat FSVision::subLaser2(cv::Mat &laserOff, cv::Mat &laserOn)
     //cv::waitKey(0);
     //cv::destroyWindow("laserLine");
 
-    int edges[cols]; //contains the cols index of the detected edges per row
+    int *edges = new int[cols]; //contains the cols index of the detected edges per row
     for(unsigned int y = 0; y <rows; y++){
         //reset the detected edges
         for(unsigned int j=0; j<cols; j++){ edges[j]=-1; }

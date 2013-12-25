@@ -133,6 +133,8 @@ macx {
         -lboost_unit_test_framework-mt \
         -lboost_wave-mt \
         -lboost_wserialization-mt \
+
+    DEFINES += MACOSX
 }
 
 linux-g++ {
@@ -179,5 +181,35 @@ linux-g++ {
 }
 
 win32 {
-    message("Buildng for Win. not working yet...")
+    message("Buildng for Win.")
+    INCLUDEPATH += C:\libs\opencv-2.4.2\opencv\build\include
+    LIBS += C:\libs\opencv-2.4.2\opencv\build\x86\vc10\lib\opencv_core242.lib
+    LIBS += C:\libs\opencv-2.4.2\opencv\build\x86\vc10\lib\opencv_highgui242.lib
+    LIBS += C:\libs\opencv-2.4.2\opencv\build\x86\vc10\lib\opencv_imgproc242.lib
+    LIBS += C:\libs\opencv-2.4.2\opencv\build\x86\vc10\lib\opencv_features2d242.lib
+    LIBS += C:\libs\opencv-2.4.2\opencv\build\x86\vc10\lib\opencv_calib3d242.lib
+    LIBS += C:\libs\opencv-2.4.2\opencv\build\x86\vc10\lib\opencv_flann242.lib
+
+    INCLUDEPATH += C:\libs\pcl-1.6.0\include\pcl-1.6
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_common_release.lib
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_io_release.lib
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_filters_release.lib
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_kdtree_release.lib
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_registration_release.lib
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_features_release.lib
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_segmentation_release.lib
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_surface_release.lib
+    LIBS += C:\libs\pcl-1.6.0\lib\pcl_search_release.lib
+
+    INCLUDEPATH += C:\libs\pcl-1.6.0\3rdParty\Eigen\include
+
+    INCLUDEPATH += C:\libs\pcl-1.6.0\3rdParty\FLANN\include
+    LIBS += C:\libs\pcl-1.6.0\3rdParty\FLANN\lib\flann.lib
+
+    INCLUDEPATH += C:\libs\pcl-1.6.0\3rdParty\Boost\include
+    LIBS += C:\libs\pcl-1.6.0\3rdParty\Boost\lib\boost_filesystem-vc100-mt-1_49.lib
+    LIBS += C:\libs\pcl-1.6.0\3rdParty\Boost\lib\boost_system-vc100-mt-gd-1_49.lib
+    LIBS += C:\libs\pcl-1.6.0\3rdParty\Boost\lib\libboost_filesystem-vc100-mt-gd-1_49.lib
+    LIBS += C:\libs\pcl-1.6.0\3rdParty\Boost\lib\libboost_system-vc100-mt-gd-1_49.lib
+    DEFINES += WINDOWS
 }
