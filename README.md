@@ -89,7 +89,7 @@ Ubuntu 12.10:
 
 Windows:
 ========
-See README_Windows.md
+See [README_Windows.md](README_Windows.md)
  
 Other platforms
 ===============
