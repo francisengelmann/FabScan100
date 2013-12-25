@@ -53,6 +53,12 @@ Copy the following files to your output directory:
  - C:\libs\pcl-1.6.0\bin\pcl_search_release.dll
  - C:\libs\pcl-1.6.0\bin\pcl_surface_release.dll
 
+ Copy platform dll
+------------------
+- Create a directory "platforms" in the output directory
+- Copy the Qt platform plugin dlls to this new directory
+ - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\plugins\platforms
+
 More information
 ----------------
 - My dev system is a Windows 7 SP1 x64 Virtual Machine
