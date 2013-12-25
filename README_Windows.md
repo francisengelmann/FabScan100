@@ -20,7 +20,8 @@ Compiling
 
 Copy DLLs
 ---------
-(Is QtCreator capable of PostBuild-Events like visual studio)
+(Is QtCreator capable of post-build-events like Visual Studio?)
+
 Copy the following files to your output directory:
 - Boost
  - C:\libs\pcl-1.6.0\3rdParty\Boost\lib\boost_filesystem-vc100-mt-1_49.dll
