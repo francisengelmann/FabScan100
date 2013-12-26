@@ -59,6 +59,11 @@ Copy the following files to your output directory:
 - Copy the Qt platform plugin dlls to this new directory
  - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\plugins\platforms
 
+Download binaries
+-----------------
+Alternatively you can download my precompiled binaries:
+- [Fabscan_Windows_2013.12.25.zip](https://mega.co.nz/#!KtQlnaTL!NEUC7kZbt57j_Oulo-jTsVaEqdsCFN6L6jMU44GbVD8)
+
 More information
 ----------------
 - My dev system is a Windows 7 SP1 x64 Virtual Machine
