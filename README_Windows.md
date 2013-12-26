@@ -40,6 +40,13 @@ Copy the following files to your output directory:
  - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\bin\Qt5Networkd.dll
  - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\bin\Qt5OpenGLd.dll
  - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\bin\Qt5Widgetsd.dll
+ - Qt plugins: Qt plugins have to be copied to the correct subdir!
+  - subdir "platforms"
+   - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\plugins\platforms\wmfengined.dll
+  - subdir "mediaservice"
+   - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\plugins\mediaservice\dsengined.dll
+   - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\plugins\mediaservice\qtmedia_audioengine.dll
+   - C:\libs\Qt\Qt5.2.0\5.2.0\msvc2010_opengl\plugins\mediaservice\wmfengined.dll
 - OpenCV
  - C:\libs\opencv-2.4.2\opencv\build\x86\vc10\bin\opencv_core242.dll
  - C:\libs\opencv-2.4.2\opencv\build\x86\vc10\bin\opencv_highgui242.dll
