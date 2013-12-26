@@ -41,8 +41,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete ui;
-    FSController::getInstance()->scanning=false;
+    FSController::getInstance()->scanning=false;	// Terminate any scan in progress
+	FSController::getInstance()->laser->turnOff();	// Make sure laser is off!
+	FSController::getInstance()->destroy();	// We'll find what's hogging the .exe the hard way...
+	cv::destroyAllWindows();
+	controlPanel->~FSControlPanel();
+	delete ui;
+	dialog->~FSDialog();
+	//qextSerialEnumerator->~QextSerialEnumerator();
+	hwTimer->~QBasicTimer();
+	qApp->quit();
 }
 
 void MainWindow::setupMenu()
@@ -237,7 +245,12 @@ void MainWindow::enumerateSerialPorts()
 
 void MainWindow::enumerateWebCams()
 {
+#ifdef WINDOWS
+    //Try using OpenCV to enumerate (but unfortunately not name) available cameras
+    if (!FSController::getInstance()->webcam->imageCaptureCv.isOpened() || QCamera::availableDevices().size()==0){
+#else	
     if(QCamera::availableDevices().size()==0){
+#endif
        QAction* a = new QAction("No camera found.", this);
        a->setEnabled(false);
        ui->menuCamera->clear();
@@ -245,27 +258,38 @@ void MainWindow::enumerateWebCams()
        return;
     }
 
-    QByteArray cameraDevice;
-    QCamera* camera;
+#ifdef WINDOWS
     ui->menuCamera->clear();
+    const QByteArray deviceName = QCamera::availableDevices()[0];
+    QString description = QCamera::deviceDescription(deviceName);
+    qDebug() << "CamId 0 " << description;
+    QAction *videoDeviceAction = new QAction(description, this);
+    videoDeviceAction->setCheckable(true);
+    videoDeviceAction->setData(QVariant(deviceName));
+    connect(videoDeviceAction,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
+    videoDeviceAction->setChecked(true);
+
+    FSController::getInstance()->webcam->info.portName=description; //This tells the main routines that we have a camera
+    FSController::getInstance()->webcam->setCamera(deviceName);
+
+    ui->menuCamera->addAction(videoDeviceAction);
+#else
+    ui->menuCamera->clear();
+    int i = 0;
     foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
-        QString description = camera->deviceDescription(deviceName);
+        QString description = QCamera::deviceDescription(deviceName);
+        qDebug() << "CamId " << i++ << description;
         QAction *videoDeviceAction = new QAction(description, this);
         videoDeviceAction->setCheckable(true);
         videoDeviceAction->setData(QVariant(deviceName));
         connect(videoDeviceAction,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
 
-        /*if(description.contains("Logitech")){
-            FSController::getInstance()->webcam->info.portName=description; //eigentlich doppelt gemoppelt, das hier kann weg muss jedoch gekukt werden
-            FSController::getInstance()->webcam->setCamera(videoDeviceAction->data().toByteArray());
-        }*/
-
         if (FSController::getInstance()->webcam->info.portName.compare(description)==0) {
-            //cameraDevice = deviceName;
             videoDeviceAction->setChecked(true);
         }
         ui->menuCamera->addAction(videoDeviceAction);
     }
+#endif
 }
 
 void MainWindow::on_scanButton_clicked()
@@ -279,6 +303,7 @@ void MainWindow::on_scanButton_clicked()
     }else{
         applyState(POINT_CLOUD);
         this->ui->scanButton->setText("Start Scan");
+		FSController::getInstance()->laser->turnOff();	// Make sure laser is off!
         FSController::getInstance()->scanning = false;
     }
 

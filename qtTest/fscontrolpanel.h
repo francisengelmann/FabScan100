@@ -46,6 +46,10 @@ private slots:
     void on_laserSwipeMinEdit_returnPressed();
 
     void on_pushButton_2_clicked();
+#ifdef WINDOWS
+	void on_cameraFrame(QImage frame);	// This might need to be public?
+							// Frame ready from cv thread
+#endif
 };
 
 #endif // FSCONTROLPANEL_H
