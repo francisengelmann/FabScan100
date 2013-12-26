@@ -9,7 +9,7 @@ Download and install all the libraries to C:\libs (no relative paths at the mome
 - C:\libs\Qt\Qt5.2.0 == [qt-windows-opensource-5.2.0-msvc2010_opengl-x86-offline.exe](http://download.qt-project.org/official_releases/qt/5.2/5.2.0/qt-windows-opensource-5.2.0-msvc2010_opengl-x86-offline.exe)
 - C:\libs\openni-1.3.2.1 == C:\libs\pcl-1.6.0\3rdParty\OpenNI\OpenNI-Win32-1.3.2-Dev.msi
  - Should be started during the installation of PCL
-- [Visual C++ 2010 Express](http://go.microsoft.com/?linkid=9709949)
+- [Visual Studio C++ 2010 Express](http://go.microsoft.com/?linkid=9709949)
 - Only if you want debugging support: [Microsoft Windows SDK for Windows 7](http://www.microsoft.com/en-us/download/details.aspx?id=8442) (check "Windows Debugging Tools")
  
 
