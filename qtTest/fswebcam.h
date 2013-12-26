@@ -34,8 +34,10 @@ public:
     FSWebCamInfo info;      //the string that identifies the camera, as selected in the menu
     QCamera* camera;        //new qt5 camera representative
     QCameraImageCapture *imageCapture;
+#ifdef WINDOWS
 	void StartX();			//Qt5 camera not fully operational in Windows. We use these two routines to sync cv capture
 	void StartX2();
+#endif
     cv::VideoCapture imageCaptureCv; 
     QImageEncoderSettings imageSettings;
     cv::Mat frame;

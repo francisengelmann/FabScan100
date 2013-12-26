@@ -50,6 +50,7 @@ FSWebCam::~FSWebCam()
 	}
 }
 
+#ifdef WINDOWS
 // These routines take the place of getFrame().
 void FSWebCam::StartX()	// This sub starts StartX2() as a seperate thread
 {
@@ -81,6 +82,7 @@ void FSWebCam::StartX2() // This thread runs concurrently
 	qDebug() << "Thread killed";
 	endThread = false; // Signal back to the main program that we've finished
 }
+#endif
 
 // Can we use the below code in the above thread to create a QImage usable in ui->viewfinder? Do we need to?
 QImage FSWebCam::Mat2QImage(const cv::Mat3b &src)
@@ -118,7 +120,9 @@ cv::Mat FSWebCam::getFrame()
     qDebug() << "preparing to take frame";
     //wait until camera has taken picture, then return
     while(!frameTaken){
+#ifdef WINDOWS
 		QThread::msleep(1); // Added for the cv routines
+#endif
         qApp->processEvents();
     }
     qDebug() << "received frame";
