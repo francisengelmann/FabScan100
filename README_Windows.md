@@ -83,7 +83,7 @@ TODO
 
 Known Issues
 ------------
-- Camera doesn't work so far, trying to understand [Ian Shillingford's changes](https://groups.google.com/d/msg/fabscan/z3gwce0bt28/Oo2FkWWP6IAJ)
+- Camera doesn't work on some systems. [Let's hope someone @ StackOverflow knows why](http://stackoverflow.com/questions/20790835/qt-5-2-0-the-camera-service-is-missing).
 - If you have a ATI/AMD graphic card and the app crashes have a look at the windows event log. It may complain about a atioglxx.dll. Have a look in C:\Windows\System32 if it's there. If not: reinstall your graphic driver. If this doesn't resolve the problem search for atioglxx (no extension) in the unpacked driver installer, find a file called atioglxx.dl_. Copy and rename it to atioglxx.dll. Move it to C:\Windows\System32
 - On my WindowsXP machine Fabscan complained about two DLLs which should be in the VC redisributable package. Maybe it's because on this machine my %WINDIR% is on H:\ instead of C:\. However, I fixed the issue by downloading msvcr100d.dll & msvcp100d.dll from dll-files.com
 
