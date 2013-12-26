@@ -81,3 +81,7 @@ TODO
 - Test if the project still compiles under linux/macosx (but should due to only small changes and the use of preprocessor constants for os-specific code fragments)
 - Ensure the the debug libs/dlls are used on a debug build and the release libs/dlls are used on a release build
 - Find out why debugging does not work, even if the debugger is recognized within QtCreator
+
+Known Issues
+------------
+- If you hava a ATI/AMD graphic card and the app crashes hava a look at the windows event log. It may complain about a atioglxx.dll. Have a look in C:\Windows\System32 if it's there. If not: reinstall your graphic driver. If this doesn't resolve the problem search for atioglxx (no extension) in the unpacked driver installer, find a file called atioglxx.dl_. Copy and rename it to atioglxx.dll. Move it to C:\Windows\System32
