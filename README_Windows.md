@@ -84,4 +84,4 @@ TODO
 
 Known Issues
 ------------
-- If you hava a ATI/AMD graphic card and the app crashes hava a look at the windows event log. It may complain about a atioglxx.dll. Have a look in C:\Windows\System32 if it's there. If not: reinstall your graphic driver. If this doesn't resolve the problem search for atioglxx (no extension) in the unpacked driver installer, find a file called atioglxx.dl_. Copy and rename it to atioglxx.dll. Move it to C:\Windows\System32
+- If you have a ATI/AMD graphic card and the app crashes have a look at the windows event log. It may complain about a atioglxx.dll. Have a look in C:\Windows\System32 if it's there. If not: reinstall your graphic driver. If this doesn't resolve the problem search for atioglxx (no extension) in the unpacked driver installer, find a file called atioglxx.dl_. Copy and rename it to atioglxx.dll. Move it to C:\Windows\System32
