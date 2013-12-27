@@ -245,12 +245,7 @@ void MainWindow::enumerateSerialPorts()
 
 void MainWindow::enumerateWebCams()
 {
-#ifdef WINDOWS
-    //Try using OpenCV to enumerate (but unfortunately not name) available cameras
-    if (!FSController::getInstance()->webcam->imageCaptureCv.isOpened() || QCamera::availableDevices().size()==0){
-#else	
     if(QCamera::availableDevices().size()==0){
-#endif
        QAction* a = new QAction("No camera found.", this);
        a->setEnabled(false);
        ui->menuCamera->clear();
@@ -258,27 +253,9 @@ void MainWindow::enumerateWebCams()
        return;
     }
 
-#ifdef WINDOWS
     ui->menuCamera->clear();
-    const QByteArray deviceName = QCamera::availableDevices()[0];
-    QString description = QCamera::deviceDescription(deviceName);
-    qDebug() << "CamId 0 " << description;
-    QAction *videoDeviceAction = new QAction(description, this);
-    videoDeviceAction->setCheckable(true);
-    videoDeviceAction->setData(QVariant(deviceName));
-    connect(videoDeviceAction,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
-    videoDeviceAction->setChecked(true);
-
-    FSController::getInstance()->webcam->info.portName=description; //This tells the main routines that we have a camera
-    FSController::getInstance()->webcam->setCamera(deviceName);
-
-    ui->menuCamera->addAction(videoDeviceAction);
-#else
-    ui->menuCamera->clear();
-    int i = 0;
     foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
         QString description = QCamera::deviceDescription(deviceName);
-        qDebug() << "CamId " << i++ << description;
         QAction *videoDeviceAction = new QAction(description, this);
         videoDeviceAction->setCheckable(true);
         videoDeviceAction->setData(QVariant(deviceName));
@@ -289,7 +266,6 @@ void MainWindow::enumerateWebCams()
         }
         ui->menuCamera->addAction(videoDeviceAction);
     }
-#endif
 }
 
 void MainWindow::on_scanButton_clicked()
