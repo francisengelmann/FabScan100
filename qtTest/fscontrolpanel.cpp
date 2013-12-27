@@ -15,9 +15,6 @@ FSControlPanel::FSControlPanel(QWidget *parent) :
 {
     ui->setupUi(this);
     this->installEventFilter(this);
-#ifdef WINDOWS
-	QObject::connect(FSController::getInstance()->webcam, SIGNAL(cameraFrame(QImage)),this, SLOT(on_cameraFrame(QImage)));
-#endif
 }
 
 FSControlPanel::~FSControlPanel()
@@ -139,10 +136,7 @@ void FSControlPanel::on_laserSwipeMinEdit_returnPressed()
 
 void FSControlPanel::on_pushButton_2_clicked()
 {
-	if(FSController::getInstance()->webcam->info.portName.isEmpty()){
-        FSController::getInstance()->mainwindow->showDialog("No webcam found!");
-        return;
-    }
+
     FSController::getInstance()->laser->enable();
     FSController::getInstance()->laser->turnOff();
     QThread::msleep(200);
@@ -163,13 +157,3 @@ void FSControlPanel::on_pushButton_2_clicked()
     this->focusWidget();
     this->setVisible(true);
 }
-
-#ifdef WINDOWS
-void FSControlPanel::on_cameraFrame(QImage frame)
-{
-	// We've received a frame from CV VideoCapture::read() via fswebcam
-	// It is a QImage structure.
-	int width = ui->cameraLabel->width();	//We have to scale it down to fit the preview window, so get the window's width
-	ui->cameraLabel->setPixmap(QPixmap::fromImage(frame.scaledToWidth(width, Qt::FastTransformation))); // Show it
-}
-#endif

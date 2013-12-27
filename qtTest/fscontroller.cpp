@@ -32,11 +32,6 @@ FSController::FSController()
     laserSwipeMin = 30; //18
     laserSwipeMax = 45; //50
     meshComputed = false;
-
-#ifdef WINDOWS
-	// Added for OpenCV capture
-	webcam->StartX();
-#endif
 }
 
 FSController* FSController::getInstance()
@@ -50,12 +45,6 @@ FSController* FSController::getInstance()
 void FSController::destroy()
 {
     if (singleton != 0) {
-#ifdef WINDOWS
-		// Added to try to get exe to end when mainwindow closed
-		singleton->geometries->~GeometryEngine();
-		if (singleton->webcam) {
-			singleton->webcam->~FSWebCam();}
-#endif
         delete singleton;
         singleton = 0;
     }
