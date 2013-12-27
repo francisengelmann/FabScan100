@@ -13,6 +13,13 @@
 #include "fsvision.h"
 #include "fsconfiguration.h"
 
+#ifdef WINDOWS
+#include "fswebcam_win.h"
+#else
+#include "fswebcam_unix.h"
+#endif
+
+
 class GeometryEngine;
 class FSModel;
 class FSController;

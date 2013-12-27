@@ -46,6 +46,8 @@ private slots:
     void on_laserSwipeMinEdit_returnPressed();
 
     void on_pushButton_2_clicked();
+
+    void on_cameraFrame(QImage frame);
 };
 
 #endif // FSCONTROLPANEL_H

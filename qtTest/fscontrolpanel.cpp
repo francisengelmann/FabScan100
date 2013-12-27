@@ -15,6 +15,7 @@ FSControlPanel::FSControlPanel(QWidget *parent) :
 {
     ui->setupUi(this);
     this->installEventFilter(this);
+    QObject::connect(FSController::getInstance()->webcam, SIGNAL(cameraFrame(QImage)),this, SLOT(on_cameraFrame(QImage)));
 }
 
 FSControlPanel::~FSControlPanel()
@@ -156,4 +157,14 @@ void FSControlPanel::on_pushButton_2_clicked()
     this->raise();
     this->focusWidget();
     this->setVisible(true);
+}
+
+void FSControlPanel::on_cameraFrame(QImage frame)
+{
+    // We've received a frame from CV VideoCapture::read() via fswebcam
+    // It is a QImage structure.
+    int width;
+
+    width = ui->cameraLabel->width();	//We have to scale it down to fit the preview window, so get the window's width
+    ui->cameraLabel->setPixmap(QPixmap::fromImage(frame.scaledToWidth(width, Qt::FastTransformation))); // Show it
 }

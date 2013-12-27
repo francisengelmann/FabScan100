@@ -254,6 +254,13 @@ void MainWindow::enumerateWebCams()
     }
 
     ui->menuCamera->clear();
+#if WINDOWS
+    QAction* a = new QAction("Default camera", this);
+    a->setCheckable(true);
+    ui->menuCamera->clear();
+    ui->menuCamera->addAction(a);
+    connect(a,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
+#else
     foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
         QString description = QCamera::deviceDescription(deviceName);
         QAction *videoDeviceAction = new QAction(description, this);
@@ -266,6 +273,7 @@ void MainWindow::enumerateWebCams()
         }
         ui->menuCamera->addAction(videoDeviceAction);
     }
+#endif
 }
 
 void MainWindow::on_scanButton_clicked()

@@ -22,7 +22,11 @@ FSController::FSController()
     model = new FSModel();
     //Harware
     serial = new FSSerial();
-    webcam = new FSWebCam();
+#if WINDOWS
+    webcam = new FSWebCamWin();
+#else
+    webcam = new FSWebCamUnix();
+#endif
     turntable = new FSTurntable();
     laser = new FSLaser();
     vision = new FSVision();
@@ -45,9 +49,13 @@ FSController* FSController::getInstance()
 void FSController::destroy()
 {
     if (singleton != 0) {
-        delete singleton;
-        singleton = 0;
-    }
+            // Added to try to get exe to end when mainwindow closed
+            singleton->geometries->~GeometryEngine();
+            if (singleton->webcam) {
+                singleton->webcam->~FSWebCam();}
+            delete singleton;
+            singleton = 0;
+        }
 }
 
 void FSController::fetchFrame()

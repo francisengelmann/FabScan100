@@ -6,7 +6,7 @@
 
 QT += core gui opengl multimedia multimediawidgets
 
-CONFIG += static noframework
+CONFIG += static noframework console
 
 TARGET = FabScan100
 TEMPLATE = app
@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     fsturntable.cpp \
     fsvision.cpp \
     fswebcam.cpp \
-    fsconfiguration.cpp
+    fsconfiguration.cpp \
+    fswebcam_win.cpp \
+    fswebcam_unix.cpp
 
 HEADERS  += mainwindow.h \
     geometryengine.h \
@@ -46,7 +48,9 @@ HEADERS  += mainwindow.h \
     fslaser.h \
     fsvision.h \
     fsturntable.h \
-    fsconfiguration.h
+    fsconfiguration.h \
+    fswebcam_win.h \
+    fswebcam_unix.h
 
 FORMS    += mainwindow.ui \
     fsdialog.ui \
