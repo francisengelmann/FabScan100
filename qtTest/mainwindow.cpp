@@ -93,6 +93,7 @@ void MainWindow::setupCamWindows()
     cv::namedWindow(WINDOW_EXTRACTED_FRAME);
     cv::namedWindow(WINDOW_LASER_FRAME);
 
+#ifdef WINDOWS
     HWND hWnd0 = (HWND)cvGetWindowHandle("FabScan");
     HWND hRawWnd0 = ::GetParent(hWnd0);
     if (hRawWnd0 != NULL) {
@@ -113,6 +114,7 @@ void MainWindow::setupCamWindows()
         BOOL bRet = ::SetWindowPos(hRawWnd2, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE |SWP_NOMOVE);
         assert(bRet);
     }
+#endif
 
     cv::namedWindow(WINDOW_EXTRACTED_FRAME);
     cv::namedWindow(WINDOW_LASER_FRAME);
@@ -341,15 +343,6 @@ void MainWindow::enumerateWebCams()
 
 void MainWindow::on_scanButton_clicked()
 {
-    if(controller->webcam->info.portName.isEmpty()){
-        showDialog("No webcam found!");
-        return;
-    }
-    if(!controller->isArduinoAlive()){
-        showDialog("Arduino not found!");
-        return;
-    }
-
     if(controller->scanning)
     {
         // if already scanning: cancel

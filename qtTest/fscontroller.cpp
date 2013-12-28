@@ -86,11 +86,18 @@ void FSController::scan()
         mainwindow->showDialog("No webcam selected!");
         return;
     }
+
     if(!serial->isOpen())
     {
         mainwindow->showDialog("Serial port is not open");
         return;
     }
+
+//    if(!isArduinoAlive()){
+//        showDialog("Arduino not found!");
+//        return;
+//    }
+
     QtConcurrent::run(this, &FSController::scanThread);
 }
 
