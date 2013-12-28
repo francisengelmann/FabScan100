@@ -188,7 +188,7 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     ptsFilePath.append("pc.pts");
     this->savePointCloudAsPTS(ptsFilePath);
     char* command;
-
+#ifndef WINDOWS
     asprintf(&command,"cd %s; ./powercrust -i %s -R 1.5 -B -m 10000", resPath, "pc.pts");
     sysRet = system(command);
     cerr << command << " system: " << sysRet << endl;
@@ -204,6 +204,7 @@ void FSModel::convertPointCloudToSurfaceMesh2()
     asprintf(&offFilePath,"%sfinal.off",resPath);
     cerr << "loading surface from off..." << endl;
     this->openFromOFFFile(offFilePath);
+#endif
 
     /*this->loadSurfaceMeshFromOFF(offFilePath);
     cout << "loaded surface from off!" << endl;

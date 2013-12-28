@@ -6,7 +6,7 @@
 
 QT += core gui opengl multimedia multimediawidgets
 
-CONFIG += static noframework
+CONFIG += static noframework console
 
 TARGET = FabScan100
 TEMPLATE = app
@@ -14,7 +14,7 @@ TEMPLATE = app
 CONFIG += precompile_header
 PRECOMPILED_HEADER = staticHeaders.h
 
-include(qextserialport-1.2beta2/src/qextserialport.pri)
+include(qextserialport-1.2rc/src/qextserialport.pri)
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     fsturntable.cpp \
     fsvision.cpp \
     fswebcam.cpp \
-    fsconfiguration.cpp
+    fsconfiguration.cpp \
+    fswebcam_win.cpp \
+    fswebcam_unix.cpp
 
 HEADERS  += mainwindow.h \
     geometryengine.h \
@@ -46,7 +48,9 @@ HEADERS  += mainwindow.h \
     fslaser.h \
     fsvision.h \
     fsturntable.h \
-    fsconfiguration.h
+    fsconfiguration.h \
+    fswebcam_win.h \
+    fswebcam_unix.h
 
 FORMS    += mainwindow.ui \
     fsdialog.ui \
@@ -133,6 +137,8 @@ macx {
         -lboost_unit_test_framework-mt \
         -lboost_wave-mt \
         -lboost_wserialization-mt \
+
+    DEFINES += MACOSX
 }
 
 linux-g++ {
@@ -179,5 +185,39 @@ linux-g++ {
 }
 
 win32 {
-    message("Buildng for Win. not working yet...")
+    message("Buildng for Win.")
+
+    #fix LNK1123
+    QMAKE_LFLAGS += /INCREMENTAL:NO
+
+    INCLUDEPATH += E:\libs\opencv-2.4.2\build\include
+    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_core242.lib
+    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_highgui242.lib
+    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_imgproc242.lib
+    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_features2d242.lib
+    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_calib3d242.lib
+    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_flann242.lib
+
+    INCLUDEPATH += E:\libs\pcl-1.6.0\include\pcl-1.6
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_common_release.lib
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_io_release.lib
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_filters_release.lib
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_kdtree_release.lib
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_registration_release.lib
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_features_release.lib
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_segmentation_release.lib
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_surface_release.lib
+    LIBS += E:\libs\pcl-1.6.0\lib\pcl_search_release.lib
+
+    INCLUDEPATH += E:\libs\pcl-1.6.0\3rdParty\Eigen\include
+
+    INCLUDEPATH += E:\libs\pcl-1.6.0\3rdParty\FLANN\include
+    LIBS += E:\libs\pcl-1.6.0\3rdParty\FLANN\lib\flann.lib
+
+    INCLUDEPATH += E:\libs\pcl-1.6.0\3rdParty\Boost\include
+    LIBS += E:\libs\pcl-1.6.0\3rdParty\Boost\lib\boost_filesystem-vc100-mt-1_49.lib
+    LIBS += E:\libs\pcl-1.6.0\3rdParty\Boost\lib\boost_system-vc100-mt-gd-1_49.lib
+    LIBS += E:\libs\pcl-1.6.0\3rdParty\Boost\lib\libboost_filesystem-vc100-mt-gd-1_49.lib
+    LIBS += E:\libs\pcl-1.6.0\3rdParty\Boost\lib\libboost_system-vc100-mt-gd-1_49.lib
+    DEFINES += WINDOWS
 }

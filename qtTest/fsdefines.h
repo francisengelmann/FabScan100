@@ -20,6 +20,10 @@
 #define REALLY_BIG_NUMBER     99999
 #define REALLY_SMALL_NUMBER  -99999
 
+
+#define WINDOW_EXTRACTED_FRAME "Extracted Frame"
+#define WINDOW_LASER_FRAME "Laser Frame"
+
 //to make the scanning process faster we ommit the lower and hight part of the cvImage
 //as there is no object anyway.  The lower limit is defined by the turning table lower bound
 //units are pixels, seen from the top, resp from the bottom

@@ -3,13 +3,18 @@
 
 #include "staticHeaders.h"
 #include "fsdialog.h"
+#include "fscontroller.h"
 #include "fscontrolpanel.h"
+#include <opencv2/highgui/highgui.hpp>
 
 
 QT_BEGIN_NAMESPACE
 class QBasicTimer;
 class QGLShaderProgram;
 QT_END_NAMESPACE
+
+// Forward declarations to resolve recursive header inclusions
+class FSController;
 
 typedef enum _FSState {
     POINT_CLOUD,
@@ -46,6 +51,7 @@ private slots:
     void showControlPanel();
     void exportSTL();
     void readConfiguration();
+    void setupCamWindows();
 
     void on_resolutionComboBox_currentIndexChanged(const QString &arg1);
 
@@ -54,6 +60,7 @@ private:
     Ui::MainWindow *ui;
     FSState state;
     FSDialog* dialog;
+    FSController *controller;
 
     void setupMenu();
     void enumerateSerialPorts();
