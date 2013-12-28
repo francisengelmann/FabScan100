@@ -320,6 +320,7 @@ void FSVision::putPointsFromFrameToCloud(
     //qDebug("still works here");
     //convert from rgb to b&w
     cv::cvtColor(laserLine, bwImage, CV_RGB2GRAY); //convert to grayscale
+    cv::imshow(WINDOW_LASER_FRAME, laserLine);
     //now iterating from top to bottom over bwLaserLine frame
     //no bear outside of these limits :) cutting of top and bottom of frame
     for(int y = FSController::config->UPPER_ANALYZING_FRAME_LIMIT;
@@ -435,8 +436,9 @@ FSPoint FSVision::detectLaserLine( cv::Mat &laserOff, cv::Mat &laserOn, unsigned
     //for(int i=0;i<lines.size();i++){
     cv::Point p1;
     cv::Point p2;
-    for(int i=0;i<lines.size();i++){
-        qDebug() << "drawing line "<<lines[i][0]<<lines[i][1]<<lines[i][2]<<lines[i][3];
+    qDebug() << "Processing " << lines.size() << " lines";
+    for(uint i=0;i<lines.size();i++){
+        //qDebug() << "drawing line "<<lines[i][0]<<lines[i][1]<<lines[i][2]<<lines[i][3];
         //int i = 0;
         p1.x = lines[i][0];
         p1.y = lines[i][1];

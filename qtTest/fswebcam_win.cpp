@@ -3,6 +3,7 @@
 FSWebCamWin::FSWebCamWin()
 {
     imageCaptureCv = 0;
+    connectedImageReceivers = 0;
 }
 
 FSWebCamWin::~FSWebCamWin()
@@ -18,6 +19,24 @@ FSWebCamWin::~FSWebCamWin()
     }
 }
 
+void FSWebCamWin::connectNotify(const QMetaMethod &signal)
+{
+    // count the connected frame receivers
+    if (signal == QMetaMethod::fromSignal(&FSWebCamWin::cameraFrame)) {
+        connectedImageReceivers++;
+        qDebug() << "Image receiver connected. Now: " << connectedImageReceivers;
+    }
+}
+
+void FSWebCamWin::disconnectNotify(const QMetaMethod &signal)
+{
+    // count the connected frame receivers
+    if (signal == QMetaMethod::fromSignal(&FSWebCamWin::cameraFrame)) {
+        connectedImageReceivers--;
+        qDebug() << "Image receiver disconnected. Now: " << connectedImageReceivers;
+    }
+}
+
 // These routines take the place of getFrame().
 void FSWebCamWin::StartX()	// This sub starts StartX2() as a seperate thread
 {
@@ -28,21 +47,24 @@ void FSWebCamWin::StartX()	// This sub starts StartX2() as a seperate thread
 
 void FSWebCamWin::StartX2() // This thread runs concurrently
 {
-    cv::Mat NN;
+    cv::Mat capture;
     while(!endThread) // endThread is set when the main program wishes to close this thread
     {
-        imageCaptureCv.read(NN); // = CV VideoCapture::read() (Grab, decode and return frame)
+        QThread::msleep(10);
+        // don't do anything if noone is interested
+        if(!isCapturingImage || connectedImageReceivers <= 0) continue;
+
+        imageCaptureCv.read(capture); // = CV VideoCapture::read() (Grab, decode and return frame)
         // Stores grab locally - we can't modify!
         frameTaken = false;
         QThread::msleep(1);
-        frame=NN.clone();		// Copy grab into global 'frame' of type MAT
+        frame=capture.clone();		// Copy grab into global 'frame' of type MAT
         //			QThread::msleep(1);		// If we're going to transmit to controlpanel->ui->viewfinder this is where we'd do it
         // It will need to be 'massaged' because MAT is BGR and QImage is RGB - see Mat2QImage() below
         // We can send to FSControlPanel->ui->cameraLabel
-        emit cameraFrame(Mat2QImage(NN)); // Convert to QImage and send to fscontrolpanel
+        if(connectedImageReceivers > 0) // emit the frame only if anyone is listening (converting causes high cpu load)
+            emit cameraFrame(Mat2QImage(capture)); // Convert to QImage and send to fscontrolpanel
         frameTaken = true;
-        QThread::msleep(10);
-
     }
     qDebug() << "Thread killed";
     endThread = false; // Signal back to the main program that we've finished
@@ -87,10 +109,10 @@ cv::Mat FSWebCamWin::getFrame()
     qDebug() << "received frame";
     //return frame.clone();
 
-    cv::Mat ONOFF = frame.clone();
-    //cv::imshow("Extracted Frame",ONOFF);/* waitKey(1) */;
+    cv::Mat result = frame.clone();
+    cv::imshow(WINDOW_EXTRACTED_FRAME,result);
 
-    return ONOFF;
+    return result;
 }
 
 void FSWebCamWin::setCamera(const QByteArray &cameraDevice)
@@ -109,6 +131,22 @@ void FSWebCamWin::setCamera(const QByteArray &cameraDevice)
 
     this->info.portName = "DefaultCamera";
     this->StartX();
+    qDebug() << "Default camera selected";
+}
+
+QList<FSWebCamInfo> FSWebCamWin::getCameras()
+{
+    QList<FSWebCamInfo> result;
+    if(QCamera::availableDevices().size()==0)
+        return result;
+
+    // As long as no camera enumeration in OpenCV is possible:
+    FSWebCamInfo info;
+    info.portName = "DefaultCamera";
+    info.friendlyName = "Default Camera";
+    info.deviceName = QVariant("DefaultCamera");
+    result.append(info);
+    return result;
 }
 
 

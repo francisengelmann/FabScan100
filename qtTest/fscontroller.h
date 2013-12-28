@@ -19,14 +19,11 @@
 #include "fswebcam_unix.h"
 #endif
 
-
+// forward declarations to resolve recursive header inclusions
 class GeometryEngine;
 class FSModel;
 class FSController;
-/*class FSSerial;
-class FSWebCam;
 class MainWindow;
-class FSLaser;*/
 
 class FSController
 {
@@ -56,8 +53,7 @@ class FSController
         void hideFrame();
 
         void scan();
-        void scanThread();
-        void scanThread2();
+
         bool detectLaserLine();
         void computeSurfaceMesh();
         cv::Mat diffImage();
@@ -69,6 +65,12 @@ class FSController
         double laserStepSize;
         double turntableStepSize;
         double yDpi;
+
+        bool isArduinoAlive();
+
+private:
+        void scanThread();
+        void scanThread2();
 };
 
 #endif // FSCONTROLLER_H

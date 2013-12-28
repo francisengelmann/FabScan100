@@ -4,6 +4,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+#include <QStringList>
 #include <QImage>
 #include <QFuture>			//These are required for the OpenCV capture thread, which replaces the non-functional...
 #include <QFutureWatcher>
@@ -15,6 +16,7 @@
 #include "fswebcam.h"
 #include "fscontroller.h"
 #include "staticHeaders.h"
+#include <QCamera>
 
 class FSWebCamWin : public FSWebCam
 {
@@ -23,6 +25,11 @@ public:
     ~FSWebCamWin();
     virtual cv::Mat getFrame();         //grab frame from camera and return as cv::Mat
     virtual void setCamera(const QByteArray &cameraDevice = 0);
+    virtual QList<FSWebCamInfo> getCameras();
+
+protected:
+    void connectNotify(const QMetaMethod &signal);
+    void disconnectNotify(const QMetaMethod &signal);
 
 private:
     void StartX();			//Qt5 camera not fully operational in Windows. We use these two routines to sync cv capture
@@ -36,6 +43,7 @@ private:
     bool frameTaken;
     bool endThread;
     bool isCapturingImage;
+    int connectedImageReceivers;
 
     QFutureWatcher<void> watcher;
 };

@@ -1,6 +1,7 @@
 #ifndef FSWEBCAM_UNIX_H
 #define FSWEBCAM_UNIX_H
 
+#include <QStringList>
 #include <QCamera>
 #include <QCameraImageCapture>
 #include <QApplication>
@@ -16,6 +17,7 @@ public:
     ~FSWebCamUnix();
     virtual cv::Mat getFrame();         //grab frame from camera and return as cv::Mat
     virtual void setCamera(const QByteArray &cameraDevice = 0);
+    virtual QList<FSWebCamInfo> getCameras();
 
 private slots:
     void imageSaved(int id, const QString &fileName);

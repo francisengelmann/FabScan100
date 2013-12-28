@@ -97,3 +97,18 @@ void FSWebCamUnix::imageSaved(int id, const QString &fileName)
     isCapturingImage = false;
 }
 
+QList<FSWebCamInfo> FSWebCamUnix::getCameras()
+{
+    QList<FSWebCamInfo> result;
+    if(QCamera::availableDevices().size()==0)
+        return result;
+
+    foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
+        FSWebCamInfo info;
+        info.friendlyName = QCamera::deviceDescription(deviceName);
+        info.deviceName = QVariant(deviceName);
+        result.append(info);
+    }
+
+    return result;
+}

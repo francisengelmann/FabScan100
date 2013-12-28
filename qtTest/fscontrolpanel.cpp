@@ -15,7 +15,18 @@ FSControlPanel::FSControlPanel(QWidget *parent) :
 {
     ui->setupUi(this);
     this->installEventFilter(this);
+}
+
+void FSControlPanel::showEvent(QShowEvent * event)
+{
+    // connect to the camera frame event only if the windows is active - reduces cpu load
     QObject::connect(FSController::getInstance()->webcam, SIGNAL(cameraFrame(QImage)),this, SLOT(on_cameraFrame(QImage)));
+}
+
+void FSControlPanel::closeEvent(QCloseEvent * event)
+{
+    // connect to the camera frame event only if the windows is active - reduces cpu load
+    QObject::disconnect(FSController::getInstance()->webcam, SIGNAL(cameraFrame(QImage)),this, SLOT(on_cameraFrame(QImage)));
 }
 
 FSControlPanel::~FSControlPanel()
@@ -74,9 +85,7 @@ void FSControlPanel::on_autoResetButton_clicked()
     cv::resize( shot,shot,cv::Size(1280,960) );
     shot = FSController::getInstance()->vision->drawLaserLineToFrame(shot);
     cv::resize(shot,shot,cv::Size(800,600));
-    cv::imshow("Laser Frame",shot);
-    cv::waitKey(0);
-    cvDestroyWindow("Laser Frame");
+    cv::imshow(WINDOW_LASER_FRAME,shot);
     this->raise();
     this->focusWidget();
     this->setVisible(true);
@@ -111,9 +120,8 @@ void FSControlPanel::on_diffImage_clicked()
     }
     cv::Mat shot = FSController::getInstance()->diffImage();
     cv::resize(shot,shot,cv::Size(800,600));
-    cv::imshow("Laser Frame",shot);
-    cv::waitKey(0);
-    cvDestroyWindow("Laser Frame");
+    cv::imshow(WINDOW_LASER_FRAME,shot);
+
     this->raise();
     this->focusWidget();
     this->setVisible(true);

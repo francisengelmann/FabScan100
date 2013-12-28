@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "fscontroller.h"
+
 #include "fsdialog.h"
 
 #include <QBasicTimer>
@@ -18,11 +18,14 @@
 #include <boost/filesystem.hpp>
 #endif
 
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     hwTimer(new QBasicTimer),
     ui(new Ui::MainWindow)
 {
+    controller = FSController::getInstance();
     ui->setupUi(this);
     this->setupMenu();
     this->enumerateSerialPorts();
@@ -30,20 +33,20 @@ MainWindow::MainWindow(QWidget *parent) :
     hwTimer->start(5000, this); //timer that checks periodically for attached hardware (camera, arduino)
     dialog = new FSDialog(this);
     controlPanel = new FSControlPanel(this);
-    FSController::getInstance()->mainwindow=this;
-    FSController::getInstance()->controlPanel=controlPanel;
+    controller->mainwindow=this;
+    controller->controlPanel=controlPanel;
     ui->widget->setStyleSheet("border: 1px solid black;");
     applyState(POINT_CLOUD);
     //resolution: Good
-    FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
-    FSController::getInstance()->yDpi = 1;
+    controller->turntableStepSize = 16*controller->turntable->degreesPerStep;
+    controller->yDpi = 1;
 }
 
 MainWindow::~MainWindow()
 {
-    FSController::getInstance()->scanning=false;	// Terminate any scan in progress
-	FSController::getInstance()->laser->turnOff();	// Make sure laser is off!
-	FSController::getInstance()->destroy();	// We'll find what's hogging the .exe the hard way...
+    controller->scanning=false;	// Terminate any scan in progress
+    controller->laser->turnOff();	// Make sure laser is off!
+    controller->destroy();	// We'll find what's hogging the .exe the hard way...
 	cv::destroyAllWindows();
 	controlPanel->~FSControlPanel();
 	delete ui;
@@ -84,8 +87,43 @@ void MainWindow::setupMenu()
     ui->menuFile->addAction(showControlPanelAction);
 }
 
-void MainWindow::
-showDialog(QString dialogText)
+void MainWindow::setupCamWindows()
+{
+    //Below is the added code to display the two cv camera feeds, which attach to the side of MainWindow.ui
+    cv::namedWindow(WINDOW_EXTRACTED_FRAME);
+    cv::namedWindow(WINDOW_LASER_FRAME);
+
+    HWND hWnd0 = (HWND)cvGetWindowHandle("FabScan");
+    HWND hRawWnd0 = ::GetParent(hWnd0);
+    if (hRawWnd0 != NULL) {
+        BOOL bRet = ::SetWindowPos(hRawWnd0, HWND_TOPMOST, 100, 100, 0, 0, SWP_NOSIZE );
+        assert(bRet);
+    }
+
+    HWND hWnd = (HWND)cvGetWindowHandle(WINDOW_EXTRACTED_FRAME);
+    HWND hRawWnd = ::GetParent(hWnd);
+    if (hRawWnd != NULL) {
+        BOOL bRet = ::SetWindowPos(hRawWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE |SWP_NOMOVE);
+        assert(bRet);
+    }
+
+    HWND hWnd2 = (HWND)cvGetWindowHandle(WINDOW_LASER_FRAME);
+    HWND hRawWnd2 = ::GetParent(hWnd2);
+    if (hRawWnd2 != NULL) {
+        BOOL bRet = ::SetWindowPos(hRawWnd2, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE |SWP_NOMOVE);
+        assert(bRet);
+    }
+
+    cv::namedWindow(WINDOW_EXTRACTED_FRAME);
+    cv::namedWindow(WINDOW_LASER_FRAME);
+
+    cv::resizeWindow(WINDOW_EXTRACTED_FRAME, controller->mainwindow->height()*3/4,controller->mainwindow->height()/2-19);
+    cv::resizeWindow(WINDOW_LASER_FRAME, controller->mainwindow->height()*3/4,controller->mainwindow->height()/2-19);
+    cv::moveWindow(WINDOW_EXTRACTED_FRAME, controller->mainwindow->x() +controller->mainwindow->width()+15,controller->mainwindow->y());
+    cv::moveWindow(WINDOW_LASER_FRAME, controller->mainwindow->x() +controller->mainwindow->width()+15,controller->mainwindow->y()+controller->mainwindow->height()/2+19);
+}
+
+void MainWindow::showDialog(QString dialogText)
 {
     dialog->setStandardButtons(QDialogButtonBox::Ok);
     dialog->setText(dialogText);
@@ -100,7 +138,7 @@ showDialog(QString dialogText)
 
 void MainWindow::exportSTL()
 {
-    if(FSController::getInstance()->model->pointCloud->empty()){
+    if(controller->model->pointCloud->empty()){
         this->showDialog("PointCloud is empty! Perform a scan, or open a pointcloud.");
         return;
     }
@@ -112,14 +150,14 @@ void MainWindow::exportSTL()
         if(fileName.isEmpty() ) return;
         qDebug() << fileName;
 
-        if(!FSController::getInstance()->meshComputed){
+        if(!controller->meshComputed){
             qDebug() << "Computing mesh...";
             this->showDialog("Will now compute surface mesh, this may take a while...");
-            FSController::getInstance()->computeSurfaceMesh();
-            FSController::getInstance()->meshComputed = true;
+            controller->computeSurfaceMesh();
+            controller->meshComputed = true;
         }
-        cout << "Done computing surface mesh, now stl export..." << endl;
-        FSController::getInstance()->model->saveToSTLFile(fileName.toStdString());
+        qDebug() << "Done computing surface mesh, now stl export...";
+        controller->model->saveToSTLFile(fileName.toStdString());
         this->showDialog("STL export done!");
 
     }
@@ -137,6 +175,16 @@ void MainWindow::timerEvent(QTimerEvent *e)
     Q_UNUSED(e);
     //this->enumerateSerialPorts();
     //this->enumerateWebCams();
+
+    //Added for the OpenCV webcam windows. They update each timer period
+
+    cv::resizeWindow(WINDOW_EXTRACTED_FRAME, controller->mainwindow->height()*3/4,controller->mainwindow->height()/2-19);
+    cv::resizeWindow(WINDOW_LASER_FRAME, controller->mainwindow->height()*3/4,controller->mainwindow->height()/2-19);
+    cv::moveWindow(WINDOW_EXTRACTED_FRAME, controller->mainwindow->x() +controller->mainwindow->width()+15,controller->mainwindow->y());
+    cv::moveWindow(WINDOW_LASER_FRAME, controller->mainwindow->x() +controller->mainwindow->width()+15,controller->mainwindow->y()+controller->mainwindow->height()/2+19);
+
+
+    //result = controller->isArduinoAlive(); //See if Arduino still responding properly
 }
 
 //===========================================
@@ -147,20 +195,49 @@ void MainWindow::onSelectSerialPort()
 {
     QAction* action=qobject_cast<QAction*>(sender());
     if(!action) return;
-    //set new path
-    FSController::getInstance()->serial->serialPortPath->clear();
-    FSController::getInstance()->serial->serialPortPath->append(action->iconText());
-    this->enumerateSerialPorts();
-    FSController::getInstance()->serial->connectToSerialPort();
+
+    if(controller->serial->serialPortPath->compare(action->iconText()) == 0)
+    {
+        // the clicked port is the port, already opened by the controller
+        controller->serial->disconnectFromSerialPort();
+        action->setChecked(false);
+    }
+    else
+    {
+        // this port is not opened by the controller
+
+        // If the controller is already connected to another serial port
+        if(controller->serial->serialPortPath->size())	//i.e. is the path name more than zero characters long?
+        {	//Yes, disconnect it
+            controller->serial->disconnectFromSerialPort();
+        }
+
+        //set new path
+        controller->serial->serialPortPath->clear();
+        controller->serial->serialPortPath->append(action->iconText());
+        bool result = controller->serial->connectToSerialPort();
+        action->setChecked(result);
+        ui->Serial_check->setChecked(result);
+        qDebug() << "Selected serial port: " << controller->serial->serialPortPath << "\tisArduinoAlive? " << result;
+    }
 }
+
+
 
 void MainWindow::onSelectWebCam()
 {
     QAction* action=qobject_cast<QAction*>(sender());
     if(!action) return;
-    FSController::getInstance()->webcam->info.portName=action->iconText(); //eigentlich doppelt gemoppelt, das hier kann weg muss jedoch gekukt werden
-    FSController::getInstance()->webcam->setCamera(action->data().toByteArray());
-    this->enumerateWebCams();
+    controller->webcam->info.portName=action->iconText(); //eigentlich doppelt gemoppelt, das hier kann weg muss jedoch gekukt werden
+    controller->webcam->setCamera(action->data().toByteArray());
+
+    if(controller->webcam->info.portName.size())
+    {
+        action->setChecked(true);
+        ui->Camera_check->setChecked(true);
+        this->setupCamWindows();
+    }
+    // TODO: Disconnect camera?
 }
 
 void MainWindow::openPointCloud()
@@ -168,14 +245,14 @@ void MainWindow::openPointCloud()
     QString fileName = QFileDialog::getOpenFileName(this, "Open File","","Files (*.pcd) ;; PLY (*.ply)");
     if(fileName.isEmpty() ) return;
     if(fileName.endsWith(".pcd", Qt::CaseInsensitive) ){
-        FSController::getInstance()->model->loadPointCloudFromPCD(fileName.toStdString());
+        controller->model->loadPointCloudFromPCD(fileName.toStdString());
     }else if(fileName.endsWith(".ply", Qt::CaseInsensitive) ){
-        FSController::getInstance()->model->loadPointCloudFromPLY(fileName.toStdString());
+        controller->model->loadPointCloudFromPLY(fileName.toStdString());
     }
     ui->widget->drawState = 0;
     ui->widget->updateGL();
     applyState(POINT_CLOUD);
-    FSController::getInstance()->meshComputed=false;
+    controller->meshComputed=false;
 }
 
 void MainWindow::savePointCloud()
@@ -189,10 +266,10 @@ void MainWindow::savePointCloud()
         qDebug() << fileName;
         if(fileName.endsWith(".pcd", Qt::CaseInsensitive) ){
             qDebug() << "Save as pcd file.";
-            FSController::getInstance()->model->savePointCloudAsPCD(fileName.toStdString());
+            controller->model->savePointCloudAsPCD(fileName.toStdString());
         }else if(fileName.endsWith(".ply", Qt::CaseInsensitive) ){
             qDebug() << "Save as ply file.";
-            FSController::getInstance()->model->savePointCloudAsPLY(fileName.toStdString());
+            controller->model->savePointCloudAsPLY(fileName.toStdString());
         }
     }
 
@@ -202,11 +279,11 @@ void MainWindow::savePointCloud()
 
 void MainWindow::newPointCloud()
 {
-    FSController::getInstance()->model->pointCloud->clear();
-    FSController::getInstance()->model->surfaceMesh.polygons.clear();
+    controller->model->pointCloud->clear();
+    controller->model->surfaceMesh.polygons.clear();
     ui->widget->updateGL();
     applyState(POINT_CLOUD);
-    FSController::getInstance()->meshComputed=false;
+    controller->meshComputed=false;
 }
 
 void MainWindow::readConfiguration()
@@ -220,32 +297,30 @@ void MainWindow::readConfiguration()
 
 void MainWindow::enumerateSerialPorts()
 {
-    QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
-    ui->menuSerialPort->clear();
+    //bool status;
+
+    QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();	// Get list of serial ports available
+    ui->menuSerialPort->clear();	//Clear list in FabScan menu
 
     foreach (QextPortInfo info, ports) {
-        if(!info.portName.isEmpty() && !info.portName.startsWith("ttyS")){
-            QAction* ac = new QAction(info.portName, this);
-            ac->setCheckable(true);
-            connect(ac,SIGNAL(triggered()),this, SLOT(onSelectSerialPort()));
-            if(FSController::getInstance()->serial->serialPortPath->compare(info.portName)==0){
-                ac->setChecked(true);
+        if(!info.portName.isEmpty()){	//If there is a port name...
+            QAction* ac = new QAction(info.portName, this); //... add this to the menu list...
+            ac->setCheckable(true);	//...which the user can select
+            connect(ac,SIGNAL(triggered()),this, SLOT(onSelectSerialPort())); //Really, this only needs to be done once, not for each port
+            if(controller->serial->serialPortPath->compare(info.portName)==0){
+                ac->setChecked(true);	//If ?
             }
             ui->menuSerialPort->addAction(ac);
         }
-        //qDebug() << "port name:"       << info.portName;
-        //qDebug() << "friendly name:"   << info.friendName;
-        //qDebug() << "physical name:"   << info.physName;
-        //qDebug() << "enumerator name:" << info.enumName;
-        //qDebug() << "vendor ID:"       << info.vendorID;
-        //qDebug() << "product ID:"      << info.productID;
-        //qDebug() << "===================================";
     }
 }
 
 void MainWindow::enumerateWebCams()
 {
-    if(QCamera::availableDevices().size()==0){
+    QList<FSWebCamInfo> cameras = controller->webcam->getCameras();
+    ui->menuCamera->clear();
+
+    if(cameras.size()==0){
        QAction* a = new QAction("No camera found.", this);
        a->setEnabled(false);
        ui->menuCamera->clear();
@@ -253,42 +328,41 @@ void MainWindow::enumerateWebCams()
        return;
     }
 
-    ui->menuCamera->clear();
-#if WINDOWS
-    QAction* a = new QAction("Default camera", this);
-    a->setCheckable(true);
-    ui->menuCamera->clear();
-    ui->menuCamera->addAction(a);
-    connect(a,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
-#else
-    foreach(const QByteArray &deviceName, QCamera::availableDevices()) {
-        QString description = QCamera::deviceDescription(deviceName);
-        QAction *videoDeviceAction = new QAction(description, this);
+    foreach(const FSWebCamInfo &cameraInfo, cameras)
+    {
+        QAction *videoDeviceAction = new QAction(cameraInfo.friendlyName, this);
         videoDeviceAction->setCheckable(true);
-        videoDeviceAction->setData(QVariant(deviceName));
+        videoDeviceAction->setData(cameraInfo.deviceName);
         connect(videoDeviceAction,SIGNAL(triggered()),this, SLOT(onSelectWebCam()));
 
-        if (FSController::getInstance()->webcam->info.portName.compare(description)==0) {
-            videoDeviceAction->setChecked(true);
-        }
         ui->menuCamera->addAction(videoDeviceAction);
     }
-#endif
 }
 
 void MainWindow::on_scanButton_clicked()
 {
-    //doneScanning();
-    //QFuture<void> future = QtConcurrent::run(FSController::getInstance(), &FSController::scanThread);
-    bool s = FSController::getInstance()->scanning;
-    if (s==false){
-        applyState(SCANNING);
-        FSController::getInstance()->scanThread();
-    }else{
+    if(controller->webcam->info.portName.isEmpty()){
+        showDialog("No webcam found!");
+        return;
+    }
+    if(!controller->isArduinoAlive()){
+        showDialog("Arduino not found!");
+        return;
+    }
+
+    if(controller->scanning)
+    {
+        // if already scanning: cancel
         applyState(POINT_CLOUD);
         this->ui->scanButton->setText("Start Scan");
-		FSController::getInstance()->laser->turnOff();	// Make sure laser is off!
-        FSController::getInstance()->scanning = false;
+        controller->laser->turnOff();	// Make sure laser is off!
+        controller->scanning = false;
+    }
+    else
+    {
+        // if not scanning: start
+        applyState(SCANNING);
+        controller->scan();
     }
 
 }
@@ -297,8 +371,8 @@ void MainWindow::doneScanning()
 {
     QSound::play("done.wav");
     this->ui->scanButton->setText("Start Scan");
-    FSController::getInstance()->laser->disable();
-    FSController::getInstance()->turntable->disable();
+    controller->laser->disable();
+    controller->turntable->disable();
     applyState(POINT_CLOUD);
 }
 
@@ -319,7 +393,7 @@ void MainWindow::applyState(FSState s)
     case POINT_CLOUD:
         this->ui->scanButton->setText("Start Scan");
         //the following lines are uncommented since we do not support showing the mesh anymore but just compute and save it
-        /*if(FSController::getInstance()->meshComputed){
+        /*if(controller->meshComputed){
             this->ui->toggleViewButton->setText("Show SurfaceMesh");
         }else{
             this->ui->toggleViewButton->setText("Compute SurfaceMesh");
@@ -335,19 +409,19 @@ void MainWindow::on_resolutionComboBox_currentIndexChanged(const QString &arg1)
 {
     if(arg1.compare("Best")==0){
         //laserStepSize = 2*laser->degreesPerStep;
-        FSController::getInstance()->turntableStepSize = FSController::getInstance()->turntable->degreesPerStep;
-        FSController::getInstance()->yDpi = 1;
+        controller->turntableStepSize = controller->turntable->degreesPerStep;
+        controller->yDpi = 1;
     }
     if(arg1.compare("Good")==0){
-        FSController::getInstance()->turntableStepSize = 16*FSController::getInstance()->turntable->degreesPerStep;
-        FSController::getInstance()->yDpi = 1;
+        controller->turntableStepSize = 16*controller->turntable->degreesPerStep;
+        controller->yDpi = 1;
     }
     if(arg1.compare("Normal")==0){
-        FSController::getInstance()->turntableStepSize = 2*16*FSController::getInstance()->turntable->degreesPerStep;
-        FSController::getInstance()->yDpi = 5;
+        controller->turntableStepSize = 2*16*controller->turntable->degreesPerStep;
+        controller->yDpi = 5;
     }
     if(arg1.compare("Poor")==0){
-        FSController::getInstance()->turntableStepSize = 10*16*FSController::getInstance()->turntable->degreesPerStep;
-        FSController::getInstance()->yDpi = 10;
+        controller->turntableStepSize = 10*16*controller->turntable->degreesPerStep;
+        controller->yDpi = 10;
     }
 }

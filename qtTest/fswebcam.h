@@ -7,12 +7,14 @@
 #define FSWEBCAM_H
 
 #include <QImage>
+#include <QList>
 #include "staticHeaders.h"
 
 struct FSWebCamInfo
 {
     QString portName;       //path to the webcam e.g. /dev/video0
     QString friendlyName;   //name of webcam that is displayed
+    QVariant deviceName;
     int sizeX;
     int sizeY;
 };
@@ -31,6 +33,7 @@ public:
 
     virtual cv::Mat getFrame() = 0;         //grab frame from camera and return as cv::Mat
     virtual void setCamera(const QByteArray &cameraDevice = 0) = 0;
+    virtual QList<FSWebCamInfo> getCameras() = 0;
 signals:
     void cameraFrame(QImage frame);
 };

@@ -79,6 +79,38 @@
       <property name="bottomMargin">
        <number>18</number>
       </property>
+	  <item>
+       <widget class="QCheckBox" name="Camera_check">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Camera</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="Serial_check">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Serial port</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
@@ -133,6 +165,9 @@
       </item>
       <item>
        <widget class="QLabel" name="label">
+	   <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
         <property name="text">
          <string>Resolution </string>
         </property>
@@ -209,7 +244,7 @@
   </widget>
   <action name="actionPort1">
    <property name="text">
-    <string>blablabla</string>
+    <string>None</string>
    </property>
   </action>
   <action name="actionOpenPointCloud">

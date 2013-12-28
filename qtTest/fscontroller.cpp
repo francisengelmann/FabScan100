@@ -67,14 +67,11 @@ void FSController::fetchFrame()
 
     cv::Mat frame;
     frame = FSController::getInstance()->webcam->getFrame();
-    //cv::imshow("Extracted Frame",frame);
-    //cv::waitKey(0);
+
     cv::resize(frame,frame,cv::Size(1280,960));
     cv::Mat result = vision->drawHelperLinesToFrame(frame);
     cv::resize(result,result,cv::Size(800,600)); //this is the resolution of the preview
-    cv::imshow("Extracted Frame",result);
-    cv::waitKey(0);
-    cvDestroyWindow("Extracted Frame");
+    cv::imshow(WINDOW_EXTRACTED_FRAME,result);
 }
 
 void FSController::hideFrame()
@@ -84,21 +81,21 @@ void FSController::hideFrame()
 
 void FSController::scan()
 {
-    if(webcam->info.portName.isEmpty()){
-        mainwindow->showDialog("No webcam selected!");
-        return;
-    }
-    QFuture<void> future = QtConcurrent::run(this, &FSController::scanThread);
-}
-
-void FSController::scanThread()
-{
     //check if camera is connected
     if(webcam->info.portName.isEmpty()){
         mainwindow->showDialog("No webcam selected!");
         return;
     }
-    //detect laser line
+    if(!serial->isOpen())
+    {
+        mainwindow->showDialog("Serial port is not open");
+        return;
+    }
+    QtConcurrent::run(this, &FSController::scanThread);
+}
+
+void FSController::scanThread()
+{
     this->detectLaserLine();
     //turn off stepper (if available)
     this->laser->disable();
@@ -109,6 +106,8 @@ void FSController::scanThread()
     laser->turnOn();
     turntable->setDirection(FS_DIRECTION_CCW);
     turntable->enable();
+
+    QString sliceStr;
 
     //iterate over a complete turn of the turntable
     for(FSFloat i=0; i<360 && scanning==true; i+=stepDegrees){
@@ -126,14 +125,18 @@ void FSController::scanThread()
 
         //here the magic happens
         vision->putPointsFromFrameToCloud(laserOff, laserOn, yDpi, 0);
+
         //update gui
         geometries->setPointCloudTo(model->pointCloud);
+        mainwindow->setWindowTitle("FabScan - Slices left = "+ sliceStr.setNum((360-i)/stepDegrees));
         mainwindow->redraw();
         //turn turntable a step
         turntable->turnNumberOfDegrees(stepDegrees);
         QThread::msleep(  300+stepDegrees*100);
     }
     if(scanning) mainwindow->doneScanning();
+    laser->turnOff();
+    mainwindow->setWindowTitle("FabScan");
     scanning = false; //stop scanning
 }
 
@@ -232,4 +235,24 @@ void FSController::computeSurfaceMesh()
     //geometries->setSurfaceMeshTo(model->surfaceMesh,model->pointCloud);
 
     //mainwindow->redraw();
+}
+
+bool FSController::isArduinoAlive()
+{
+    char c;
+    FSController *fs = FSController::getInstance();
+
+    qDebug() << "Arduino Status...";
+    if(!fs->serial->serialPortPath->isNull())	//Only perform if we have a port selected
+    {
+        fs->serial->writeChar(MC_FABSCAN_PING);	//Send a 'ping'...
+        QThread::msleep(100); //Give it time to answer (it's slower than we are)
+        c = fs->serial->readChar(); //Get a 'pong'
+
+        return ((int)((unsigned char)c) == MC_FABSCAN_PONG);
+    }
+    else
+    { //No serial port selected or found
+        return false;
+    }
 }
