@@ -80,6 +80,7 @@ TODO
 - Copy the dlls by a postbuild process
 - Make the paths in qtTest.pro relative or based on a environment variable or something
 - Ensure the the debug libs/dlls are used on a debug build and the release libs/dlls are used on a release build
+-- for Windows, this already works.
 - Fix AppCrashes
 
 Known Issues
