@@ -8,6 +8,8 @@ QT += core gui opengl multimedia multimediawidgets
 
 CONFIG += static noframework console
 
+QMAKE_LFLAGS += -static
+
 TARGET = FabScan100
 TEMPLATE = app
 
@@ -190,34 +192,139 @@ win32 {
     #fix LNK1123
     QMAKE_LFLAGS += /INCREMENTAL:NO
 
-    INCLUDEPATH += E:\libs\opencv-2.4.2\build\include
-    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_core242.lib
-    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_highgui242.lib
-    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_imgproc242.lib
-    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_features2d242.lib
-    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_calib3d242.lib
-    LIBS += E:\libs\opencv-2.4.2\build\x86\vc10\lib\opencv_flann242.lib
 
-    INCLUDEPATH += E:\libs\pcl-1.6.0\include\pcl-1.6
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_common_release.lib
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_io_release.lib
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_filters_release.lib
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_kdtree_release.lib
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_registration_release.lib
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_features_release.lib
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_segmentation_release.lib
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_surface_release.lib
-    LIBS += E:\libs\pcl-1.6.0\lib\pcl_search_release.lib
+    #CHECK IF THESE PATHS MATCH YOUR SYSTEM !!!
+    OPENCVDIR = "F:\libs\opencv-2.4.7\build\x86\vc10"
+    PCLDIR = "F:\libs\pcl-1.6.0"
 
-    INCLUDEPATH += E:\libs\pcl-1.6.0\3rdParty\Eigen\include
+    exists($$OPENCVDIR) {
+        DEFINES += USEOPENCV
+        INCLUDEPATH += F:\libs\opencv-2.4.7\build\include
 
-    INCLUDEPATH += E:\libs\pcl-1.6.0\3rdParty\FLANN\include
-    LIBS += E:\libs\pcl-1.6.0\3rdParty\FLANN\lib\flann.lib
+        CONFIG(release, debug|release) {
+        LIBS += -L$${OPENCVDIR}/lib \
+        -lopencv_core247 \
+        -lopencv_highgui247 \
+        -lopencv_imgproc247 \
+        -lopencv_features2d247 \
+        -lopencv_calib3d247 \
+        -lopencv_flann247
 
-    INCLUDEPATH += E:\libs\pcl-1.6.0\3rdParty\Boost\include
-    LIBS += E:\libs\pcl-1.6.0\3rdParty\Boost\lib\boost_filesystem-vc100-mt-1_49.lib
-    LIBS += E:\libs\pcl-1.6.0\3rdParty\Boost\lib\boost_system-vc100-mt-gd-1_49.lib
-    LIBS += E:\libs\pcl-1.6.0\3rdParty\Boost\lib\libboost_filesystem-vc100-mt-gd-1_49.lib
-    LIBS += E:\libs\pcl-1.6.0\3rdParty\Boost\lib\libboost_system-vc100-mt-gd-1_49.lib
+        PRE_TARGETDEPS += \
+        $${OPENCVDIR}/lib/opencv_core247.lib \
+        $${OPENCVDIR}/lib/opencv_highgui247.lib \
+        $${OPENCVDIR}/lib/opencv_imgproc247.lib \
+        $${OPENCVDIR}/lib/opencv_features2d247.lib \
+        $${OPENCVDIR}/lib/opencv_calib3d247.lib \
+        $${OPENCVDIR}/lib/opencv_flann247.lib
+        }else{
+        LIBS += -L$${OPENCVDIR}/lib \
+        -lopencv_core247d \
+        -lopencv_highgui247d \
+        -lopencv_imgproc247d \
+        -lopencv_features2d247d \
+        -lopencv_calib3d247d \
+        -lopencv_flann247d
+
+        PRE_TARGETDEPS += \
+        $${OPENCVDIR}/lib/opencv_core247d.lib \
+        $${OPENCVDIR}/lib/opencv_highgui247d.lib \
+        $${OPENCVDIR}/lib/opencv_imgproc247d.lib \
+        $${OPENCVDIR}/lib/opencv_features2d247d.lib \
+        $${OPENCVDIR}/lib/opencv_calib3d247d.lib \
+        $${OPENCVDIR}/lib/opencv_flann247d.lib
+        }
+        message("OpenCV libraries found in $${OPENCVDIR}")
+      } else {
+        message("OpenCV libraries not found.")
+      }
+
+    exists($$PCLDIR) {
+        INCLUDEPATH += $${PCLDIR}/include/pcl-1.6
+        INCLUDEPATH += $${PCLDIR}/3rdParty/Eigen/include
+        INCLUDEPATH += $${PCLDIR}/3rdParty/FLANN/include
+        INCLUDEPATH += $${PCLDIR}/3rdParty/Boost/include
+
+        CONFIG(release, debug|release) {
+        LIBS += -L$${PCLDIR}/lib \
+        -lpcl_common_release \
+        -lpcl_io_release \
+        -lpcl_filters_release \
+        -lpcl_kdtree_release \
+        -lpcl_registration_release \
+        -lpcl_features_release \
+        -lpcl_segmentation_release \
+        -lpcl_surface_release \
+        -lpcl_search_release \
+
+        LIBS += -L$${PCLDIR}/3rdParty/FLANN/lib \
+        -lflann_s
+
+        LIBS += -L$${PCLDIR}/3rdParty/Boost/lib \
+        -lboost_filesystem-vc100-mt-1_49
+        -lboost_system-vc100-mt-1_49
+        -llibboost_filesystem-vc100-mt-1_49
+        -llibboost_system-vc100-mt-1_49
+
+        PRE_TARGETDEPS += \
+        $${PCLDIR}/lib/pcl_common_release.lib \
+        $${PCLDIR}/lib/pcl_io_release.lib \
+        $${PCLDIR}/lib/pcl_filters_release.lib \
+        $${PCLDIR}/lib/pcl_kdtree_release.lib \
+        $${PCLDIR}/lib/pcl_registration_release.lib \
+        $${PCLDIR}/lib/pcl_features_release.lib \
+        $${PCLDIR}/lib/pcl_segmentation_release.lib \
+        $${PCLDIR}/lib/pcl_surface_release.lib \
+        $${PCLDIR}/lib/pcl_search_release.lib \
+        $${PCLDIR}/3rdParty\FLANN\lib\flann_s.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\boost_filesystem-vc100-mt-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\boost_system-vc100-mt-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\libboost_filesystem-vc100-mt-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\libboost_system-vc100-mt-1_49.lib
+        }else{
+
+        LIBS += -L$${PCLDIR}/lib \
+        -lpcl_common_debug \
+        -lpcl_io_debug \
+        -lpcl_filters_debug \
+        -lpcl_kdtree_debug \
+        -lpcl_registration_debug \
+        -lpcl_features_debug \
+        -lpcl_segmentation_debug \
+        -lpcl_surface_debug \
+        -lpcl_search_debug
+
+        LIBS += -L$${PCLDIR}/3rdParty/FLANN/lib \
+        -lflann_s-gd
+
+        LIBS += -L$${PCLDIR}/3rdParty/Boost/lib \
+        -lboost_filesystem-vc100-mt-gd-1_49
+        -lboost_system-vc100-mt-gd-1_49
+        -llibboost_filesystem-vc100-mt-gd-1_49
+        -llibboost_system-vc100-mt-gd-1_49
+
+        PRE_TARGETDEPS += \
+        $${PCLDIR}/lib/pcl_common_debug.lib \
+        $${PCLDIR}/lib/pcl_io_debug.lib \
+        $${PCLDIR}/lib/pcl_filters_debug.lib \
+        $${PCLDIR}/lib/pcl_kdtree_debug.lib \
+        $${PCLDIR}/lib/pcl_registration_debug.lib \
+        $${PCLDIR}/lib/pcl_features_debug.lib \
+        $${PCLDIR}/lib/pcl_segmentation_debug.lib \
+        $${PCLDIR}/lib/pcl_surface_debug.lib \
+        $${PCLDIR}/lib/pcl_search_debug.lib \
+        $${PCLDIR}/3rdParty\FLANN\lib\flann_s-gd.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\boost_filesystem-vc100-mt-gd-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\boost_system-vc100-mt-gd-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\libboost_filesystem-vc100-mt-gd-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\libboost_system-vc100-mt-gd-1_49.lib
+        }
+        message("PCL libraries found in $${PCLDIR}")
+      } else {
+        message("PCL libraries not found.")
+      }
+
+
+
     DEFINES += WINDOWS
 }
