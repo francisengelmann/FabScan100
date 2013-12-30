@@ -2,7 +2,10 @@
 //
 //  Created by Francis Engelmann on 7/1/11.
 //  Copyright 2011 Media Computing Group, RWTH Aachen University. All rights reserved.
-//  Last Modifcation: R. Bohne 29.01.2013: changed pin mapping to Watterott FabScan Arduino Shield
+//  
+//  Chngelog:
+//  R. Bohne 29.01.2013: changed pin mapping to Watterott FabScan Arduino Shield
+//  R. Bohne 30.12.2013: added pin definitions for stepper 4 --> this firmware supports the new FabScan Shield V1.1
 
 #define LIGHT_PIN 17
 #define LASER_PIN 18
@@ -22,6 +25,11 @@
 #define ENABLE_PIN_2  11
 #define STEP_PIN_2    12
 #define DIR_PIN_2     13
+
+//Stepper 4, currently unused
+#define ENABLE_PIN_3  14
+#define STEP_PIN_3    15
+#define DIR_PIN_3     16
   
 #define TURN_LASER_OFF      200
 #define TURN_LASER_ON       201
@@ -100,11 +108,16 @@ void setup()
   pinMode(ENABLE_PIN_2, OUTPUT);
   pinMode(DIR_PIN_2, OUTPUT);
   pinMode(STEP_PIN_2, OUTPUT);
+
+  pinMode(ENABLE_PIN_3, OUTPUT);
+  pinMode(DIR_PIN_3, OUTPUT);
+  pinMode(STEP_PIN_3, OUTPUT);
  
  //enable turntable and laser steppers
- digitalWrite(ENABLE_PIN_0, HIGH);  //LOW to turn
- digitalWrite(ENABLE_PIN_1, HIGH);  //LOW to turn
+ digitalWrite(ENABLE_PIN_0, HIGH);  //HIGH to turn on
+ digitalWrite(ENABLE_PIN_1, HIGH);  //HIGH to turn on
  digitalWrite(ENABLE_PIN_2, LOW);  //LOW to turn off
+ digitalWrite(ENABLE_PIN_3, LOW);  //LOW to turn off 
  
  digitalWrite(LIGHT_PIN, 0); //turn light off
 
