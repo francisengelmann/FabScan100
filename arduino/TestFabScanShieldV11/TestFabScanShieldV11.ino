@@ -4,6 +4,7 @@
 // This sketch tests all four stepper drivers on the FabScan-Shield V1.1
 // It also turns on the light and the laser
 // This sketch is not the real FabScan firmware, but just a test script for people who want to test their hardware!
+// at startup, the sketch blinks all leds, the light and the motor a few times and after that, it starts to spin the motors.
 
 #define LIGHT_PIN 17
 #define LASER_PIN 18
@@ -59,8 +60,28 @@ void setup()
   digitalWrite(ENABLE_PIN_2, LOW);  //LOW to turn on
   digitalWrite(ENABLE_PIN_3, LOW);  //LOW to turn on 
 
-  digitalWrite(LIGHT_PIN, 1); //turn light on
-  digitalWrite(LASER_PIN, 1); //turn laser on
+  //blink all leds, lights ans the laser 10 times
+  for(int i=0; i<10; i++)
+  {
+    digitalWrite(ENABLE_PIN_0, HIGH);  //HIGH to turn off
+    digitalWrite(ENABLE_PIN_1, HIGH);  //HIGH to turn off
+    digitalWrite(ENABLE_PIN_2, HIGH);  //LOW to turn on
+    digitalWrite(ENABLE_PIN_3, HIGH);  //LOW to turn on 
+    digitalWrite(LIGHT_PIN, 0); //turn light off
+    digitalWrite(LASER_PIN, 0); //turn laser off
+    delay(120);
+    digitalWrite(ENABLE_PIN_0, LOW);  //HIGH to turn off
+    digitalWrite(ENABLE_PIN_1, LOW);  //HIGH to turn off
+    digitalWrite(ENABLE_PIN_2, LOW);  //LOW to turn on
+    digitalWrite(ENABLE_PIN_3, LOW);  //LOW to turn on 
+    digitalWrite(LIGHT_PIN, 1); //turn light on
+    digitalWrite(LASER_PIN, 1); //turn laser on
+    delay(120);
+  }
+  
+  
+  
+  
 } 
 
 //loop just steps all four steppers. Attached motors should turn!
