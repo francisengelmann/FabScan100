@@ -5,7 +5,7 @@
 //  
 //  Chngelog:
 //  R. Bohne 29.01.2013: changed pin mapping to Watterott FabScan Arduino Shield
-//  R. Bohne 30.12.2013: added pin definitions for stepper 4 --> this firmware supports the new FabScan Shield V1.1
+//  R. Bohne 30.12.2013: added pin definitions for stepper 4 --> this firmware supports the new FabScan Shield V1.1, minor syntax changes. Steppers are now disabled at startup.
 
 #define LIGHT_PIN 17
 #define LASER_PIN 18
@@ -63,23 +63,26 @@ int incomingByte = 0;
 int byteType = 1;
 int currStepper;
 
+
+//current motor: turn a single step 
 void step()
 {
  if(currStepper == TURNTABLE_STEPPER){
-   digitalWrite(STEP_PIN_0, 0);
+   digitalWrite(STEP_PIN_0, LOW);
  }else if(currStepper == LASER_STEPPER){
-   digitalWrite(STEP_PIN_1, 0);
+   digitalWrite(STEP_PIN_1, LOW);
  }
 
  delay(3);
  if(currStepper == TURNTABLE_STEPPER){
-   digitalWrite(STEP_PIN_0, 1);
+   digitalWrite(STEP_PIN_0, HIGH);
  }else if(currStepper == LASER_STEPPER){
-   digitalWrite(STEP_PIN_1, 1);
+   digitalWrite(STEP_PIN_1, HIGH);
  }
  delay(3);
 }
 
+//step the current motor for <count> times
 void step(int count)
 {
   for(int i=0; i<count; i++){
@@ -113,15 +116,15 @@ void setup()
   pinMode(DIR_PIN_3, OUTPUT);
   pinMode(STEP_PIN_3, OUTPUT);
  
- //enable turntable and laser steppers
- digitalWrite(ENABLE_PIN_0, HIGH);  //HIGH to turn on
- digitalWrite(ENABLE_PIN_1, HIGH);  //HIGH to turn on
- digitalWrite(ENABLE_PIN_2, LOW);  //LOW to turn off
- digitalWrite(ENABLE_PIN_3, LOW);  //LOW to turn off 
+ //disable all steppers at startup
+ digitalWrite(ENABLE_PIN_0, HIGH);  //HIGH to turn off
+ digitalWrite(ENABLE_PIN_1, HIGH);  //HIGH to turn off
+ digitalWrite(ENABLE_PIN_2, HIGH);  //LOW to turn on
+ digitalWrite(ENABLE_PIN_3, HIGH);  //LOW to turn on 
  
- digitalWrite(LIGHT_PIN, 0); //turn light off
+ digitalWrite(LIGHT_PIN, LOW); //turn light off
 
- digitalWrite(LASER_PIN, 1); //turn laser on
+ digitalWrite(LASER_PIN, HIGH); //turn laser on
  Serial.write(FABSCAN_PONG); //send a pong back to the computer so we know setup is done and that we are actually dealing with a FabScan
  
  currStepper = TURNTABLE_STEPPER;  //turntable is default stepper
@@ -154,37 +157,37 @@ void loop()
               break;
             case SET_DIRECTION_CW:
               if(currStepper == TURNTABLE_STEPPER){
-                digitalWrite(DIR_PIN_0, 1);
+                digitalWrite(DIR_PIN_0, HIGH);
               }else if(currStepper == LASER_STEPPER){
-                digitalWrite(DIR_PIN_1, 1);
+                digitalWrite(DIR_PIN_1, HIGH);
               }
               break;
             case SET_DIRECTION_CCW:
               if(currStepper == TURNTABLE_STEPPER){
-                digitalWrite(DIR_PIN_0, 0);
+                digitalWrite(DIR_PIN_0, LOW);
               }else if(currStepper == LASER_STEPPER){
-                digitalWrite(DIR_PIN_1, 0);
+                digitalWrite(DIR_PIN_1, LOW);
               }
               break;
             case TURN_STEPPER_ON:
               if(currStepper == TURNTABLE_STEPPER){
-                digitalWrite(ENABLE_PIN_0, 0);
+                digitalWrite(ENABLE_PIN_0, LOW);
               }else if(currStepper == LASER_STEPPER){
-                digitalWrite(ENABLE_PIN_1, 0);
+                digitalWrite(ENABLE_PIN_1, LOW);
               }
               break;
             case TURN_STEPPER_OFF:
               if(currStepper == TURNTABLE_STEPPER){
-                digitalWrite(ENABLE_PIN_0, 1);
+                digitalWrite(ENABLE_PIN_0, HIGH);
               }else if(currStepper == LASER_STEPPER){
-                digitalWrite(ENABLE_PIN_1, 1);
+                digitalWrite(ENABLE_PIN_1, HIGH);
               }
               break;
             case TURN_LIGHT_ON:
               byteType = LIGHT_INTENSITY;
               break;
             case TURN_LIGHT_OFF:
-              digitalWrite(LIGHT_PIN, 0);
+              digitalWrite(LIGHT_PIN, LOW);
               break;
             case FABSCAN_PING:
               delay(1);
