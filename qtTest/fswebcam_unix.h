@@ -12,6 +12,9 @@
 
 class FSWebCamUnix : public FSWebCam
 {
+    //we need this macro, because this class has a SIGNAL: imageSaved
+    Q_OBJECT
+
 public:
     FSWebCamUnix();
     ~FSWebCamUnix();

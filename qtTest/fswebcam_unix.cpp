@@ -18,18 +18,28 @@ cv::Mat FSWebCamUnix::getFrame()
     frameTaken = false;
     isCapturingImage = true;
 
+    //wait until camera has taken picture, then return */
     #ifdef MACOSX
+    qDebug() << "preparing to take frame MAC OS X";
     imageCapture->capture("./");
     #elif LINUX
+    qDebug() << "preparing to take frame LINUX";
     imageCapture->capture();
     #endif
-    //qDebug() << "preparing to take frame";
+
     //wait until camera has taken picture, then return
     while(!frameTaken){
+        //QThread::msleep(1); // Added for the cv routines
         qApp->processEvents();
     }
-    //qDebug() << "received frame";
-    return frame.clone();
+
+    qDebug() << "received frame";
+    cv::Mat result = frame.clone();
+    cv::imshow(WINDOW_EXTRACTED_FRAME,result);
+
+    return result;
+
+
 }
 
 void FSWebCamUnix::setCamera(const QByteArray &cameraDevice)
@@ -50,9 +60,10 @@ void FSWebCamUnix::setCamera(const QByteArray &cameraDevice)
     #ifdef MACOSX
         imageSettings.setCodec("image/jpeg");
         imageSettings.setResolution(1280, 960);
-        imageCapture->setEncodingSettings(imageSettings);
     #endif
+    imageCapture->setEncodingSettings(imageSettings);
 
+    //connect(imageCapture, SIGNAL(imageCaptured(int,QImage)), this, SLOT(processCapturedImage(int,QImage)));
     connect(imageCapture, SIGNAL(imageSaved(int,QString)), this, SLOT(imageSaved(int,QString)));
 
     camera->start();
@@ -76,22 +87,30 @@ void FSWebCamUnix::setCamera(const QByteArray &cameraDevice)
 
 void FSWebCamUnix::imageSaved(int id, const QString &fileName)
 {
+    qDebug() << "imageSaved: ";
     Q_UNUSED(id);
     Q_UNUSED(fileName);
 
     QImage img = QImage(fileName);
     QFile::remove(fileName);
+    qDebug() << "before img.convertToFormat";
     QImage img2 = img.convertToFormat(QImage::Format_RGB888);
-    //qDebug() << img2.height() << img2.width();
+    qDebug() << "after img.convertToFormat";
+    qDebug() << img2.height() << img2.width();
+
     cv::Mat mat(img2.height(),
                 img2.width(),
                 CV_8UC3,
                 (uchar*)img2.bits(), img2.bytesPerLine());
+
     #ifdef MACOSX
-    frame = mat;
+    //frame = mat;
+    frame = mat.clone();
     #elif LINUX
     frame = mat.clone();
     #endif
+
+    qDebug() << "almost done";
     cv::cvtColor(mat,frame, CV_RGB2BGR);
     frameTaken = true;
     isCapturingImage = false;
