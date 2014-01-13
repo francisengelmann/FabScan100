@@ -8,7 +8,7 @@ QT += core gui opengl multimedia multimediawidgets
 
 CONFIG += static noframework console
 
-QMAKE_LFLAGS += -static
+#QMAKE_LFLAGS += -static
 
 TARGET = FabScan100
 TEMPLATE = app
@@ -68,8 +68,23 @@ RESOURCES += \
 
 macx {
     message("Buildng for Mac.")
-    INCLUDEPATH += /usr/local/Cellar/opencv/2.4.2/include
-    LIBS += -L/usr/local/Cellar/opencv/2.4.2 \
+
+    QMAKE_MAC_SDK.macosx.path = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdK
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
+
+    if( !exists( $$QMAKE_MAC_SDK.macosx.path) ) {
+        error("The selected Mac OSX SDK does not exist at $$QMAKE_MAC_SDK.macosx.path!")
+    }
+    else
+    {
+        message("The selected Mac OSX SDK was found at $$QMAKE_MAC_SDK.macosx.path");
+        message("building for Mac OSX $$QMAKE_MACOSX_DEPLOYMENT_TARGET");
+    }
+
+
+    INCLUDEPATH += /usr/local/include/
+    INCLUDEPATH += /usr/local/include/opencv/
+    LIBS += -L/usr/local/lib/ \
     -lopencv_core \
     -lopencv_highgui \
     -lopencv_imgproc \
@@ -106,11 +121,11 @@ macx {
 
     #INCLUDEPATH += /usr/local/Cellar/vtk/5.10.0/include/vtk-5.10
 
-    INCLUDEPATH += /usr/local/Cellar/eigen/3.1.2/include/eigen3
-    INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
-    INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
+    INCLUDEPATH += /usr/local/include/eigen3
+    INCLUDEPATH += /usr/local/include/flann
+    INCLUDEPATH += /usr/local/include/boost
 
-        LIBS += -L/usr/local/Cellar/boost/1.51.0 \
+        LIBS += -L/usr/local/lib \
         -lboost_chrono-mt \
         -lboost_context-mt \
         -lboost_date_time-mt \
