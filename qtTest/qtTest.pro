@@ -6,7 +6,9 @@
 
 QT += core gui opengl multimedia multimediawidgets
 
-CONFIG += static noframework
+CONFIG += static noframework console
+
+#QMAKE_LFLAGS += -static
 
 TARGET = FabScan100
 TEMPLATE = app
@@ -14,7 +16,7 @@ TEMPLATE = app
 CONFIG += precompile_header
 PRECOMPILED_HEADER = staticHeaders.h
 
-include(qextserialport-1.2beta2/src/qextserialport.pri)
+include(qextserialport-1.2rc/src/qextserialport.pri)
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -62,8 +64,23 @@ RESOURCES += \
 
 macx {
     message("Buildng for Mac.")
-    INCLUDEPATH += /usr/local/Cellar/opencv/2.4.2/include
-    LIBS += -L/usr/local/Cellar/opencv/2.4.2 \
+
+    QMAKE_MAC_SDK.macosx.path = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdK
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
+
+    if( !exists( $$QMAKE_MAC_SDK.macosx.path) ) {
+        error("The selected Mac OSX SDK does not exist at $$QMAKE_MAC_SDK.macosx.path!")
+    }
+    else
+    {
+        message("The selected Mac OSX SDK was found at $$QMAKE_MAC_SDK.macosx.path");
+        message("building for Mac OSX $$QMAKE_MACOSX_DEPLOYMENT_TARGET");
+    }
+
+
+    INCLUDEPATH += /usr/local/include/
+    INCLUDEPATH += /usr/local/include/opencv/
+    LIBS += -L/usr/local/lib/ \
     -lopencv_core \
     -lopencv_highgui \
     -lopencv_imgproc \
@@ -100,11 +117,11 @@ macx {
 
     #INCLUDEPATH += /usr/local/Cellar/vtk/5.10.0/include/vtk-5.10
 
-    INCLUDEPATH += /usr/local/Cellar/eigen/3.1.2/include/eigen3
-    INCLUDEPATH += /usr/local/Cellar/flann/1.7.1/include
-    INCLUDEPATH += /usr/local/Cellar/boost/1.51.0/include/boost
+    INCLUDEPATH += /usr/local/include/eigen3
+    INCLUDEPATH += /usr/local/include/flann
+    INCLUDEPATH += /usr/local/include/boost
 
-        LIBS += -L/usr/local/Cellar/boost/1.51.0 \
+        LIBS += -L/usr/local/lib \
         -lboost_chrono-mt \
         -lboost_context-mt \
         -lboost_date_time-mt \
@@ -133,6 +150,8 @@ macx {
         -lboost_unit_test_framework-mt \
         -lboost_wave-mt \
         -lboost_wserialization-mt \
+
+    DEFINES += MACOSX
 }
 
 linux-g++ {
@@ -179,5 +198,144 @@ linux-g++ {
 }
 
 win32 {
-    message("Buildng for Win. not working yet...")
+    message("Buildng for Win.")
+
+    #fix LNK1123
+    QMAKE_LFLAGS += /INCREMENTAL:NO
+
+
+    #CHECK IF THESE PATHS MATCH YOUR SYSTEM !!!
+    OPENCVDIR = "F:\libs\opencv-2.4.7\build\x86\vc10"
+    PCLDIR = "F:\libs\pcl-1.6.0"
+
+    exists($$OPENCVDIR) {
+        DEFINES += USEOPENCV
+        INCLUDEPATH += F:\libs\opencv-2.4.7\build\include
+
+        CONFIG(release, debug|release) {
+        LIBS += -L$${OPENCVDIR}/lib \
+        -lopencv_core247 \
+        -lopencv_highgui247 \
+        -lopencv_imgproc247 \
+        -lopencv_features2d247 \
+        -lopencv_calib3d247 \
+        -lopencv_flann247
+
+        PRE_TARGETDEPS += \
+        $${OPENCVDIR}/lib/opencv_core247.lib \
+        $${OPENCVDIR}/lib/opencv_highgui247.lib \
+        $${OPENCVDIR}/lib/opencv_imgproc247.lib \
+        $${OPENCVDIR}/lib/opencv_features2d247.lib \
+        $${OPENCVDIR}/lib/opencv_calib3d247.lib \
+        $${OPENCVDIR}/lib/opencv_flann247.lib
+        }else{
+        LIBS += -L$${OPENCVDIR}/lib \
+        -lopencv_core247d \
+        -lopencv_highgui247d \
+        -lopencv_imgproc247d \
+        -lopencv_features2d247d \
+        -lopencv_calib3d247d \
+        -lopencv_flann247d
+
+        PRE_TARGETDEPS += \
+        $${OPENCVDIR}/lib/opencv_core247d.lib \
+        $${OPENCVDIR}/lib/opencv_highgui247d.lib \
+        $${OPENCVDIR}/lib/opencv_imgproc247d.lib \
+        $${OPENCVDIR}/lib/opencv_features2d247d.lib \
+        $${OPENCVDIR}/lib/opencv_calib3d247d.lib \
+        $${OPENCVDIR}/lib/opencv_flann247d.lib
+        }
+        message("OpenCV libraries found in $${OPENCVDIR}")
+      } else {
+        message("OpenCV libraries not found.")
+      }
+
+    exists($$PCLDIR) {
+        INCLUDEPATH += $${PCLDIR}/include/pcl-1.6
+        INCLUDEPATH += $${PCLDIR}/3rdParty/Eigen/include
+        INCLUDEPATH += $${PCLDIR}/3rdParty/FLANN/include
+        INCLUDEPATH += $${PCLDIR}/3rdParty/Boost/include
+
+        CONFIG(release, debug|release) {
+        LIBS += -L$${PCLDIR}/lib \
+        -lpcl_common_release \
+        -lpcl_io_release \
+        -lpcl_filters_release \
+        -lpcl_kdtree_release \
+        -lpcl_registration_release \
+        -lpcl_features_release \
+        -lpcl_segmentation_release \
+        -lpcl_surface_release \
+        -lpcl_search_release \
+
+        LIBS += -L$${PCLDIR}/3rdParty/FLANN/lib \
+        -lflann_s
+
+        LIBS += -L$${PCLDIR}/3rdParty/Boost/lib \
+        -lboost_filesystem-vc100-mt-1_49
+        -lboost_system-vc100-mt-1_49
+        -llibboost_filesystem-vc100-mt-1_49
+        -llibboost_system-vc100-mt-1_49
+
+        PRE_TARGETDEPS += \
+        $${PCLDIR}/lib/pcl_common_release.lib \
+        $${PCLDIR}/lib/pcl_io_release.lib \
+        $${PCLDIR}/lib/pcl_filters_release.lib \
+        $${PCLDIR}/lib/pcl_kdtree_release.lib \
+        $${PCLDIR}/lib/pcl_registration_release.lib \
+        $${PCLDIR}/lib/pcl_features_release.lib \
+        $${PCLDIR}/lib/pcl_segmentation_release.lib \
+        $${PCLDIR}/lib/pcl_surface_release.lib \
+        $${PCLDIR}/lib/pcl_search_release.lib \
+        $${PCLDIR}/3rdParty\FLANN\lib\flann_s.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\boost_filesystem-vc100-mt-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\boost_system-vc100-mt-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\libboost_filesystem-vc100-mt-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\libboost_system-vc100-mt-1_49.lib
+        }else{
+
+        LIBS += -L$${PCLDIR}/lib \
+        -lpcl_common_debug \
+        -lpcl_io_debug \
+        -lpcl_filters_debug \
+        -lpcl_kdtree_debug \
+        -lpcl_registration_debug \
+        -lpcl_features_debug \
+        -lpcl_segmentation_debug \
+        -lpcl_surface_debug \
+        -lpcl_search_debug
+
+        LIBS += -L$${PCLDIR}/3rdParty/FLANN/lib \
+        -lflann_s-gd
+
+        LIBS += -L$${PCLDIR}/3rdParty/Boost/lib \
+        -lboost_filesystem-vc100-mt-gd-1_49
+        -lboost_system-vc100-mt-gd-1_49
+        -llibboost_filesystem-vc100-mt-gd-1_49
+        -llibboost_system-vc100-mt-gd-1_49
+
+        PRE_TARGETDEPS += \
+        $${PCLDIR}/lib/pcl_common_debug.lib \
+        $${PCLDIR}/lib/pcl_io_debug.lib \
+        $${PCLDIR}/lib/pcl_filters_debug.lib \
+        $${PCLDIR}/lib/pcl_kdtree_debug.lib \
+        $${PCLDIR}/lib/pcl_registration_debug.lib \
+        $${PCLDIR}/lib/pcl_features_debug.lib \
+        $${PCLDIR}/lib/pcl_segmentation_debug.lib \
+        $${PCLDIR}/lib/pcl_surface_debug.lib \
+        $${PCLDIR}/lib/pcl_search_debug.lib \
+        $${PCLDIR}/3rdParty\FLANN\lib\flann_s-gd.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\boost_filesystem-vc100-mt-gd-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\boost_system-vc100-mt-gd-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\libboost_filesystem-vc100-mt-gd-1_49.lib \
+        $${PCLDIR}/3rdParty\Boost\lib\libboost_system-vc100-mt-gd-1_49.lib
+        }
+        message("PCL libraries found in $${PCLDIR}")
+      } else {
+        message("PCL libraries not found.")
+      }
+
+
+
+    DEFINES += WINDOWS
 }

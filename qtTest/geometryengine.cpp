@@ -57,7 +57,9 @@ void GeometryEngine::initPointCloud()
 
 void GeometryEngine::setPointCloudTo(pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud)
 {
-    VertexData vertices[pointcloud->points.size()];
+    //VertexData vertices[pointcloud->points.size()];
+    VertexData *vertices = new VertexData[pointcloud->points.size()];
+
     //VertexData vertices[9999];
     GLuint indices[pointcloud->points.size()];
 
@@ -190,11 +192,15 @@ void GeometryEngine::setSurfaceMeshTo(pcl::PolygonMesh &surfacemesh, pcl::PointC
     std::cout << "1" << std::endl;
     pcl::PointCloud<pcl::PointXYZ> cloud;
     cout << "2" << endl;
-    pcl::fromROSMsg(surfacemesh.cloud, cloud);
+
+    //pcl::fromROSMsg(surfacemesh.cloud, cloud);//not a member since pcl 1.7
+    pcl::fromPCLPointCloud2(surfacemesh.cloud, cloud);//for pcl >= 1.7
 
     //cout << "GeometryEngine:" << cloud.points.size() << endl;
 
-    VertexData vertices[cloud.points.size()];
+    //VertexData vertices[cloud.points.size()];
+    VertexData *vertices = new VertexData[cloud.points.size()];
+
     //VertexData vertices[999999]; //TODO: solve this in a nicer way
     GLuint indices[surfacemesh.polygons.size()*3];
 

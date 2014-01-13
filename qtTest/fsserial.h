@@ -2,8 +2,8 @@
 #define FSSERIAL_H
 
 #include <QObject>
-#include "qextserialport-1.2beta2/src/qextserialport.h"
-#include "qextserialport-1.2beta2/src/qextserialenumerator.h"
+#include "qextserialport-1.2rc/src/qextserialport.h"
+#include "qextserialport-1.2rc/src/qextserialenumerator.h"
 
 //#include "staticHeaders.h"
 
