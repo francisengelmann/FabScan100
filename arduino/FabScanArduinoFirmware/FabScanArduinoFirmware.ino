@@ -6,10 +6,11 @@
 //  Chngelog:
 //  R. Bohne 29.01.2013: changed pin mapping to Watterott FabScan Arduino Shield
 //  R. Bohne 30.12.2013: added pin definitions for stepper 4 --> this firmware supports the new FabScan Shield V1.1, minor syntax changes. Steppers are now disabled at startup.
+//  R. Bohne 12.03.2014: renamed the pins 14..19 to A0..A5 (better abstraction for people who use Arduino MEGA, etc.)
 
-#define LIGHT_PIN 17
-#define LASER_PIN 18
-#define MS_PIN    19
+#define LIGHT_PIN A3
+#define LASER_PIN A4
+#define MS_PIN    A5
 
 //Stepper 1 as labeled on Shield, Turntable
 #define ENABLE_PIN_0  2
@@ -27,9 +28,9 @@
 #define DIR_PIN_2     13
 
 //Stepper 4, currently unused
-#define ENABLE_PIN_3  14
-#define STEP_PIN_3    15
-#define DIR_PIN_3     16
+#define ENABLE_PIN_3  A0
+#define STEP_PIN_3    A1
+#define DIR_PIN_3     A2
   
 #define TURN_LASER_OFF      200
 #define TURN_LASER_ON       201
