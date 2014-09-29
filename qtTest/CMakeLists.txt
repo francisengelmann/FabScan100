@@ -14,13 +14,31 @@ set(CMAKE_AUTOMOC ON)
 file(GLOB fabscan_SRC
     "*.h"
     "*.cpp"
-    "qextserialport-1.2beta2/src/*.h"
-    "qextserialport-1.2beta2/src/*.cpp"
 )
+
+set (qextserialport_FILES
+    qextserialport-1.2rc/src/qextserialenumerator.h
+    qextserialport-1.2rc/src/qextserialport.h
+    qextserialport-1.2rc/src/qextserialenumerator_p.h
+    qextserialport-1.2rc/src/qextserialport_global.h
+    qextserialport-1.2rc/src/qextserialport_p.h
+    qextserialport-1.2rc/src/qextserialport.cpp
+    qextserialport-1.2rc/src/qextserialenumerator_linux.cpp
+    qextserialport-1.2rc/src/qextserialenumerator.cpp
+#    qextserialport-1.2rc/src/qextserialenumerator_osx.cpp
+#    qextserialport-1.2rc/src/qextserialenumerator_win.cpp
+    qextserialport-1.2rc/src/qextserialport_unix.cpp
+#    qextserialport-1.2rc/src/qextserialport_win.cpp
+#    qextserialport-1.2rc/src/qextserialenumerator_unix.cpp
+)
+
+find_library(UDEV_LIBS udev)
+mark_as_advanced(UDEV_LIBS)
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Multimedia REQUIRED)
 find_package(Qt5MultimediaWidgets REQUIRED)
+find_package(Qt5OpenGL REQUIRED)
 
 include_directories(${Qt5Widgets_DEFINITIONS})
 add_definitions(${Qt5Widgets_DEFINITIONS})
@@ -32,18 +50,19 @@ include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
-find_package(Boost REQUIRED)
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost COMPONENTS system)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 
-add_executable(fabscan ${fabscan_SRC})
+find_package(OpenCV REQUIRED)
+
+qt5_wrap_ui(UIS_HDRS mainwindow.ui fscontrolpanel.ui fsdialog.ui)
+qt5_add_resources(APP_RESOURCES shaders.qrc textures.qrc)
+
+add_executable(fabscan ${fabscan_SRC} ${UIS_HDRS} ${qextserialport_FILES} ${APP_RESOURCES})
+qt5_use_modules(fabscan Core Gui Multimedia MultimediaWidgets Widgets OpenGL)
 install(TARGETS fabscan RUNTIME DESTINATION bin)
-target_link_libraries(fabscan ${Qt5Core_LIBRARIES})
-
-qt5_use_modules(fabscan Widgets)
-qt5_use_modules(fabscan Multimedia)
-qt5_use_modules(fabscan MultimediaWidgets)
-
-qt5_wrap_ui(ui_mainwindow.h mainwindow.ui)
-qt5_wrap_ui(ui_fscontrolpanel.h fscontrolpanel.ui)
-qt5_wrap_ui(ui_fsdialog.h fsdialog.ui)
+target_link_libraries(fabscan ${Qt5Core_LIBRARIES} GL ${OpenCV_LIBS} ${Boost_LIBRARIES} ${PCL_LIBRARIES} ${UDEV_LIBS})
