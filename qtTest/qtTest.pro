@@ -63,7 +63,7 @@ RESOURCES += \
     textures.qrc
 
 macx {
-    message("Buildng for Mac.")
+    message("Building for Mac.")
 
     QMAKE_MAC_SDK.macosx.path = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdK
     QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.8
@@ -154,8 +154,8 @@ macx {
     DEFINES += MACOSX
 }
 
-linux-g++ {
-    message("Buildng for Linux.")
+linux-g++* {
+    message("Building for Linux.")
 
     #CONFIG += link_pkgconfig
     #PKGCONFIG += opencv
@@ -198,7 +198,7 @@ linux-g++ {
 }
 
 win32 {
-    message("Buildng for Win.")
+    message("Building for Win.")
 
     #fix LNK1123
     QMAKE_LFLAGS += /INCREMENTAL:NO
